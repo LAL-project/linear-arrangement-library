@@ -285,7 +285,7 @@ public:
 	template <std::integral T>
 	[[nodiscard]] integer operator+ (const T i) const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		a += i;
 		return a;
 	}
@@ -308,7 +308,7 @@ public:
 	 */
 	[[nodiscard]] integer operator+ (const integer& i) const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		a += i;
 		return a;
 	}
@@ -347,7 +347,7 @@ public:
 	/// Minus unary operator. Returns a new object of type 'integer'.
 	[[nodiscard]] integer operator- () const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		mpz_neg(a.m_val, a.m_val);
 		return a;
 	}
@@ -358,7 +358,7 @@ public:
 	template <std::integral T>
 	[[nodiscard]] integer operator- (const T i) const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		a -= i;
 		return a;
 	}
@@ -381,7 +381,7 @@ public:
 	 */
 	[[nodiscard]] integer operator- (const integer& i) const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		a -= i;
 		return a;
 	}
@@ -424,7 +424,7 @@ public:
 	template <std::integral T>
 	[[nodiscard]] integer operator* (const T i) const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		a *= i;
 		return a;
 	}
@@ -448,7 +448,7 @@ public:
 	 */
 	[[nodiscard]] integer operator* (const integer& i) const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		a *= i;
 		return a;
 	}
@@ -486,7 +486,7 @@ public:
 	template <std::integral T>
 	[[nodiscard]] integer operator/ (const T i) const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		a /= i;
 		return a;
 	}
@@ -509,7 +509,7 @@ public:
 	 */
 	[[nodiscard]] integer operator/ (const integer& i) const noexcept
 	{
-		integer a(*this);
+		integer a = *this;
 		a /= i;
 		return a;
 	}
