@@ -285,8 +285,18 @@ public:
 	template <std::integral T>
 	[[nodiscard]] integer operator+ (const T i) const noexcept
 	{
-		integer a = *this;
-		a += i;
+		integer a;
+		if constexpr (not std::is_signed_v<T>) {
+			mpz_add_ui(a.m_val, m_val, i);
+		}
+		else {
+			if (i > 0) {
+				mpz_add_ui(a.m_val, m_val, static_cast<uint64_t>(i));
+			}
+			else {
+				mpz_sub_ui(a.m_val, m_val, static_cast<uint64_t>(-i));
+			}
+		}
 		return a;
 	}
 #if !defined __LAL_SWIG_PYTHON
@@ -308,8 +318,8 @@ public:
 	 */
 	[[nodiscard]] integer operator+ (const integer& i) const noexcept
 	{
-		integer a = *this;
-		a += i;
+		integer a;
+		mpz_add(a.m_val, m_val, i.m_val);
 		return a;
 	}
 	/**
@@ -342,13 +352,13 @@ public:
 		return *this;
 	}
 
-	// -- SUBSTRACTION
+	// -- SUBTRACTION
 
 	/// Minus unary operator. Returns a new object of type 'integer'.
 	[[nodiscard]] integer operator- () const noexcept
 	{
-		integer a = *this;
-		mpz_neg(a.m_val, a.m_val);
+		integer a;
+		mpz_neg(a.m_val, m_val);
 		return a;
 	}
 	/**
@@ -358,8 +368,18 @@ public:
 	template <std::integral T>
 	[[nodiscard]] integer operator- (const T i) const noexcept
 	{
-		integer a = *this;
-		a -= i;
+		integer a;
+		if constexpr (not std::is_signed_v<T>) {
+			mpz_sub_ui(a.m_val, m_val, i);
+		}
+		else {
+			if (i > 0) {
+				mpz_sub_ui(a.m_val, m_val, static_cast<uint64_t>(i));
+			}
+			else {
+				mpz_add_ui(a.m_val, m_val, static_cast<uint64_t>(-i));
+			}
+		}
 		return a;
 	}
 #if !defined __LAL_SWIG_PYTHON
@@ -381,8 +401,8 @@ public:
 	 */
 	[[nodiscard]] integer operator- (const integer& i) const noexcept
 	{
-		integer a = *this;
-		a -= i;
+		integer a;
+		mpz_sub(a.m_val, m_val, i.m_val);
 		return a;
 	}
 	/**
@@ -424,8 +444,13 @@ public:
 	template <std::integral T>
 	[[nodiscard]] integer operator* (const T i) const noexcept
 	{
-		integer a = *this;
-		a *= i;
+		integer a;
+		if constexpr (std::is_signed_v<T>) {
+			mpz_mul_si(a.m_val, m_val, i);
+		}
+		else {
+			mpz_mul_ui(a.m_val, m_val, i);
+		}
 		return a;
 	}
 #if !defined __LAL_SWIG_PYTHON
@@ -448,8 +473,8 @@ public:
 	 */
 	[[nodiscard]] integer operator* (const integer& i) const noexcept
 	{
-		integer a = *this;
-		a *= i;
+		integer a;
+		mpz_mul(a.m_val, m_val, i.m_val);
 		return a;
 	}
 	/**
@@ -486,8 +511,19 @@ public:
 	template <std::integral T>
 	[[nodiscard]] integer operator/ (const T i) const noexcept
 	{
-		integer a = *this;
-		a /= i;
+		integer a;
+		if constexpr (not std::is_signed_v<T>) {
+			mpz_tdiv_q_ui(a.m_val, m_val, i);
+		}
+		else {
+			if (i < 0) {
+				mpz_tdiv_q_ui(a.m_val, m_val, static_cast<uint64_t>(-i));
+				mpz_neg(a.m_val, a.m_val);
+			}
+			else {
+				mpz_tdiv_q_ui(a.m_val, m_val, static_cast<uint64_t>(i));
+			}
+		}
 		return a;
 	}
 #if !defined __LAL_SWIG_PYTHON
@@ -509,8 +545,19 @@ public:
 	 */
 	[[nodiscard]] integer operator/ (const integer& i) const noexcept
 	{
-		integer a = *this;
-		a /= i;
+		integer a;
+		if (i < 0) {
+			mpz_t pos_i;
+			mpz_init(pos_i);
+			mpz_set(pos_i, i.m_val);
+			mpz_neg(pos_i, pos_i);
+
+			mpz_tdiv_q(a.m_val, m_val, pos_i);
+			mpz_neg(a.m_val, a.m_val);
+		}
+		else {
+			mpz_tdiv_q(a.m_val, m_val, i.m_val);
+		}
 		return a;
 	}
 	/**
@@ -521,11 +568,16 @@ public:
 	integer& operator/= (const T i) noexcept
 	{
 		if constexpr (not std::is_signed_v<T>) {
-			mpz_fdiv_q_ui(m_val, m_val, i);
+			mpz_tdiv_q_ui(m_val, m_val, i);
 		}
 		else {
-			mpz_fdiv_q_ui(m_val, m_val, static_cast<uint64_t>(i < 0 ? -i : i));
-			mpz_mul_si(m_val, m_val, (i < 0 ? -1 : 1));
+			if (i < 0) {
+				mpz_tdiv_q_ui(m_val, m_val, static_cast<uint64_t>(-i));
+				mpz_neg(m_val, m_val);
+			}
+			else {
+				mpz_tdiv_q_ui(m_val, m_val, i);
+			}
 		}
 		return *this;
 	}
@@ -535,7 +587,18 @@ public:
 	 */
 	integer& operator/= (const integer& i) noexcept
 	{
-		mpz_div(m_val, m_val, i.m_val);
+		if (i < 0) {
+			mpz_t pos_i;
+			mpz_init(pos_i);
+			mpz_set(pos_i, i.m_val);
+			mpz_neg(pos_i, pos_i);
+
+			mpz_fdiv_q(m_val, m_val, pos_i);
+			mpz_neg(m_val, m_val);
+		}
+		else {
+			mpz_fdiv_q(m_val, m_val, i.m_val);
+		}
 		return *this;
 	}
 
