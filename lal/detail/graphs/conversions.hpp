@@ -765,6 +765,8 @@ template <graphs::Tree tree_t>
 	// the output tree
 	graphs::free_tree t(n);
 
+	// TODO: can these nested loops be optimized with pointers?
+
 	// for each number in the sequence seq[i], find the first
 	// lowest-numbered node, j, with degree equal to 1, add
 	// the edge (j, seq[i]) to the tree, and decrement the degrees
