@@ -49,6 +49,12 @@ namespace numeric {
 
 // PUBLIC
 
+integer::integer(mpz_t&& raw) noexcept
+{
+	m_initialized = true;
+	detail::move_mpz(*m_val, std::move(*raw));
+}
+
 /* ARITHMETIC OPERATORS */
 
 // -- EXPONENTIATION
@@ -64,6 +70,15 @@ integer& integer::powt(const integer& i) noexcept
 std::size_t integer::bytes() const noexcept
 {
 	return detail::mpz_bytes(m_val);
+}
+
+// PRIVATE
+
+void integer::move_into(integer&& i) noexcept
+{
+	m_initialized = true;
+	detail::move_mpz(*m_val, std::move(*i.m_val));
+	i.m_initialized = false;
 }
 
 } // namespace numeric

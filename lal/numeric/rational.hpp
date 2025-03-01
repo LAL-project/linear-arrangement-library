@@ -68,6 +68,7 @@ public:
 	/// Empty constructor.
 	rational() noexcept
 	{
+		m_initialized = true;
 		mpq_init(m_val);
 	}
 	/**
@@ -78,7 +79,6 @@ public:
 	template <std::integral T>
 	rational(const T n, const uint64_t d = 1) noexcept
 	{
-		mpq_init(m_val);
 		set_number(n, d);
 	}
 	/**
@@ -88,7 +88,6 @@ public:
 	 */
 	rational(const integer& n, const integer& d = 1) noexcept
 	{
-		mpq_init(m_val);
 		set_integer(n, d);
 	}
 	/**
@@ -97,7 +96,6 @@ public:
 	 */
 	rational(const std::string& s) noexcept
 	{
-		mpq_init(m_val);
 		set_str(s);
 	}
 	/**
@@ -106,6 +104,7 @@ public:
 	 */
 	rational(const rational& r) noexcept
 	{
+		m_initialized = true;
 		mpq_init(m_val);
 		mpq_set(m_val, r.m_val);
 	}
@@ -116,18 +115,7 @@ public:
 	 */
 	rational(integer&& i) noexcept
 	{
-		// move i's contents into numerator
-		m_val[0]._mp_num = *i.m_val;
-		// set the denominator to 1
-		mpz_init_set_ui(&m_val[0]._mp_den, 1);
-		// we must canonicalize
-		mpq_canonicalize(m_val);
-
-		// invalidate i's contents
-		i.m_val->_mp_alloc = 0;
-		i.m_val->_mp_size = 0;
-		i.m_val->_mp_d = nullptr;
-		i.m_initialized = false;
+		move_into(std::move(i));
 	}
 	/**
 	 * @brief Move constructor with numerator and denominator.
@@ -137,24 +125,7 @@ public:
 	 */
 	rational(integer&& n, integer&& d) noexcept
 	{
-		// move n's contents into numerator
-		m_val[0]._mp_num = *n.m_val;
-		// move d's contents into denominator
-		m_val[0]._mp_den = *d.m_val;
-		// we must canonicalize
-		mpq_canonicalize(m_val);
-
-		// invalidate n's contents
-		n.m_val->_mp_alloc = 0;
-		n.m_val->_mp_size = 0;
-		n.m_val->_mp_d = nullptr;
-		n.m_initialized = false;
-
-		// invalidate d's contents
-		d.m_val->_mp_alloc = 0;
-		d.m_val->_mp_size = 0;
-		d.m_val->_mp_d = nullptr;
-		d.m_initialized = false;
+		move_into(std::move(n), std::move(d));
 	}
 	/**
 	 * @brief Move constructor.
@@ -163,22 +134,14 @@ public:
 	 */
 	rational(rational&& r) noexcept
 	{
-		*m_val = *r.m_val;
-
-		// invalidate r's contents
-		r.m_val->_mp_num._mp_alloc = 0;
-		r.m_val->_mp_num._mp_size = 0;
-		r.m_val->_mp_num._mp_d = nullptr;
-		r.m_val->_mp_den._mp_alloc = 0;
-		r.m_val->_mp_den._mp_size = 0;
-		r.m_val->_mp_den._mp_d = nullptr;
-		r.m_initialized = false;
+		move_into(std::move(r));
 	}
 
 	/// Destructor.
 	~rational() noexcept
 	{
 		mpq_clear(m_val);
+		m_initialized = false;
 	}
 
 	/* SETTERS */
@@ -192,6 +155,7 @@ public:
 	void set_number(const T n, const uint64_t d = 1) noexcept
 	{
 		if (not is_initialized()) {
+			m_initialized = true;
 			mpq_init(m_val);
 		}
 		if constexpr (std::is_signed_v<T>) {
@@ -201,7 +165,6 @@ public:
 			mpq_set_ui(m_val, n, d);
 		}
 		mpq_canonicalize(m_val);
-		m_initialized = true;
 	}
 	/**
 	 * @brief Overwrites the value in the string @e s.
@@ -210,11 +173,11 @@ public:
 	void set_str(const std::string& s) noexcept
 	{
 		if (not is_initialized()) {
+			m_initialized = true;
 			mpq_init(m_val);
 		}
 		mpq_set_str(m_val, s.c_str(), 10);
 		mpq_canonicalize(m_val);
-		m_initialized = true;
 	}
 	/**
 	 * @brief Overwrites the value of this rational with the value \f$n/d\f$.
@@ -224,12 +187,21 @@ public:
 	void set_integer(const integer& n, const integer& d) noexcept
 	{
 		if (not is_initialized()) {
+			m_initialized = true;
 			mpq_init(m_val);
 		}
-		mpq_set_num(m_val, n.get_raw_value());
-		mpq_set_den(m_val, d.get_raw_value());
+		mpq_set_num(m_val, n.m_val);
+		mpq_set_den(m_val, d.m_val);
 		mpq_canonicalize(m_val);
-		m_initialized = true;
+	}
+	/**
+	 * @brief Overwrites the value of this rational with the value \f$n/d\f$.
+	 * @param n Numerator, a @ref lal::numeric::integer.
+	 * @param d Denominator, a @ref lal::numeric::integer.
+	 */
+	void set_integer(integer&& n, integer&& d) noexcept
+	{
+		move_into(std::move(n), std::move(d));
 	}
 	/**
 	 * @brief Overwrites the value of this rational with the value \f$n/d\f$.
@@ -238,6 +210,7 @@ public:
 	void set_rational(const rational& r) noexcept
 	{
 		if (not is_initialized()) {
+			m_initialized = true;
 			mpq_init(m_val);
 		}
 		mpq_set(m_val, r.m_val);
@@ -303,23 +276,8 @@ public:
 	 */
 	rational& operator= (integer&& i) noexcept
 	{
-		// clear this's contents
 		mpq_clear(m_val);
-		m_initialized = true;
-
-		// move i's contents into numerator
-		m_val[0]._mp_num = *i.m_val;
-		// set the denominator to 1
-		mpz_init_set_ui(&m_val[0]._mp_den, 1);
-		// we must canonicalize
-		mpq_canonicalize(m_val);
-
-		// invalidate i's contents
-		i.m_val->_mp_alloc = 0;
-		i.m_val->_mp_size = 0;
-		i.m_val->_mp_d = nullptr;
-		i.m_initialized = false;
-
+		move_into(std::move(i));
 		return *this;
 	}
 	/**
@@ -329,22 +287,8 @@ public:
 	 */
 	rational& operator= (rational&& r) noexcept
 	{
-		// clear this's contents
 		mpq_clear(m_val);
-		m_initialized = true;
-
-		// move r's contents into this's
-		*m_val = *r.m_val;
-
-		// invalidate r's contents
-		r.m_val->_mp_num._mp_alloc = 0;
-		r.m_val->_mp_num._mp_size = 0;
-		r.m_val->_mp_num._mp_d = nullptr;
-		r.m_val->_mp_den._mp_alloc = 0;
-		r.m_val->_mp_den._mp_size = 0;
-		r.m_val->_mp_den._mp_d = nullptr;
-		r.m_initialized = false;
-
+		move_into(std::move(r));
 		return *this;
 	}
 
@@ -881,16 +825,12 @@ public:
 
 	/**
 	 * @brief Swaps the value of this rational with rational @e r's value.
-	 *
-	 * - If none of the rationals is initialized, it does nothing.
-	 * - If only one of the rationals is initialized, moves the contents
-	 * of the initialized rational to the other. At the end, one of the two
-	 * rationals is left uninitiliased.
-	 * - If both rationals are initialized, swaps the values they contain.
+	 * @param[inout] r Rational value.
 	 */
 	void swap(rational& r) noexcept
 	{
 		mpq_swap(m_val, r.m_val);
+		std::swap(m_initialized, r.m_initialized);
 	}
 
 #if !defined __LAL_SWIG_PYTHON
@@ -907,10 +847,33 @@ public:
 
 private:
 
+	/**
+	 * @brief Moves an @ref lal::numeric::integer into this object.
+	 * @param i Input integer.
+	 */
+	void move_into(integer&& i) noexcept;
+
+	/**
+	 * @brief Moves two @ref lal::numeric::integer into this object.
+	 *
+	 * The two integers represent a fraction.
+	 * @param n Input integer.
+	 * @param d Input integer.
+	 */
+	void move_into(integer&& n, integer&& d) noexcept;
+
+	/**
+	 * @brief Moves a @ref lal::numeric::rational into this object.
+	 * @param r Input rational.
+	 */
+	void move_into(rational&& r) noexcept;
+
+private:
+
 	/// Structure from GMP storing the rational's value.
 	mpq_t m_val;
 	/// Is this rational initialized?
-	bool m_initialized = true;
+	bool m_initialized = false;
 };
 
 } // namespace numeric

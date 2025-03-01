@@ -69,6 +69,7 @@ public:
 	/// Empty constructor.
 	integer() noexcept
 	{
+		m_initialized = true;
 		mpz_init(m_val);
 	}
 
@@ -76,17 +77,7 @@ public:
 	 * @brief Constructor with mpz_t.
 	 * @post Object @e raw will have to be initialized by the callee.
 	 */
-	integer(mpz_t&& raw) noexcept
-	{
-		// move raw's contents
-		*m_val = *raw;
-		m_initialized = true;
-
-		// invalidate raw's contents
-		raw->_mp_alloc = 0;
-		raw->_mp_size = 0;
-		raw->_mp_d = nullptr;
-	}
+	integer(mpz_t&& raw) noexcept;
 
 	/**
 	 * @brief Constructor with unsigned integer value.
@@ -95,12 +86,7 @@ public:
 	template <std::integral T>
 	integer(const T i) noexcept
 	{
-		if constexpr (std::is_signed_v<T>) {
-			mpz_init_set_si(m_val, i);
-		}
-		else {
-			mpz_init_set_ui(m_val, i);
-		}
+		set_number(i);
 	}
 	/**
 	 * @brief Constructor with string.
@@ -108,7 +94,7 @@ public:
 	 */
 	integer(const std::string& s) noexcept
 	{
-		mpz_init_set_str(m_val, s.c_str(), 10);
+		set_str(s);
 	}
 
 	/**
@@ -118,14 +104,7 @@ public:
 	 */
 	integer(integer&& i) noexcept
 	{
-		// move i's contents
-		*m_val = *i.m_val;
-
-		// invalidate i's contents
-		i.m_val->_mp_alloc = 0;
-		i.m_val->_mp_size = 0;
-		i.m_val->_mp_d = nullptr;
-		i.m_initialized = false;
+		move_into(std::move(i));
 	}
 
 	/**
@@ -134,12 +113,14 @@ public:
 	 */
 	integer(const integer& i) noexcept
 	{
+		m_initialized = true;
 		mpz_init_set(m_val, i.m_val);
 	}
 	/// Destructor.
 	~integer() noexcept
 	{
 		mpz_clear(m_val);
+		m_initialized = false;
 	}
 
 	/* SETTERS */
@@ -152,6 +133,7 @@ public:
 	void set_number(const T i) noexcept
 	{
 		if (not is_initialized()) {
+			m_initialized = true;
 			mpz_init(m_val);
 		}
 		if constexpr (std::is_signed_v<T>) {
@@ -160,7 +142,6 @@ public:
 		else {
 			mpz_set_ui(m_val, i);
 		}
-		m_initialized = true;
 	}
 
 	/**
@@ -170,10 +151,10 @@ public:
 	void set_integer(const integer& i) noexcept
 	{
 		if (not is_initialized()) {
+			m_initialized = true;
 			mpz_init(m_val);
 		}
 		mpz_set(m_val, i.m_val);
-		m_initialized = true;
 	}
 	/**
 	 * @brief Overwrites the value of this integer with @e s.
@@ -182,10 +163,10 @@ public:
 	void set_str(const std::string& s) noexcept
 	{
 		if (not is_initialized()) {
+			m_initialized = true;
 			mpz_init(m_val);
 		}
 		mpz_set_str(m_val, s.c_str(), 10);
-		m_initialized = true;
 	}
 
 	/* OPERATORS */
@@ -219,17 +200,7 @@ public:
 	integer& operator= (integer&& i) noexcept
 	{
 		mpz_clear(m_val);
-
-		// move i's contents
-		*m_val = *i.m_val;
-		m_initialized = true;
-
-		// invalidate i's contents
-		i.m_val->_mp_alloc = 0;
-		i.m_val->_mp_size = 0;
-		i.m_val->_mp_d = nullptr;
-		i.m_initialized = false;
-
+		move_into(std::move(i));
 		return *this;
 	}
 
@@ -727,22 +698,14 @@ public:
 		free(buf);
 	}
 
-	/* OTHERS */
-
 	/**
 	 * @brief Swaps the value of this integer with integer @e i's value.
-	 *
-	 * - If none of the integers is initialized, it does nothing.
-	 * - If only one of the integers is initialized, moves the contents
-	 * of the initialized integer to the other. At the end, one of the two
-	 * integers is left uninitiliased.
-	 * - If both integers are initialized, swaps the values they contain.
-	 *
-	 * @param i A @ref lal::numeric::integer
+	 * @param[inout] i A @ref lal::numeric::integer
 	 */
 	void swap(integer& i) noexcept
 	{
 		mpz_swap(m_val, i.m_val);
+		std::swap(m_initialized, i.m_initialized);
 	}
 
 #if !defined __LAL_SWIG_PYTHON
@@ -759,10 +722,18 @@ public:
 
 private:
 
+	/**
+	 * @brief Moves an @ref lal::numeric::integer into this object.
+	 * @param i Input integer.
+	 */
+	void move_into(integer&& i) noexcept;
+
+private:
+
 	/// Structure from GMP storing the integer's value.
 	mpz_t m_val;
 	/// Is this integer initialized?
-	bool m_initialized = true;
+	bool m_initialized = false;
 };
 
 } // namespace numeric

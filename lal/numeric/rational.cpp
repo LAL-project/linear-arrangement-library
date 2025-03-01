@@ -118,5 +118,35 @@ void rational::as_integer(integer& i) const noexcept
 	mpz_clears(numerator, denominator, NULL);
 }
 
+void rational::move_into(integer&& i) noexcept
+{
+	m_initialized = true;
+
+	detail::move_mpz(m_val->_mp_num, std::move(*i.m_val));
+	mpz_init_set_ui(&m_val->_mp_den, 1);
+	mpq_canonicalize(m_val);
+
+	i.m_initialized = false;
+}
+
+void rational::move_into(integer&& n, integer&& d) noexcept
+{
+	m_initialized = true;
+
+	detail::move_mpz(m_val->_mp_num, std::move(*n.m_val));
+	detail::move_mpz(m_val->_mp_den, std::move(*d.m_val));
+	mpq_canonicalize(m_val);
+
+	n.m_initialized = false;
+	d.m_initialized = false;
+}
+
+void rational::move_into(rational&& r) noexcept
+{
+	m_initialized = true;
+	detail::move_mpq(*m_val, std::move(*r.m_val));
+	r.m_initialized = false;
+}
+
 } // namespace numeric
 } // namespace lal

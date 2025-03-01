@@ -42,6 +42,7 @@
 #pragma once
 
 // C++ includes
+#include <utility>
 #include <cstdint>
 
 // gmp includes
@@ -49,6 +50,21 @@
 
 namespace lal {
 namespace detail {
+
+/* Memory operations */
+
+inline void move_mpz(__mpz_struct& l, __mpz_struct&& r) noexcept
+{
+	l = std::move(r);
+	r._mp_d = nullptr;
+}
+
+inline void move_mpq(__mpq_struct& l, __mpq_struct&& r) noexcept
+{
+	l = std::move(r);
+	r._mp_num._mp_d = nullptr;
+	r._mp_den._mp_d = nullptr;
+}
 
 /* Other arithmetic operations */
 
