@@ -362,7 +362,7 @@ public:
 	template <std::integral T>
 	[[nodiscard]] rational operator+ (const T i) const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		r += i;
 		return r;
 	}
@@ -385,7 +385,7 @@ public:
 	 */
 	[[nodiscard]] rational operator+ (const integer& i) const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		r += i;
 		return r;
 	}
@@ -407,7 +407,7 @@ public:
 	 */
 	[[nodiscard]] rational operator+ (const rational& r) const noexcept
 	{
-		rational k(*this);
+		rational k = *this;
 		k += r;
 		return k;
 	}
@@ -448,7 +448,7 @@ public:
 	/// Substraction unary operator.
 	[[nodiscard]] rational operator- () const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		mpq_neg(r.m_val, r.m_val);
 		return r;
 	}
@@ -459,7 +459,7 @@ public:
 	template <std::integral T>
 	[[nodiscard]] rational operator- (const T i) const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		r -= i;
 		return r;
 	}
@@ -482,7 +482,7 @@ public:
 	 */
 	[[nodiscard]] rational operator- (const integer& i) const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		r -= i;
 		return r;
 	}
@@ -504,7 +504,7 @@ public:
 	 */
 	[[nodiscard]] rational operator- (const rational& r) const noexcept
 	{
-		rational k(*this);
+		rational k = *this;
 		k -= r;
 		return k;
 	}
@@ -549,7 +549,7 @@ public:
 	template <std::integral T>
 	[[nodiscard]] rational operator* (const T i) const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		r *= i;
 		return r;
 	}
@@ -572,7 +572,7 @@ public:
 	 */
 	[[nodiscard]] rational operator* (const integer& i) const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		r *= i;
 		return r;
 	}
@@ -594,7 +594,7 @@ public:
 	 */
 	[[nodiscard]] rational operator* (const rational& r) const noexcept
 	{
-		rational k(*this);
+		rational k = *this;
 		k *= r;
 		return k;
 	}
@@ -639,7 +639,7 @@ public:
 	template <std::integral T>
 	[[nodiscard]] rational operator/ (const T i) const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		r /= i;
 		return r;
 	}
@@ -665,7 +665,7 @@ public:
 	 */
 	[[nodiscard]] rational operator/ (const integer& i) const noexcept
 	{
-		rational r(*this);
+		rational r = *this;
 		r /= i;
 		return r;
 	}
@@ -685,7 +685,7 @@ public:
 	 */
 	[[nodiscard]] rational operator/ (const rational& r) const noexcept
 	{
-		rational k(*this);
+		rational k = *this;
 		k /= r;
 		return k;
 	}
