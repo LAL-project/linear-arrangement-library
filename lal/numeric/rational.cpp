@@ -51,19 +51,6 @@ namespace numeric {
 
 /* ARITHMETIC OPERATORS */
 
-// -- DIVISION
-
-rational& rational::operator/= (const integer& i) noexcept
-{
-	detail::mpz_divide_mpq(m_val, i.get_raw_value());
-	return *this;
-}
-rational& rational::operator/= (const rational& r) noexcept
-{
-	detail::mpq_divide_mpq(m_val, r.m_val);
-	return *this;
-}
-
 // -- EXPONENTIATION
 
 rational rational::power(uint64_t p) const noexcept

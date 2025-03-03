@@ -164,7 +164,9 @@ public:
 		else {
 			mpq_set_ui(m_val, n, d);
 		}
-		mpq_canonicalize(m_val);
+		if (d > 1) {
+			mpq_canonicalize(m_val);
+		}
 	}
 	/**
 	 * @brief Overwrites the value in the string @e s.
@@ -407,8 +409,8 @@ public:
 	 */
 	[[nodiscard]] rational operator+ (const rational& r) const noexcept
 	{
-		rational k = *this;
-		k += r;
+		rational k;
+		mpq_add(k.m_val, m_val, r.m_val);
 		return k;
 	}
 
@@ -448,8 +450,8 @@ public:
 	/// Substraction unary operator.
 	[[nodiscard]] rational operator- () const noexcept
 	{
-		rational r = *this;
-		mpq_neg(r.m_val, r.m_val);
+		rational r;
+		mpq_neg(r.m_val, m_val);
 		return r;
 	}
 	/**
@@ -459,8 +461,8 @@ public:
 	template <std::integral T>
 	[[nodiscard]] rational operator- (const T i) const noexcept
 	{
-		rational r = *this;
-		r -= i;
+		rational r = -i;
+		mpq_add(r.m_val, r.m_val, m_val);
 		return r;
 	}
 #if !defined __LAL_SWIG_PYTHON
@@ -504,8 +506,8 @@ public:
 	 */
 	[[nodiscard]] rational operator- (const rational& r) const noexcept
 	{
-		rational k = *this;
-		k -= r;
+		rational k;
+		mpq_sub(k.m_val, m_val, r.m_val);
 		return k;
 	}
 
@@ -549,8 +551,15 @@ public:
 	template <std::integral T>
 	[[nodiscard]] rational operator* (const T i) const noexcept
 	{
-		rational r = *this;
-		r *= i;
+		rational r;
+		if constexpr (std::is_signed_v<T>) {
+			mpz_mul_si(&r.m_val->_mp_num, &m_val->_mp_num, i);
+		}
+		else {
+			mpz_mul_ui(&r.m_val->_mp_num, &m_val->_mp_num, i);
+		}
+		mpz_set(&r.m_val->_mp_den, &m_val->_mp_den);
+		mpq_canonicalize(r.m_val);
 		return r;
 	}
 #if !defined __LAL_SWIG_PYTHON
@@ -572,8 +581,10 @@ public:
 	 */
 	[[nodiscard]] rational operator* (const integer& i) const noexcept
 	{
-		rational r = *this;
-		r *= i;
+		rational r;
+		mpz_mul(&r.m_val->_mp_num, &m_val->_mp_num, i.m_val);
+		mpz_set(&r.m_val->_mp_den, &m_val->_mp_den);
+		mpq_canonicalize(r.m_val);
 		return r;
 	}
 #if !defined __LAL_SWIG_PYTHON
@@ -594,8 +605,8 @@ public:
 	 */
 	[[nodiscard]] rational operator* (const rational& r) const noexcept
 	{
-		rational k = *this;
-		k *= r;
+		rational k;
+		mpq_mul(k.m_val, m_val, r.m_val);
 		return k;
 	}
 
@@ -606,8 +617,13 @@ public:
 	template <std::integral T>
 	rational& operator*= (const T i) noexcept
 	{
-		rational r(i);
-		mpq_mul(m_val, m_val, r.m_val);
+		if constexpr (std::is_signed_v<T>) {
+			mpz_mul_si(&m_val->_mp_num, &m_val->_mp_num, i);
+		}
+		else {
+			mpz_mul_ui(&m_val->_mp_num, &m_val->_mp_num, i);
+		}
+		mpq_canonicalize(m_val);
 		return *this;
 	}
 	/**
@@ -616,8 +632,8 @@ public:
 	 */
 	rational& operator*= (const integer& i) noexcept
 	{
-		rational r(i);
-		mpq_mul(m_val, m_val, r.m_val);
+		mpz_mul(&m_val->_mp_num, &m_val->_mp_num, i.m_val);
+		mpq_canonicalize(m_val);
 		return *this;
 	}
 	/**
@@ -639,9 +655,23 @@ public:
 	template <std::integral T>
 	[[nodiscard]] rational operator/ (const T i) const noexcept
 	{
-		rational r = *this;
-		r /= i;
-		return r;
+		if constexpr (std::is_signed_v<T>) {
+			if (i < 0) {
+				rational r(-1, static_cast<uint64_t>(-i));
+				r *= (*this);
+				return r;
+			}
+			else {
+				rational r(1, static_cast<uint64_t>(i));
+				r *= (*this);
+				return r;
+			}
+		}
+		else {
+			rational r(1, i);
+			r *= (*this);
+			return r;
+		}
 	}
 #if !defined __LAL_SWIG_PYTHON
 	/**
@@ -665,8 +695,10 @@ public:
 	 */
 	[[nodiscard]] rational operator/ (const integer& i) const noexcept
 	{
-		rational r = *this;
-		r /= i;
+		rational r;
+		mpz_set_ui(&r.m_val->_mp_num, 1);
+		mpz_mul(&r.m_val->_mp_den, &r.m_val->_mp_den, i.m_val);
+		mpq_canonicalize(r.m_val);
 		return r;
 	}
 	/**
@@ -685,8 +717,8 @@ public:
 	 */
 	[[nodiscard]] rational operator/ (const rational& r) const noexcept
 	{
-		rational k = *this;
-		k /= r;
+		rational k;
+		mpq_div(k.m_val, m_val, r.m_val);
 		return k;
 	}
 
@@ -697,7 +729,7 @@ public:
 	template <std::integral T>
 	rational& operator/= (const T i) noexcept
 	{
-		integer I(i);
+		rational I(i);
 		*this /= I;
 		return *this;
 	}
@@ -705,12 +737,21 @@ public:
 	 * @brief Division operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	rational& operator/= (const integer& i) noexcept;
+	rational& operator/= (const integer& i) noexcept
+	{
+		mpz_mul(&m_val->_mp_den, &m_val->_mp_den, i.m_val);
+		mpq_canonicalize(m_val);
+		return *this;
+	}
 	/**
 	 * @brief Division operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	rational& operator/= (const rational& r) noexcept;
+	rational& operator/= (const rational& r) noexcept
+	{
+		mpq_div(m_val, m_val, r.m_val);
+		return *this;
+	}
 
 	// -- EXPONENTIATION
 
