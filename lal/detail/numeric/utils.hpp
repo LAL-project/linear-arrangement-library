@@ -120,28 +120,6 @@ inline void mpz_pow_mpz(mpz_t& r, const mpz_t& b, const mpz_t& e) noexcept
 }
 
 /**
- * @brief Rational-Integer division.
- *
- * Divide a rational \f$r\f$ by an integer \f$k\f$.
- * @param[out] r The rational to be divided by \f$k\f$. Result is \f$r := r/k\f$.
- * @param[in] k The integer that divides the rational.
- */
-inline void mpz_divide_mpq(mpq_t& r, const mpz_t& k) noexcept
-{
-	mpz_t b;
-	mpz_init(b);
-
-	mpq_get_den(b, r); // r = a/b
-
-	mpz_mul(b, b, k); // b <- b*k
-
-	mpq_set_den(r, b); // r <- a/(b*k)
-	mpq_canonicalize(r);
-
-	mpz_clear(b);
-}
-
-/**
  * @brief Rational-Rational division.
  *
  * Divide a rational \f$r_1\f$ by another rational \f$r_2\f$.
