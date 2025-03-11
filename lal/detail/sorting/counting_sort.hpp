@@ -133,8 +133,6 @@ struct memory {
  * Function paremeters:
  * @param begin Iterator at the beginning of the range.
  * @param end Iterator at the end of the range.
- * @param largest_key_plus_1 Integer value equal to 1 + the largest key that can
- * be obtained with function @e key.
  * @param key Function that returns a single integer value used to compare the
  * elements. This function is always called twice per element in the range to
  * be sorted.

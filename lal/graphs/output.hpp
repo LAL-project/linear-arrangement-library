@@ -82,7 +82,7 @@ private:
  * Usable by @ref lal::graphs::undirected_graph and @ref lal::graphs::free_tree.
  *
  * This operator adds a tabulator string at the beginning of each line. See
- * @ref lal::graphs::formatted_output, and @ref.
+ * @ref lal::graphs::formatted_output, and @ref lal::graphs::tabulator.
  *
  * Example:
 @code

@@ -298,7 +298,7 @@ public:
 
 	/**
 	 * @brief Three-way comparison operator.
-	 * @param i A @ref lal::numeric::rational.
+	 * @param r A @ref lal::numeric::rational.
 	 */
 	[[nodiscard]] std::strong_ordering operator<=> (const rational& r
 	) const noexcept
@@ -307,7 +307,7 @@ public:
 	}
 	/**
 	 * @brief Equality operator.
-	 * @param i A @ref lal::numeric::rational.
+	 * @param r A @ref lal::numeric::rational.
 	 */
 	[[nodiscard]] bool operator== (const rational& r) const noexcept
 	{
