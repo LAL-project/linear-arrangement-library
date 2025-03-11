@@ -56,8 +56,8 @@
 namespace lal {
 namespace linarr {
 
-#define __ident(arr) detail::identity_arr(arr)
-#define __nonident(arr) detail::nonidentity_arr(arr)
+#define lal_ident_arr(arr) detail::identity_arr(arr)
+#define lal_nonident_arr(arr) detail::nonidentity_arr(arr)
 
 template <graphs::Graph graph_t>
 uint64_t num_crossings(
@@ -67,27 +67,27 @@ uint64_t num_crossings(
 	if (arr.size() == 0) {
 		switch (A) {
 		case algorithms_C::brute_force:
-			return detail::crossings::n_C_brute_force(g, __ident(arr));
+			return detail::crossings::n_C_brute_force(g, lal_ident_arr(arr));
 		case algorithms_C::dynamic_programming:
-			return detail::crossings::n_C_dynamic_programming(g, __ident(arr));
+			return detail::crossings::n_C_dynamic_programming(g, lal_ident_arr(arr));
 		case algorithms_C::ladder:
-			return detail::crossings::n_C_ladder(g, __ident(arr));
+			return detail::crossings::n_C_ladder(g, lal_ident_arr(arr));
 		case algorithms_C::stack_based:
-			return detail::crossings::n_C_stack_based(g, __ident(arr));
+			return detail::crossings::n_C_stack_based(g, lal_ident_arr(arr));
 		}
 	}
 	else {
 		switch (A) {
 		case algorithms_C::brute_force:
-			return detail::crossings::n_C_brute_force(g, __nonident(arr));
+			return detail::crossings::n_C_brute_force(g, lal_nonident_arr(arr));
 		case algorithms_C::dynamic_programming:
 			return detail::crossings::n_C_dynamic_programming(
-				g, __nonident(arr)
+				g, lal_nonident_arr(arr)
 			);
 		case algorithms_C::ladder:
-			return detail::crossings::n_C_ladder(g, __nonident(arr));
+			return detail::crossings::n_C_ladder(g, lal_nonident_arr(arr));
 		case algorithms_C::stack_based:
-			return detail::crossings::n_C_stack_based(g, __nonident(arr));
+			return detail::crossings::n_C_stack_based(g, lal_nonident_arr(arr));
 		}
 	}
 
@@ -188,19 +188,19 @@ uint64_t is_num_crossings_lesseq_than(
 		switch (A) {
 		case algorithms_C::brute_force:
 			return detail::crossings::is_n_C_brute_force_lesseq_than(
-				g, __ident(arr), upper_bound
+				g, lal_ident_arr(arr), upper_bound
 			);
 		case algorithms_C::dynamic_programming:
 			return detail::crossings::is_n_C_dynamic_programming_lesseq_than(
-				g, __ident(arr), upper_bound
+				g, lal_ident_arr(arr), upper_bound
 			);
 		case algorithms_C::ladder:
 			return detail::crossings::is_n_C_ladder_lesseq_than(
-				g, __ident(arr), upper_bound
+				g, lal_ident_arr(arr), upper_bound
 			);
 		case algorithms_C::stack_based:
 			return detail::crossings::is_n_C_stack_based_lesseq_than(
-				g, __ident(arr), upper_bound
+				g, lal_ident_arr(arr), upper_bound
 			);
 		}
 	}
@@ -208,19 +208,19 @@ uint64_t is_num_crossings_lesseq_than(
 		switch (A) {
 		case algorithms_C::brute_force:
 			return detail::crossings::is_n_C_brute_force_lesseq_than(
-				g, __nonident(arr), upper_bound
+				g, lal_nonident_arr(arr), upper_bound
 			);
 		case algorithms_C::dynamic_programming:
 			return detail::crossings::is_n_C_dynamic_programming_lesseq_than(
-				g, __nonident(arr), upper_bound
+				g, lal_nonident_arr(arr), upper_bound
 			);
 		case algorithms_C::ladder:
 			return detail::crossings::is_n_C_ladder_lesseq_than(
-				g, __nonident(arr), upper_bound
+				g, lal_nonident_arr(arr), upper_bound
 			);
 		case algorithms_C::stack_based:
 			return detail::crossings::is_n_C_stack_based_lesseq_than(
-				g, __nonident(arr), upper_bound
+				g, lal_nonident_arr(arr), upper_bound
 			);
 		}
 	}

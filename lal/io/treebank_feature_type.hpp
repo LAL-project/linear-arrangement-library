@@ -46,7 +46,7 @@
 #include <cassert>
 #endif
 
-#if defined __LAL_SWIG_PYTHON
+#if defined LAL_SWIG_PYTHON
 #include <string>
 #else
 #include <string_view>
@@ -538,7 +538,7 @@ enum class treebank_feature_type {
 	 *
 	 * <b>This is used for internal purposes only.</b> Do not use this feature.
 	 */
-	__last_value
+	_last_value
 };
 
 /**
@@ -548,8 +548,8 @@ enum class treebank_feature_type {
  * @ref lal::io::treebank_feature_type, except the last one (which should never be
  * used).
  */
-constexpr inline std::size_t __treebank_feature_size =
-	static_cast<std::size_t>(treebank_feature_type::__last_value);
+constexpr inline std::size_t _treebank_feature_size =
+	static_cast<std::size_t>(treebank_feature_type::_last_value);
 
 /**
  * @brief Converts a @ref lal::io::treebank_feature_type value into a string.
@@ -557,7 +557,7 @@ constexpr inline std::size_t __treebank_feature_size =
  * @returns A string used to format output files.
  */
 constexpr inline
-#if defined __LAL_SWIG_PYTHON
+#if defined LAL_SWIG_PYTHON
 	std::string
 #else
 	std::string_view
@@ -659,7 +659,7 @@ constexpr inline
 	case treebank_feature_type::tree_type:			return "tree_type";
 	case treebank_feature_type::syntactic_dependency_tree_class:
 		return "syntactic_dependency_tree_class";
-	case treebank_feature_type::__last_value: return "__last_value";
+	case treebank_feature_type::_last_value: return "_last_value";
 	}
 	// should never happen
 	return "???";
@@ -677,16 +677,14 @@ constexpr inline io::treebank_feature_type
 index_to_treebank_feature(const std::size_t idx) noexcept
 {
 #if defined DEBUG
-	assert(
-		idx < treebank_feature_to_index(treebank_feature_type::__last_value)
-	);
+	assert(idx < treebank_feature_to_index(treebank_feature_type::_last_value));
 #endif
 	return static_cast<io::treebank_feature_type>(idx);
 }
 
 /// Returns the treebank feature corresponding to the index as a string.
 constexpr inline
-#if defined __LAL_SWIG_PYTHON
+#if defined LAL_SWIG_PYTHON
 	std::string
 #else
 	std::string_view

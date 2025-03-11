@@ -73,7 +73,7 @@ reason_discard AEF_BnB::check_propagation_node_to_node(
 	return reason_discard::none;
 }
 
-reason_discard AEF_BnB::discard_node__degree_2__bridge__level_0(const node u
+reason_discard AEF_BnB::discard_node_degree_2_bridge_level_0(const node u
 ) const noexcept
 {
 	const auto path_idx = m_node_to_path_idx[u];
@@ -112,7 +112,7 @@ reason_discard AEF_BnB::discard_node__degree_2__bridge__level_0(const node u
 	return reason_discard::none;
 }
 
-reason_discard AEF_BnB::discard_node__degree_2__bridge__level_pm2(
+reason_discard AEF_BnB::discard_node_degree_2_bridge_level_pm2(
 	const node u, const int64_t level_u
 ) const noexcept
 {
@@ -227,7 +227,7 @@ reason_discard AEF_BnB::discard_node_degree_2(
 	else {
 		if (level_u == 2 or level_u == -2) {
 			const reason_discard r =
-				discard_node__degree_2__bridge__level_pm2(u, level_u);
+				discard_node_degree_2_bridge_level_pm2(u, level_u);
 			if (r != reason_discard::none) {
 				return r;
 			}
@@ -236,7 +236,7 @@ reason_discard AEF_BnB::discard_node_degree_2(
 #if defined DEBUG
 			assert(level_u == 0);
 #endif
-			const reason_discard r = discard_node__degree_2__bridge__level_0(u);
+			const reason_discard r = discard_node_degree_2_bridge_level_0(u);
 			if (r != reason_discard::none) {
 				return r;
 			}

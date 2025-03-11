@@ -312,7 +312,7 @@ protected:
 	}
 
 	/// Adds a node to the graph.
-	void __add_node() noexcept
+	void _add_node() noexcept
 	{
 		m_adjacency_list.emplace_back();
 	}
@@ -330,7 +330,7 @@ protected:
 	 * @post The graph is normalized only if it was normalized before the call
 	 * and @e g is also normalized.
 	 */
-	void __disjoint_union(const graph& g) noexcept
+	void _disjoint_union(const graph& g) noexcept
 	{
 #if defined DEBUG
 		// If I'm directed, g must be directed.

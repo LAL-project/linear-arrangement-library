@@ -48,7 +48,7 @@
 // C++ includes
 #if defined DEBUG
 #include <cassert>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
@@ -74,7 +74,7 @@ int AEF_BnB::process_end(const uint64_t D, const position pos) noexcept
 		return process_end_result::did_not_reach_end;
 	}
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Reached end of the arrangement\n";
 #endif
 
@@ -102,7 +102,7 @@ int AEF_BnB::process_end(const uint64_t D, const position pos) noexcept
 			sum_cuts += m_cut_values[*i];
 		}
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 		std::cout << tab() << "sum by cuts= " << _D << '\n'
 				  << tab() << "D_current=   " << D << '\n';
 #endif
@@ -125,7 +125,7 @@ void AEF_BnB::update_state(
 	const node u, const position_t pos, uint64_t& D_p, uint64_t& D_ps_m
 ) noexcept
 {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Trying vertex " << u << " at position " << pos
 			  << '\n';
 #endif
@@ -228,7 +228,7 @@ void AEF_BnB::update_state(
 #if defined DEBUG
 	for (node v = 0; v < m_n_nodes; ++v) {
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 		if (is_vertex_assigned(v)) {
 			std::cout << tab() << "    "
 					  << "degree[" << v << "]: " << m_t.get_degree(v) << " (-"
@@ -256,7 +256,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept
 {
 	const node u = m_arr[pos];
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Remove vertex " << u << " from position " << pos
 			  << '\n';
 #endif
@@ -342,7 +342,7 @@ void AEF_BnB::recover_state(const position_t pos) noexcept
 
 #if defined DEBUG
 	for (node v = 0; v < m_n_nodes; ++v) {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 		if (is_vertex_assigned(v)) {
 			std::cout << tab() << "    "
 					  << "degree[" << v << "]: " << m_t.get_degree(v) << " (-"

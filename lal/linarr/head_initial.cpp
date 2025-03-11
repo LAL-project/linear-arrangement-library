@@ -53,8 +53,8 @@
 namespace lal {
 namespace linarr {
 
-#define __ident_arr(arr) detail::identity_arr(arr)
-#define __nonident_arr(arr) detail::nonidentity_arr(arr)
+#define lal_ident_arr(arr) detail::identity_arr(arr)
+#define lal_nonident_arr(arr) detail::nonidentity_arr(arr)
 
 numeric::rational head_initial_rational(
 	const graphs::directed_graph& g, const linear_arrangement& arr
@@ -66,8 +66,8 @@ numeric::rational head_initial_rational(
 
 	return (
 		arr.size() == 0
-			? detail::head_initial<numeric::rational>(g, __ident_arr(arr))
-			: detail::head_initial<numeric::rational>(g, __nonident_arr(arr))
+			? detail::head_initial<numeric::rational>(g, lal_ident_arr(arr))
+			: detail::head_initial<numeric::rational>(g, lal_nonident_arr(arr))
 	);
 }
 
@@ -80,8 +80,8 @@ double head_initial(
 #endif
 
 	return (
-		arr.size() == 0 ? detail::head_initial<double>(g, __ident_arr(arr))
-						: detail::head_initial<double>(g, __nonident_arr(arr))
+		arr.size() == 0 ? detail::head_initial<double>(g, lal_ident_arr(arr))
+						: detail::head_initial<double>(g, lal_nonident_arr(arr))
 	);
 }
 

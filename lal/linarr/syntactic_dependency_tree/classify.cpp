@@ -71,7 +71,7 @@ namespace linarr {
 typedef syntactic_dependency_tree_type syndepstr_type;
 
 template <detail::Arrangement arrangement_t>
-void __get_yields(
+void get_yields(
 	const graphs::rooted_tree& t,
 	const arrangement_t& arr,
 	const node u,
@@ -83,7 +83,7 @@ void __get_yields(
 	yu.push_back(arr[node_t{u}]);
 
 	for (const node v : t.get_out_neighbors(u)) {
-		__get_yields(t, arr, v, yields);
+		get_yields(t, arr, v, yields);
 		yu.insert(yu.end(), yields[v].begin(), yields[v].end());
 	}
 
@@ -92,7 +92,7 @@ void __get_yields(
 	);
 }
 
-bool __are_yields_wellnested(
+bool are_yields_wellnested(
 	const uint64_t n,
 	const graphs::rooted_tree& rT,
 	const std::vector<std::vector<position>>& yields
@@ -142,7 +142,7 @@ bool __are_yields_wellnested(
 	return true;
 }
 
-uint64_t __get_num_discontinuities(
+uint64_t get_num_discontinuities(
 	const uint64_t n, const std::vector<std::vector<node>>& yields
 ) noexcept
 {
@@ -161,29 +161,29 @@ uint64_t __get_num_discontinuities(
 }
 
 template <detail::Arrangement arrangement_t>
-bool __is_WG1(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
+bool is_WG1(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
 {
 	const uint64_t n = rT.get_num_nodes();
 
 	// compute the yield of each node
 	std::vector<std::vector<position>> yields(n);
-	__get_yields(rT, arr, rT.get_root(), yields);
+	get_yields(rT, arr, rT.get_root(), yields);
 
 	// calculate maximum discontinuities in the yields
-	const uint64_t max_dis = __get_num_discontinuities(n, yields);
+	const uint64_t max_dis = get_num_discontinuities(n, yields);
 	if (max_dis != 1) {
 		return false;
 	}
 
 	// test whether the tree is well nested
-	return __are_yields_wellnested(n, rT, yields);
+	return are_yields_wellnested(n, rT, yields);
 }
 
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
 template <detail::Arrangement arrangement_t>
 uint64_t
-__is_1EC(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
+is_1EC(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
 {
 	// use the paper in
 	// https://compling.ucdavis.edu/iwpt2017/proceedings/pdf/IWPT12.pdf
@@ -279,18 +279,18 @@ __is_1EC(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
 }
 
 template <detail::Arrangement arrangement_t>
-std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
+std::array<bool, _syntactic_dependency_tree_size> get_syn_dep_tree_type(
 	const graphs::rooted_tree& rT, const arrangement_t& arr, const uint64_t C
 ) noexcept
 {
 
 	bool is_some_class = false;
-	std::array<bool, __syntactic_dependency_tree_size> cl = detail::
-		make_array_with_value<bool, __syntactic_dependency_tree_size, false>();
+	std::array<bool, _syntactic_dependency_tree_size> cl = detail::
+		make_array_with_value<bool, _syntactic_dependency_tree_size, false>();
 
 	cl[static_cast<std::size_t>(syndepstr_type::unknown)] = true;
 
-	const auto __set_type = [&](const syndepstr_type& ts)
+	const auto _set_type = [&](const syndepstr_type& ts)
 	{
 		is_some_class = true;
 		cl[enum_to_sizet(ts)] = true;
@@ -314,7 +314,7 @@ std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 	// -------------------------------------------------------------------------
 	// classify small trees
 	if (n <= 2) {
-		__set_type(syndepstr_type::projective);
+		_set_type(syndepstr_type::projective);
 		nullify(syndepstr_type::unknown);
 		return cl;
 	}
@@ -325,7 +325,7 @@ std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 		const auto t = is_root_covered(rT, arr) ? syndepstr_type::planar
 												: syndepstr_type::projective;
 
-		__set_type(t);
+		_set_type(t);
 		nullify(syndepstr_type::unknown);
 		return cl;
 	}
@@ -344,29 +344,29 @@ std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 #endif
 
 	// update the linear arrangement
-	linear_arrangement __arr;
+	linear_arrangement arr_;
 	if constexpr (detail::is_nonidentity<arrangement_t>) {
 #if defined DEBUG
 		assert(arr.size() > 0);
 #endif
 
-		__arr.resize(arr.size() + 1);
-		if (__arr.size() > 0) {
-			__arr.assign(0ull, 0ull);
+		arr_.resize(arr.size() + 1);
+		if (arr_.size() > 0) {
+			arr_.assign(0ull, 0ull);
 		}
 		for (node u = 0; u < n; ++u) {
-			__arr.assign(u + 1, arr[node_t{u}] + 1);
+			arr_.assign(u + 1, arr[node_t{u}] + 1);
 		}
 	}
 
-	arrangement_t _arr(__arr);
+	arrangement_t arr_wrapper(arr_);
 
 	// +++++++++++++++++++++++++
 	// projective structures
 
 	// If C=0 then the structure is either projective or planar
 	if (C == 0) {
-		__set_type(
+		_set_type(
 			detail::is_root_covered(rT, arr) ? syndepstr_type::planar
 											 : syndepstr_type::projective
 		);
@@ -377,13 +377,13 @@ std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 		uint64_t _C = C;
 		{
 			const node only_child = _rT.get_out_neighbors(0)[0];
-			const position poc = _arr[node_t{only_child}];
+			const position poc = arr_wrapper[node_t{only_child}];
 
 			iterators::E_iterator eit(_rT);
 			while (not eit.end()) {
 				const auto [u, v] = eit.yield_edge_t();
-				const position pu = _arr[u];
-				const position pv = _arr[v];
+				const position pu = arr_wrapper[u];
+				const position pv = arr_wrapper[v];
 				if (pu < pv) {
 					_C += 0 < pu and pu < poc and poc < pv;
 				}
@@ -394,7 +394,7 @@ std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 		}
 
 		// remove 1-ec from the types when needed
-		if (_C > 0 and not __is_1EC(_rT, _arr)) {
+		if (_C > 0 and not is_1EC(_rT, arr_wrapper)) {
 			nullify(syndepstr_type::EC1);
 		}
 
@@ -408,15 +408,15 @@ std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 	// ---------------------------------------------------
 	// is the structure Well-Nested of Gap degree at most 1?
 
-	if (__is_WG1(rT, arr)) {
-		__set_type(syndepstr_type::WG1);
+	if (is_WG1(rT, arr)) {
+		_set_type(syndepstr_type::WG1);
 	}
 
 	// ---------------------------------------------------
 	// is the structure 1-Endpoint Crossing?
 
-	if (__is_1EC(_rT, _arr)) {
-		__set_type(syndepstr_type::EC1);
+	if (is_1EC(_rT, arr_wrapper)) {
+		_set_type(syndepstr_type::EC1);
 	}
 
 	if (is_some_class) {
@@ -425,7 +425,7 @@ std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 	return cl;
 }
 
-std::array<bool, __syntactic_dependency_tree_size>
+std::array<bool, _syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify(
 	const graphs::rooted_tree& rT,
 	const uint64_t C,
@@ -438,12 +438,12 @@ syntactic_dependency_tree_classify(
 
 	return (
 		arr.size() == 0
-			? __get_syn_dep_tree_type(rT, detail::identity_arr(arr), C)
-			: __get_syn_dep_tree_type(rT, detail::nonidentity_arr(arr), C)
+			? get_syn_dep_tree_type(rT, detail::identity_arr(arr), C)
+			: get_syn_dep_tree_type(rT, detail::nonidentity_arr(arr), C)
 	);
 }
 
-std::array<bool, __syntactic_dependency_tree_size>
+std::array<bool, _syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify(
 	const graphs::rooted_tree& rT, const linear_arrangement& arr
 ) noexcept
@@ -454,8 +454,8 @@ syntactic_dependency_tree_classify(
 	const uint64_t C = rT.get_num_nodes() >= 4 ? num_crossings(rT, arr) : 0;
 	return (
 		arr.size() == 0
-			? __get_syn_dep_tree_type(rT, detail::identity_arr(arr), C)
-			: __get_syn_dep_tree_type(rT, detail::nonidentity_arr(arr), C)
+			? get_syn_dep_tree_type(rT, detail::identity_arr(arr), C)
+			: get_syn_dep_tree_type(rT, detail::nonidentity_arr(arr), C)
 	);
 }
 

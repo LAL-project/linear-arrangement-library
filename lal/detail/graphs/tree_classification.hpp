@@ -65,7 +65,7 @@ namespace detail {
  */
 template <graphs::Tree tree_t>
 void classify_tree(
-	const tree_t& t, std::array<bool, graphs::__tree_type_size>& tree_types
+	const tree_t& t, std::array<bool, graphs::_tree_type_size>& tree_types
 ) noexcept
 {
 #if defined DEBUG

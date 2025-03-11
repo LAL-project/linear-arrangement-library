@@ -48,7 +48,7 @@
 #pragma once
 
 // C++ includes
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <string_view>
 #endif
 #include <cstdint>
@@ -156,10 +156,10 @@ enum class reason_discard : int8_t {
 
 	// Simply to get the amount of items in this enum safely.
 	/// Null value
-	__last_item
+	_last_value
 };
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::reason_discard
 /// to a long string.
 [[nodiscard]] inline constexpr std::string_view
@@ -218,7 +218,7 @@ reason_discard_to_string(const reason_discard at) noexcept
 			   "order";
 
 	/* -- */
-	case reason_discard::__last_item: return "?";
+	case reason_discard::_last_value: return "?";
 	}
 	return "";
 }

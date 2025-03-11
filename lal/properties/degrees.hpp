@@ -58,7 +58,7 @@ namespace properties {
 
 /* -------------------------------------------------------------------------- */
 
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 
 /**
  * @brief Generic template function for the sum of degrees.
@@ -329,7 +329,7 @@ sum_powers_degrees(const graphs::directed_graph& g, const uint64_t p) noexcept
 
 /* -------------------------------------------------------------------------- */
 
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 
 /**
  * @brief Generic template function for the moment of degree about 0.

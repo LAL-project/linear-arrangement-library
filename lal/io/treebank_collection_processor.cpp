@@ -195,7 +195,7 @@ treebank_file_error treebank_collection_processor::process() noexcept
 					tbproc.set_verbosity(m_be_verbose);
 
 					// add features in this treebank collection processor
-					for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
+					for (std::size_t i = 0; i < _treebank_feature_size; ++i) {
 						if (m_what_fs[i]) {
 							tbproc.add_feature(index_to_treebank_feature(i));
 						}

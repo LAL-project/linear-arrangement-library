@@ -48,7 +48,7 @@
 // C++ includes
 #if defined DEBUG
 #include <cassert>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
@@ -76,7 +76,7 @@ AEF_BnB::exe_independent_set(const uint64_t D_p, position pos) noexcept
 	assert(num_remain_verts > 0);
 #endif
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "The remaining vertices (" << num_remain_verts << ") "
 			  << "make up an various-degree independent set.\n";
 #endif
@@ -131,7 +131,7 @@ AEF_BnB::exe_independent_set(const uint64_t D_p, position pos) noexcept
 
 	m_max_arrs.add(D, m_arr);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	const bool reached_maximum = m_max_arrs.get_max_value() == D;
 	return reached_maximum;
 #else
@@ -187,7 +187,7 @@ AEF_BnB::exe_independent_set_leaves(const uint64_t D_p, position pos) noexcept
 
 	m_max_arrs.add(D, m_arr);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	const bool reached_maximum = m_max_arrs.get_max_value() == D;
 	return reached_maximum;
 #else

@@ -210,7 +210,7 @@ public:
 		return from_direct(v.begin(), v.end(), v.size());
 	}
 
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Construct a linear arrangement from a direct arrangement.
 	 *
@@ -259,7 +259,7 @@ public:
 		return from_inverse(v.begin(), v.end(), v.size());
 	}
 
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Construct a linear arrangement from an inverse arrangement.
 	 *

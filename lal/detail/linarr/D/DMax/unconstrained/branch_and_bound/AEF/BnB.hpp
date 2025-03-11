@@ -64,9 +64,9 @@
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/level_value_propagation_origin.hpp>
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/propagation_result.hpp>
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #if !defined DEBUG
-#error("'__LAL_DEBUG_DMax_Unc_BnB' must be defined along with 'DEBUG'")
+#error("'LAL_DEBUG_DMax_Unc_BnB' must be defined along with 'DEBUG'")
 #endif
 #endif
 
@@ -97,7 +97,7 @@ public:
 
 	/// Used to determine the result type of certain functions.
 	static constexpr bool debug_BnB =
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 		true;
 #else
 		false;
@@ -219,9 +219,9 @@ protected:
 	) const noexcept;
 	/// Can a vertex of a bridge be discarded when it is to be assigned with level 0?
 	[[nodiscard]] reason_discard
-	discard_node__degree_2__bridge__level_0(const node u) const noexcept;
+	discard_node_degree_2_bridge_level_0(const node u) const noexcept;
 	/// Can a vertex of a bridge be discarded when it is to be assigned with level \f$\pm2\f$?
-	[[nodiscard]] reason_discard discard_node__degree_2__bridge__level_pm2(
+	[[nodiscard]] reason_discard discard_node_degree_2_bridge_level_pm2(
 		const node u, const int64_t level_u
 	) const noexcept;
 	/// Can a vertex of degree 2 be discarded?
@@ -281,11 +281,11 @@ protected:
 	// -- propagation of constraints -- //
 
 	/// Propagate level values at an antenna, starting at its hub.
-	void propagate_LV__antenna__from_hub(const node h, const node u) noexcept;
+	void propagate_LV_antenna_from_hub(const node h, const node u) noexcept;
 	/// Propagate level values at an antenna, starting at its leaf.
-	void propagate_LV__antenna__from_leaf(const node u) noexcept;
+	void propagate_LV_antenna_from_leaf(const node u) noexcept;
 	/// Propagate level values at an antenna, starting at an internal vertex.
-	void propagate_LV__antenna__from_internal(const node u) noexcept;
+	void propagate_LV_antenna_from_internal(const node u) noexcept;
 
 	/**
 	 * @brief In a bridge, predict the level value of the lowest lexicographic vertex.
@@ -295,43 +295,43 @@ protected:
 	 * This check can fail.
 	 */
 	[[nodiscard]] propagation_result
-	propagate_LV__bridge__check_lowest_can_be_predicted(
+	propagate_LV_bridge_check_lowest_can_be_predicted(
 		const std::size_t path_idx, const LV_propagation_origin origin
 	) noexcept;
 
 	/// Propagate level values at a bridge, starting at the second hub.
-	void propagate_LV__bridge__from_hub__h2(const std::size_t path_idx
+	void propagate_LV_bridge_from_hub_h2(const std::size_t path_idx
 	) noexcept;
 	/// Propagate level values at a bridge, starting at the first hub.
-	void propagate_LV__bridge__from_hub__h1(const std::size_t path_idx
+	void propagate_LV_bridge_from_hub_h1(const std::size_t path_idx
 	) noexcept;
 	/// Propagate level values at a bridge, starting at a hub @e h.
-	[[nodiscard]] propagation_result propagate_LV__bridge__from_hub(
+	[[nodiscard]] propagation_result propagate_LV_bridge_from_hub(
 		const node h, const std::size_t path_idx
 	) noexcept;
 
 	/// Propagate level values at a bridge starting at the lowest lexicographic
 	/// with level value \f$\pm 2\f$ towards the second hub.
-	void propagate_LV__bridge__from_lowest__level_0__towards_h2(
+	void propagate_LV_bridge_from_lowest_level_0_towards_h2(
 		const std::size_t path_idx
 	) noexcept;
 	/// Propagate level values at a bridge starting at the lowest lexicographic
 	/// with level value \f$\pm 2\f$ towards the first hub.
-	void propagate_LV__bridge__from_lowest__level_0__towards_h1(
+	void propagate_LV_bridge_from_lowest_level_0_towards_h1(
 		const std::size_t path_idx
 	) noexcept;
 	/// Propagate level values at a bridge starting at the lowest lexicographic.
-	void propagate_LV__bridge__from_lowest__level_0(const node u) noexcept;
+	void propagate_LV_bridge_from_lowest_level_0(const node u) noexcept;
 
 	/// Propagate level values at a bridge starting at the lowest lexicographic
 	/// with level value \f$0\f$.
 	[[nodiscard]] propagation_result
-	propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept;
+	propagate_LV_bridge_from_lowest_level_pm2(const node u) noexcept;
 
 	/// Propagate level values at a bridge starting at an internal vertex that is
 	/// not the lowest lexicographic.
 	[[nodiscard]] propagation_result
-	propagate_LV__bridge__from_internal(const node u) noexcept;
+	propagate_LV_bridge_from_internal(const node u) noexcept;
 
 	/// Propagate level values starting at vertex @e u.
 	[[nodiscard]] propagation_result propagate_constraints(const node u
@@ -340,40 +340,40 @@ protected:
 	// -- rollback constraints -- //
 
 	/// Undo the propagation of level values at an antenna.
-	void roll_back_LV__antenna(const node u) noexcept;
+	void roll_back_LV_antenna(const node u) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at the second hub.
-	void roll_back_LV__bridge__from_hub__h2(const std::size_t path_idx
+	void roll_back_LV_bridge_from_hub_h2(const std::size_t path_idx
 	) noexcept;
 	/// Undo the propagation of level values at a bridge, starting at the first hub.
-	void roll_back_LV__bridge__from_hub__h1(const std::size_t path_idx
+	void roll_back_LV_bridge_from_hub_h1(const std::size_t path_idx
 	) noexcept;
 	/// Undo the propagation of level values at a bridge.
-	void roll_back_LV__bridge__from_hub(
+	void roll_back_LV_bridge_from_hub(
 		const node h, const std::size_t path_idx
 	) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$0\f$ towards the second hub.
-	void roll_back_LV__bridge__from_lowest__level_0__towards_h2(
+	void roll_back_LV_bridge_from_lowest_level_0_towards_h2(
 		const std::size_t path_idx
 	) noexcept;
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$0\f$ towards the first hub.
-	void roll_back_LV__bridge__from_lowest__level_0__towards_h1(
+	void roll_back_LV_bridge_from_lowest_level_0_towards_h1(
 		const std::size_t path_idx
 	) noexcept;
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$0\f$.
-	void roll_back_LV__bridge__from_lowest__level_0(const node u) noexcept;
+	void roll_back_LV_bridge_from_lowest_level_0(const node u) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$\pm2\f$.
-	void roll_back_LV__bridge__from_lowest__level_pm2(const node u) noexcept;
+	void roll_back_LV_bridge_from_lowest_level_pm2(const node u) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at an internal
 	/// vertex.
-	void roll_back_LV__bridge__from_internal(const node u) noexcept;
+	void roll_back_LV_bridge_from_internal(const node u) noexcept;
 	/// Undo the propagation of level values at a vertex @e u.
 	void roll_back_constraints(const node u) noexcept;
 
@@ -644,21 +644,21 @@ private:
 	 * values that went through @e u. Notice that @e u may be the origin of the
 	 * propagation (see @ref lal::detail::DMax::unconstrained::LV_propagation_origin::self).
 	 */
-	array<LV_propagation_origin> m_predicted_LV__origin;
+	array<LV_propagation_origin> m_predicted_LV_origin;
 
 	/// Does vertex @e u have a valid prediction of level value?
 	[[nodiscard]] bool has_valid_LV_prediction(node u) const noexcept
 	{
-		return m_predicted_LV__origin[u] != LV_propagation_origin::none;
+		return m_predicted_LV_origin[u] != LV_propagation_origin::none;
 	}
 
 	/// Did a propagation of level values start at vertex @e u?
 	[[nodiscard]] bool is_node_a_trigger_of_LV(node u) const noexcept
 	{
-		return m_predicted_LV__origin[u] == LV_propagation_origin::self;
+		return m_predicted_LV_origin[u] == LV_propagation_origin::self;
 	}
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	// -------------------------------------------------------------------------
 	// Display of algorithm's data and progress
 

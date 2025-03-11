@@ -323,7 +323,7 @@ undirected_graph& undirected_graph::disjoint_union(const undirected_graph& g
 ) noexcept
 {
 	// updates the number of edges and other base-class related attributes
-	__disjoint_union(g);
+	_disjoint_union(g);
 
 	// update the adjacency list
 	detail::append_adjacency_lists(m_adjacency_list, g.m_adjacency_list);

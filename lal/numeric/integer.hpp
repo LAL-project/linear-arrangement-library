@@ -270,7 +270,7 @@ public:
 		}
 		return a;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
@@ -353,7 +353,7 @@ public:
 		}
 		return a;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
@@ -424,7 +424,7 @@ public:
 		}
 		return a;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Product operator.
 	 * @param i An integer (basic type) number.
@@ -497,7 +497,7 @@ public:
 		}
 		return a;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
@@ -708,7 +708,7 @@ public:
 		std::swap(m_initialized, i.m_initialized);
 	}
 
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Swaps two integers.
 	 * @param i Input lal::numeric::integer.

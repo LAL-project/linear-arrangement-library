@@ -144,7 +144,7 @@ void AEF_BnB::initialize(
 	m_cut_values.resize(m_n_nodes, 0);
 
 	m_predicted_LV.resize(m_n_nodes);
-	m_predicted_LV__origin.resize(m_n_nodes, LV_propagation_origin::none);
+	m_predicted_LV_origin.resize(m_n_nodes, LV_propagation_origin::none);
 
 	indexer_edge I_p, I_ps, I_s;
 	I_p.init(m_n_nodes);

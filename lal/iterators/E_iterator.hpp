@@ -165,7 +165,7 @@ public:
 	/// Sets the iterator at the beginning of the set of edges.
 	void reset() noexcept
 	{
-		__reset();
+		_reset();
 		next();
 	}
 
@@ -193,7 +193,7 @@ private:
 private:
 
 	/// Sets the iterator at the beginning of the set of edges.
-	void __reset() noexcept
+	void _reset() noexcept
 	{
 		m_exists_next = true;
 		m_reached_end = false;

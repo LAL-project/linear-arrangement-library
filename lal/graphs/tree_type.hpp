@@ -146,7 +146,7 @@ enum class tree_type {
 };
 
 /// Number of elements within enumeration @ref lal::graphs::tree_type.
-constexpr inline std::size_t __tree_type_size =
+constexpr inline std::size_t _tree_type_size =
 	1 + static_cast<std::size_t>(tree_type::unknown);
 
 } // namespace graphs

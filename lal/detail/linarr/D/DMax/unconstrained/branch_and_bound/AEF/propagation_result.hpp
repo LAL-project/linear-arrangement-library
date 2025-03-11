@@ -48,7 +48,7 @@
 #pragma once
 
 // C++ includes
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <string_view>
 #endif
 #include <cstdint>
@@ -76,10 +76,10 @@ enum class propagation_result : int8_t {
 	 * Null value.
 	 * This is used only for debugging.
 	 */
-	__last_item
+	_last_item
 };
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::propagation_result
 /// to a long string.
 [[nodiscard]] inline constexpr std::string_view
@@ -91,7 +91,7 @@ propagation_result_to_string(const propagation_result at) noexcept
 		return "Propagation of level values conflicted";
 	case propagation_result::conflict_LV_emulated_propagation:
 		return "Emulated propagation of level values conflicted";
-	case propagation_result::__last_item: return "?";
+	case propagation_result::_last_item: return "?";
 	}
 	return "";
 }

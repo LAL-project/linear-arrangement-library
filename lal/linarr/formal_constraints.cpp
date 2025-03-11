@@ -47,8 +47,8 @@
 namespace lal {
 namespace linarr {
 
-#define __ident(arr) detail::identity_arr(arr)
-#define __nonident(arr) detail::nonidentity_arr(arr)
+#define lal_ident_arr(arr) detail::identity_arr(arr)
+#define lal_nonident_arr(arr) detail::nonidentity_arr(arr)
 
 bool is_bipartite(
 	[[maybe_unused]] const graphs::undirected_graph& g,
@@ -62,9 +62,9 @@ bool is_bipartite(
 #endif
 
 	if (arr.size() == 0) {
-		return detail::is_bipartite__connected(c, __ident(arr));
+		return detail::is_bipartite_connected(c, lal_ident_arr(arr));
 	}
-	return detail::is_bipartite__connected(c, __nonident(arr));
+	return detail::is_bipartite_connected(c, lal_nonident_arr(arr));
 }
 
 bool is_bipartite(
@@ -79,9 +79,9 @@ bool is_bipartite(
 #endif
 
 	if (arr.size() == 0) {
-		return detail::is_bipartite__connected(c, __ident(arr));
+		return detail::is_bipartite_connected(c, lal_ident_arr(arr));
 	}
-	return detail::is_bipartite__connected(c, __nonident(arr));
+	return detail::is_bipartite_connected(c, lal_nonident_arr(arr));
 }
 
 bool is_bipartite(
@@ -94,9 +94,9 @@ bool is_bipartite(
 #endif
 
 	if (arr.size() == 0) {
-		return detail::is_bipartite(g, __ident(arr));
+		return detail::is_bipartite(g, lal_ident_arr(arr));
 	}
-	return detail::is_bipartite(g, __nonident(arr));
+	return detail::is_bipartite(g, lal_nonident_arr(arr));
 }
 bool is_bipartite(
 	const graphs::directed_graph& g, const linear_arrangement& arr
@@ -108,9 +108,9 @@ bool is_bipartite(
 #endif
 
 	if (arr.size() == 0) {
-		return detail::is_bipartite(g, __ident(arr));
+		return detail::is_bipartite(g, lal_ident_arr(arr));
 	}
-	return detail::is_bipartite(g, __nonident(arr));
+	return detail::is_bipartite(g, lal_nonident_arr(arr));
 }
 
 bool is_root_covered(

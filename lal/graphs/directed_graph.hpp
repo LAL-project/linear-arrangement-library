@@ -164,7 +164,7 @@ public:
 	/// Adds a node to the graph.
 	virtual directed_graph& add_node() noexcept
 	{
-		graph::__add_node();
+		graph::_add_node();
 		m_in_adjacency_list.emplace_back();
 		return *this;
 	}

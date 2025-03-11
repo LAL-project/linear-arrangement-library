@@ -181,7 +181,7 @@ public:
 	/// Sets the iterator at the beginning of the set of edges.
 	void reset() noexcept
 	{
-		__reset();
+		_reset();
 		next();
 	}
 
@@ -211,7 +211,7 @@ private:
 private:
 
 	/// Sets the iterator at the beginning of the set of edges.
-	void __reset() noexcept
+	void _reset() noexcept
 	{
 		m_exists_next = true;
 		m_reached_end = false;
@@ -251,7 +251,7 @@ private:
 
 		// how do we know there is a next edge?
 		// well, look for it!
-		const auto [f2, _, __] = find_next_pair(
+		const auto [f2, _a, _b] = find_next_pair(
 			m_cur1.first, m_cur1.second, m_cur2.first, m_cur2.second + 1
 		);
 

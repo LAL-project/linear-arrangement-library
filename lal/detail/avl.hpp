@@ -356,7 +356,7 @@ public:
 		return (m_root == nullptr ? 0 : m_root->tree_counter);
 	}
 
-#if defined __LAL_DEBUG_AVL
+#if defined LAL_DEBUG_AVL
 	/// Perform a series of correctness checks
 	[[nodiscard]] bool sanity_check() const noexcept
 	{
@@ -1333,7 +1333,7 @@ private:
 
 private:
 
-#if defined __LAL_DEBUG_AVL
+#if defined LAL_DEBUG_AVL
 	[[nodiscard]] std::size_t exhaustive_size(tree_node *n) const noexcept
 	{
 		if (n == nullptr) {

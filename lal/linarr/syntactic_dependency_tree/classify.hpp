@@ -69,7 +69,7 @@ namespace linarr {
  * be determined the method sets the corresponding position for
  * @ref lal::linarr::syntactic_dependency_tree_type::unknown.
  */
-[[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
+[[nodiscard]] std::array<bool, _syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify(
 	const graphs::rooted_tree& t,
 	const uint64_t C,
@@ -89,7 +89,7 @@ syntactic_dependency_tree_classify(
  * be determined the method sets the corresponding position for
  * @ref lal::linarr::syntactic_dependency_tree_type::unknown.
  */
-[[nodiscard]] std::array<bool, __syntactic_dependency_tree_size>
+[[nodiscard]] std::array<bool, _syntactic_dependency_tree_size>
 syntactic_dependency_tree_classify(
 	const graphs::rooted_tree& t, const linear_arrangement& pi = {}
 ) noexcept;

@@ -48,7 +48,7 @@
 #pragma once
 
 // C++ includes
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <string_view>
 #endif
 #include <cstdint>
@@ -83,7 +83,7 @@ enum class next_action : int8_t {
 	continue_independent_set_leaves
 };
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 /// Converts a value of @ref lal::detail::DMax::unconstrained::next_action
 /// to a string.
 [[nodiscard]] inline constexpr std::string_view

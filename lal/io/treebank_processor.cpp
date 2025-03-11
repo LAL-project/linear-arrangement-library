@@ -278,7 +278,7 @@ treebank_file_error treebank_processor::process() noexcept
 	// output header to the file
 	if (m_output_header) {
 		bool first = true;
-		for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
+		for (std::size_t i = 0; i < _treebank_feature_size; ++i) {
 			if (m_what_fs[i]) {
 
 				if (first) {
@@ -364,7 +364,7 @@ treebank_file_error treebank_processor::process() noexcept
 					output_syndepstruct_type_header(out_treebank_file);
 					break;
 
-				case treebank_feature_type::__last_value: break;
+				case treebank_feature_type::_last_value: break;
 				}
 			}
 		}
@@ -374,8 +374,8 @@ treebank_file_error treebank_processor::process() noexcept
 
 	const auto start = std::chrono::system_clock::now();
 
-	detail::array<double> props(__treebank_feature_size, 0.0);
-	detail::array<char> prop_set(__treebank_feature_size, 0);
+	detail::array<double> props(_treebank_feature_size, 0.0);
+	detail::array<char> prop_set(_treebank_feature_size, 0);
 
 	// process the current treebank
 	graphs::rooted_tree rT;
@@ -416,7 +416,7 @@ void treebank_processor::output_tree_type_header(out_stream_t& out_treebank_file
 	out_treebank_file << detail::tree_type_string(detail::array_of_tree_types[0]
 	);
 
-	for (std::size_t j = 1; j < graphs::__tree_type_size; ++j) {
+	for (std::size_t j = 1; j < graphs::_tree_type_size; ++j) {
 		out_treebank_file << m_separator
 						  << detail::tree_type_string(
 								 detail::array_of_tree_types[j]
@@ -433,7 +433,7 @@ void treebank_processor::output_syndepstruct_type_header(
 		detail::array_of_syntactic_dependency_trees[0]
 	);
 
-	for (std::size_t j = 1; j < linarr::__syntactic_dependency_tree_size; ++j) {
+	for (std::size_t j = 1; j < linarr::_syntactic_dependency_tree_size; ++j) {
 		out_treebank_file << m_separator
 						  << detail::syntactic_dependency_tree_to_string(
 								 detail::array_of_syntactic_dependency_trees[j]
@@ -457,7 +457,7 @@ void treebank_processor::output_tree_type_values(
 	}
 
 	output_tt(detail::array_of_tree_types[0]);
-	for (std::size_t j = 1; j < graphs::__tree_type_size; ++j) {
+	for (std::size_t j = 1; j < graphs::_tree_type_size; ++j) {
 		out_treebank_file << m_separator;
 		output_tt(detail::array_of_tree_types[j]);
 	}
@@ -478,7 +478,7 @@ void treebank_processor::output_syndepstruct_type_values(
 	};
 
 	output_sdst(detail::array_of_syntactic_dependency_trees[0]);
-	for (std::size_t j = 1; j < linarr::__syntactic_dependency_tree_size; ++j) {
+	for (std::size_t j = 1; j < linarr::_syntactic_dependency_tree_size; ++j) {
 		out_treebank_file << m_separator;
 		output_sdst(detail::array_of_syntactic_dependency_trees[j]);
 	}
@@ -926,7 +926,7 @@ void treebank_processor::process_tree(
 	// output features
 
 	bool first = true;
-	for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
+	for (std::size_t i = 0; i < _treebank_feature_size; ++i) {
 		if (m_what_fs[i]) {
 			if (first) {
 				first = false;
@@ -1021,7 +1021,7 @@ void treebank_processor::process_tree(
 				output_syndepstruct_type_values(rT, C, out_treebank_file);
 				break;
 
-			case treebank_feature_type::__last_value: break;
+			case treebank_feature_type::_last_value: break;
 			}
 		}
 	}

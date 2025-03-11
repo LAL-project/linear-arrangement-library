@@ -220,8 +220,8 @@ free_tree& free_tree::remove_edges_incident_to(
 
 	undirected_graph::remove_edges_incident_to(u, norm, check_norm);
 #if defined DEBUG
-	assert(m_union_find__root_of[u] == u);
-	assert(m_union_find__root_size[u] == 1);
+	assert(m_union_find_root_of[u] == u);
+	assert(m_union_find_root_size[u] == 1);
 #endif
 	return *this;
 }
@@ -243,12 +243,12 @@ free_tree& free_tree::disjoint_union(const free_tree& t) noexcept
 
 	// join union-find
 #define vec_join(A, B) A.insert(A.end(), B.begin(), B.end())
-	vec_join(m_union_find__root_of, t.m_union_find__root_of);
-	vec_join(m_union_find__root_size, t.m_union_find__root_size);
+	vec_join(m_union_find_root_of, t.m_union_find_root_of);
+	vec_join(m_union_find_root_size, t.m_union_find_root_size);
 
 	// update the labels of the vertices' root of the union find
 	for (node u = prev_n; u < get_num_nodes(); ++u) {
-		m_union_find__root_of[u] += prev_n;
+		m_union_find_root_of[u] += prev_n;
 	}
 
 	return *this;

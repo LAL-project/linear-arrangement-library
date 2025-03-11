@@ -200,7 +200,7 @@ protected:
 	 * @pre The generator must have been initialized.
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	[[nodiscard]] graphs::free_tree __get_tree() noexcept;
+	[[nodiscard]] graphs::free_tree _get_tree() noexcept;
 
 private:
 

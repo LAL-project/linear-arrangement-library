@@ -40,7 +40,7 @@
  ********************************************************************/
 
 // C++ includes
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #include <cassert>
 #endif
@@ -77,7 +77,7 @@ void split_vertices_by_color(
 {
 	const uint64_t n = t.get_num_nodes();
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "-----------------\n";
 	for (node u = 0; u < n; ++u) {
 		std::cout << "Node '" << u << "' has color '" << int(vertex_colors[u])
@@ -113,7 +113,7 @@ void split_vertices_by_color(
 	sort_nodes(blue_vertices_sorted_by_degree);
 	sort_nodes(red_vertices_sorted_by_degree);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "-----------------\n";
 	std::cout << "Color 0:";
 	for (node u : blue_vertices_sorted_by_degree) {
@@ -161,7 +161,7 @@ void relate_vertices_to_paths(
 	internal_path_node_to_path_idx.resize(n, n + 1);
 	incident_antennas.resize(n);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Num paths: " << branchless_paths_in_tree.size() << '\n';
 	for (const auto& path : branchless_paths_in_tree) {
 		std::cout << "-----------------\n";
@@ -215,7 +215,7 @@ void relate_vertices_to_paths(
 		}
 	}
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	for (node u = 0; u < n; ++u) {
 		std::cout << "Node '" << u << "' belongs to path '"
 				  << internal_path_node_to_path_idx[u] << "'.\n";
@@ -230,7 +230,7 @@ void relate_vertices_to_orbits(
 	detail::array<std::size_t>& vertex_to_orbit
 ) noexcept
 {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Computing orbits...\n";
 #endif
 
@@ -244,7 +244,7 @@ void relate_vertices_to_orbits(
 		}
 	}
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "    Orbits: " << orbits.size() << '\n';
 	for (const auto& orbit : orbits) {
 		std::cout << "    ->";
@@ -297,7 +297,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 	const std::size_t number_of_threads
 ) noexcept
 {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	assert(number_of_threads == 1);
 #endif
 
@@ -344,7 +344,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 		initial_DMax
 	);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Making runners...\n";
 #endif
 
@@ -374,7 +374,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 
 	// ---------------------------------------------------------------------- //
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << "Initializing runners...\n";
 #endif
 
@@ -382,7 +382,7 @@ std::pair<uint64_t, std::vector<linear_arrangement>> max_sum_edge_lengths_all(
 		BnB_runners[i].initialize(initial_DMax);
 	}
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	// execute BnB sequentially
 	for (const auto& orbit : orbits) {
 		BnB_runners[0].exe(orbit[0]);

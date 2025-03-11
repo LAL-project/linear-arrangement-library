@@ -221,7 +221,7 @@ void all_ulab_free_trees::next() noexcept
 	m_is_last = (m_q == 0);
 }
 
-void all_ulab_free_trees::__reset() noexcept
+void all_ulab_free_trees::_reset() noexcept
 {
 	m_is_last = false;
 	m_reached_end = false;
@@ -264,7 +264,7 @@ void all_ulab_free_trees::__reset() noexcept
 
 /* PROTECTED */
 
-graphs::free_tree all_ulab_free_trees::__get_tree() noexcept
+graphs::free_tree all_ulab_free_trees::_get_tree() noexcept
 {
 	if (m_n <= 1) {
 		return graphs::free_tree(m_n);

@@ -52,7 +52,7 @@
 
 // lal includes
 #include <lal/detail/macros/basic_convert.hpp>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <lal/graphs/output.hpp>
 #endif
 
@@ -78,7 +78,7 @@ void AEF_BnB::roll_back_constraints(const node u) noexcept
 	}
 
 	if (m_t.get_degree(u) == 1) {
-		roll_back_LV__antenna(m_node_to_path_idx[u]);
+		roll_back_LV_antenna(m_node_to_path_idx[u]);
 		return;
 	}
 
@@ -86,20 +86,20 @@ void AEF_BnB::roll_back_constraints(const node u) noexcept
 		const std::size_t path_u_idx = m_node_to_path_idx[u];
 		const auto& path_u = m_paths_in_tree[path_u_idx];
 		if (path_u.is_antenna(m_t)) {
-			roll_back_LV__antenna(path_u_idx);
+			roll_back_LV_antenna(path_u_idx);
 		}
 		else {
 			const int64_t level_u = m_node_level[u];
 			if (path_u.get_lowest_lexicographic() == u) {
 				if (level_u == 2 or level_u == -2) {
-					roll_back_LV__bridge__from_lowest__level_pm2(u);
+					roll_back_LV_bridge_from_lowest_level_pm2(u);
 				}
 				else {
-					roll_back_LV__bridge__from_lowest__level_0(u);
+					roll_back_LV_bridge_from_lowest_level_0(u);
 				}
 			}
 			else {
-				roll_back_LV__bridge__from_internal(u);
+				roll_back_LV_bridge_from_internal(u);
 			}
 		}
 		return;
@@ -114,9 +114,9 @@ void AEF_BnB::roll_back_constraints(const node u) noexcept
 		const auto& path_v = m_paths_in_tree[path_v_idx];
 
 		if (path_v.is_antenna(m_t)) {
-			if (m_predicted_LV__origin[v] ==
+			if (m_predicted_LV_origin[v] ==
 				LV_propagation_origin::antenna_hub) {
-				roll_back_LV__antenna(path_v_idx);
+				roll_back_LV_antenna(path_v_idx);
 			}
 		}
 		else {
@@ -125,11 +125,11 @@ void AEF_BnB::roll_back_constraints(const node u) noexcept
 			const node h2 = path_v.get_h2();
 			assert(u == h1 or u == h2);
 #endif
-			roll_back_LV__bridge__from_hub(u, path_v_idx);
+			roll_back_LV_bridge_from_hub(u, path_v_idx);
 		}
 	}
 
-	m_predicted_LV__origin[u] = LV_propagation_origin::none;
+	m_predicted_LV_origin[u] = LV_propagation_origin::none;
 }
 
 } // namespace unconstrained

@@ -42,8 +42,8 @@
 #pragma once
 
 #if !defined DEBUG
-#if defined __LAL_DEBUG_DMax_1_thistle
-#error "__LAL_DEBUG_DMax_1_thistle can only be defined when DEBUG is defined"
+#if defined LAL_DEBUG_DMax_1_thistle
+#error "LAL_DEBUG_DMax_1_thistle can only be defined when DEBUG is defined"
 #endif
 #endif
 
@@ -54,7 +54,7 @@
 #include <vector>
 
 #if defined DEBUG
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 #include <iostream>
 #endif
 #include <cassert>
@@ -69,7 +69,7 @@
 #include <lal/linarr/D/D.hpp>
 #if defined DEBUG
 #include <lal/linarr/formal_constraints.hpp>
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 #include <lal/graphs/output.hpp>
 #endif
 #endif
@@ -145,10 +145,10 @@ using result_t = std::conditional_t<
 	std::pair<uint64_t, linear_arrangement>,
 	uint64_t>;
 
-#define __LAL_level_position(p) levels_per_vertex[node_t{inv_arr[p]}]
-#define __LAL_level_vertex(u) levels_per_vertex[node_t{u}]
+#define lal_level_position_(p) levels_per_vertex[node_t{inv_arr[p]}]
+#define lal_level_vertex_(u) levels_per_vertex[node_t{u}]
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 inline void print_arrangement(
 	const std::string& msg, const linear_arrangement& arr
 ) noexcept
@@ -207,17 +207,17 @@ inline void construct_initial_arrangement(
 		}
 		const int64_t d = to_int64(t.get_degree(u));
 		if (thistle_side_per_vertex[u] == LEFT_SIDE) {
-			__LAL_level_vertex(u) = d;
+			lal_level_vertex_(u) = d;
 			inv_arr[left++] = u;
 		}
 		else if (thistle_side_per_vertex[u] == RIGHT_SIDE) {
-			__LAL_level_vertex(u) = -d;
+			lal_level_vertex_(u) = -d;
 			inv_arr[right--] = u;
 			min_level_value = std::min(min_level_value, -d);
 		}
 #if defined DEBUG
 		else {
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 			std::cout << "Vertex " << u << " was not assigned a side\n";
 #endif
 			assert(false);
@@ -227,7 +227,7 @@ inline void construct_initial_arrangement(
 
 	// This function assumes that the thistle will never have negative (<0)
 	// level value.
-	__LAL_level_vertex(thistle) = thistle_level;
+	lal_level_vertex_(thistle) = thistle_level;
 	// The position to place the thistle is either 'left' or 'right' since,
 	// at this point, their values are equal (see next assertion).
 	inv_arr[left] = thistle;
@@ -236,7 +236,7 @@ inline void construct_initial_arrangement(
 	assert(left == right);
 #endif
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	std::cout << "        Level per vertex:\n";
 	for (node u = 0; u < n; ++u) {
 		std::cout << "            level[" << u
@@ -253,7 +253,7 @@ inline void construct_initial_arrangement(
 		n,
 		[&](const node u)
 		{
-			return to_uint64(__LAL_level_vertex(u) - min_level_value);
+			return to_uint64(lal_level_vertex_(u) - min_level_value);
 		}
 	);
 	sorting::counting_sort<node, sorting::sort_type::non_increasing>(
@@ -263,7 +263,7 @@ inline void construct_initial_arrangement(
 		n,
 		[&](const node u)
 		{
-			return to_uint64(__LAL_level_vertex(u) - min_level_value);
+			return to_uint64(lal_level_vertex_(u) - min_level_value);
 		}
 	);
 }
@@ -300,12 +300,12 @@ inline void sort_level_sequences(
 	while (p < n) {
 
 		position q = p;
-		const int64_t current_level = __LAL_level_position(p);
-		while (q < n and __LAL_level_position(q) == current_level) {
+		const int64_t current_level = lal_level_position_(p);
+		while (q < n and lal_level_position_(q) == current_level) {
 			++q;
 		}
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 		std::cout << "        Sort the interval [" << p << ", " << q << ").\n";
 #endif
 
@@ -388,7 +388,7 @@ inline void adjust_nonneighbors_of_thistle_smart(
 	// position of thistle can never be '0'
 	position p = arr[node_t{thistle}] - 1;
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	std::cout << "        Thistle position p= " << p + 1 << '\n';
 #endif
 
@@ -405,7 +405,7 @@ inline void adjust_nonneighbors_of_thistle_smart(
 		assert(p <= t.get_num_nodes());
 #endif
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 		std::cout << "        __________________________________________\n";
 		std::cout << "        Find next non-neighbor starting at p= " << p
 				  << '\n';
@@ -413,21 +413,21 @@ inline void adjust_nonneighbors_of_thistle_smart(
 
 		// find the next non-neighbor of 'thistle'
 		while (p > 0 and is_thistle_neighbor[arr[position_t{p}]] == 1) {
-			total_level_value += __LAL_level_vertex(arr[position_t{p}]);
+			total_level_value += lal_level_vertex_(arr[position_t{p}]);
 			++num_neighbors;
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 			std::cout << "            Vertex " << arr[position_t{p}]
 					  << " is a neighbor\n";
 			std::cout << "                At position:    " << p << '\n';
 			std::cout << "                Of level value: "
-					  << __LAL_level_vertex(arr[position_t{p}]) << '\n';
+					  << lal_level_vertex_(arr[position_t{p}]) << '\n';
 #endif
 
 			--p;
 		}
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 		std::cout << "        Sum of level values: " << total_level_value
 				  << '\n';
 		std::cout << "        Number of neighbors: " << num_neighbors << '\n';
@@ -445,9 +445,9 @@ inline void adjust_nonneighbors_of_thistle_smart(
 #if defined DEBUG
 			assert(is_thistle_neighbor[to_move] == 0);
 #endif
-			const int64_t level_nonneigh = __LAL_level_vertex(to_move);
+			const int64_t level_nonneigh = lal_level_vertex_(to_move);
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 			std::cout << "        First non-neighbor:  " << to_move << '\n';
 			std::cout << "               at position:  " << p << '\n';
 			std::cout << "                  of level:  " << level_nonneigh
@@ -463,7 +463,7 @@ inline void adjust_nonneighbors_of_thistle_smart(
 			const int64_t gain = -(num_neighbors + 1) * level_nonneigh +
 								 total_level_value + thistle_level;
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 			std::cout << "        gain= " << gain << '\n';
 #endif
 
@@ -479,7 +479,7 @@ inline void adjust_nonneighbors_of_thistle_smart(
 			p = (p > 0 ? p - 1 : p);
 		}
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 		print_arrangement(
 			"After moving vertex '" + std::to_string(to_move) + "'", arr
 		);
@@ -514,7 +514,7 @@ noexcept
 		assert(p <= t.get_num_nodes());
 #endif
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 		std::cout << "        __________________________________________\n";
 		std::cout << "        Find next non-neighbor starting at p= " << p << '\n';
 #endif
@@ -585,7 +585,7 @@ inline void merge_arrangements(
 	const auto n = t.get_num_nodes();
 
 #if defined DEBUG
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	std::cout << "        Chosen level value: " << thistle_level << '\n';
 #endif
 #endif
@@ -601,14 +601,14 @@ inline void merge_arrangements(
 
 #if defined DEBUG
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	print_arrangement("Initial arrangement", arr);
 #endif
 	assert(linarr::is_arrangement(t, arr));
 	// sum of edge lengths prior to adjustments
-	const uint64_t __D1 = linarr::sum_edge_lengths(t, arr);
-#if defined __LAL_DEBUG_DMax_1_thistle
-	std::cout << "        __D1= " << __D1 << '\n';
+	const uint64_t _D1 = linarr::sum_edge_lengths(t, arr);
+#if defined LAL_DEBUG_DMax_1_thistle
+	std::cout << "        _D1= " << _D1 << '\n';
 #endif
 #endif
 
@@ -627,15 +627,15 @@ inline void merge_arrangements(
 	arr = linear_arrangement::from_inverse(inv_arr.begin(), inv_arr.end());
 
 #if defined DEBUG
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	print_arrangement("After sorting all sequences of equal level value", arr);
 #endif
 	assert(linarr::is_arrangement(t, arr));
-	const uint64_t __D2 = linarr::sum_edge_lengths(t, arr);
-#if defined __LAL_DEBUG_DMax_1_thistle
-	std::cout << "        __D2= " << __D2 << '\n';
+	const uint64_t _D2 = linarr::sum_edge_lengths(t, arr);
+#if defined LAL_DEBUG_DMax_1_thistle
+	std::cout << "        _D2= " << _D2 << '\n';
 #endif
-	assert(__D2 == __D1);
+	assert(_D2 == _D1);
 #endif
 
 	adjust_nonneighbors_of_thistle_smart(
@@ -648,7 +648,7 @@ inline void merge_arrangements(
 	*/
 
 #if defined DEBUG
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	print_arrangement(
 		"After moving thistle and readjusting other vertices", arr
 	);
@@ -659,10 +659,10 @@ inline void merge_arrangements(
 	const uint64_t D = linarr::sum_edge_lengths(t, arr);
 
 #if defined DEBUG
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	std::cout << "        D= " << D << '\n';
 #endif
-	assert(D >= __D2);
+	assert(D >= _D2);
 #endif
 
 	if constexpr (make_arrangement) {
@@ -715,7 +715,7 @@ inline void choose_orientations_for_thistle_neighbors(
 
 	array<char> binary_combination(thistle_deg, 0);
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	std::cout << "Thistle: " << thistle << '\n';
 	int counter = 0;
 #endif
@@ -733,7 +733,7 @@ inline void choose_orientations_for_thistle_neighbors(
 	);
 
 	do {
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 		std::cout << "    Binary combination: " << counter++ << '\n';
 		std::cout << "    ";
 		for (std::size_t j = 0; j < thistle_deg; ++j) {
@@ -784,7 +784,7 @@ inline void choose_orientations_for_thistle_neighbors(
 				res
 			);
 		}
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 		else {
 			std::cout << "        Ignore negative values and non-thistle "
 						 "configurations.\n";
@@ -827,7 +827,7 @@ AEF(const graphs::free_tree& t,
 
 	const auto n = t.get_num_nodes();
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	{
 		std::cout << "Start tree\n";
 		std::cout << t << '\n';
@@ -876,7 +876,7 @@ AEF(const graphs::free_tree& t,
 			const std::size_t pidx = node_to_path[thistle];
 			// not in this case
 			if (internal_in_path_was_used[pidx] == 1) {
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 				std::cout << "Thistle belongs to path " << pidx
 						  << " and will not be tested.\n";
 #endif
@@ -885,7 +885,7 @@ AEF(const graphs::free_tree& t,
 
 			// do not use internal vertices of this branchless path anymore
 			internal_in_path_was_used[pidx] = 1;
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 			std::cout << "Thistle vertex belongs to path " << pidx << ".\n";
 #endif
 		}
@@ -915,7 +915,7 @@ AEF(const graphs::free_tree& t,
 		}
 	}
 
-#if defined __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
 	{
 		std::cout << "Finish tree\n";
 		std::cout << t << '\n';
@@ -969,11 +969,11 @@ AEF(const graphs::free_tree& t,
 	return AEF<make_arrangement>(t, all_paths, node_to_path);
 }
 
-#undef __LAL_level_position
-#undef __LAL_level_vertex
+#undef lal_level_position_
+#undef lal_level_vertex_
 
-#if defined __LAL_DEBUG_DMax_1_thistle
-#undef __LAL_DEBUG_DMax_1_thistle
+#if defined LAL_DEBUG_DMax_1_thistle
+#undef LAL_DEBUG_DMax_1_thistle
 #endif
 
 } // namespace thistle_1

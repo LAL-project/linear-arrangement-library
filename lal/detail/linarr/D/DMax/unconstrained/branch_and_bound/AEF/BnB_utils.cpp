@@ -47,7 +47,7 @@
 
 // C++ includes
 #if defined DEBUG
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <string_view>
 #include <iostream>
 #include <iomanip>
@@ -58,7 +58,7 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 
 //static constexpr std::string_view WHITE = "1";
 //static constexpr std::string_view GRAY = "2";
@@ -96,7 +96,7 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 
 static constexpr uint64_t column_width = 2;
 #define set_col_width std::setw(column_width)
@@ -236,7 +236,7 @@ void AEF_BnB::output_predicted_level_values() const noexcept
 		widths[u] = std::max(
 			widths[u],
 			static_cast<int>(
-				LV_propagation_origin_to_short_string(m_predicted_LV__origin[u])
+				LV_propagation_origin_to_short_string(m_predicted_LV_origin[u])
 					.length()
 			)
 		);
@@ -259,7 +259,7 @@ void AEF_BnB::output_predicted_level_values() const noexcept
 	for (node u = 0; u < m_n_nodes; ++u) {
 		std::cout << ' ' << std::setw(widths[u])
 				  << LV_propagation_origin_to_short_string(
-						 m_predicted_LV__origin[u]
+						 m_predicted_LV_origin[u]
 					 );
 	}
 	std::cout << '\n';

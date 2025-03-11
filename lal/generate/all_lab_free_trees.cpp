@@ -49,7 +49,7 @@ namespace generate {
 
 /* PROTECTED */
 
-graphs::free_tree all_lab_free_trees::__get_tree() noexcept
+graphs::free_tree all_lab_free_trees::_get_tree() noexcept
 {
 	if (m_n <= 1) {
 		return graphs::free_tree(m_n);

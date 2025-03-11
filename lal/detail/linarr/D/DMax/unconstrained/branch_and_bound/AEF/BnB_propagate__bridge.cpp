@@ -48,14 +48,14 @@
 // C++ includes
 #if defined DEBUG
 #include <cassert>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
 
 // lal includes
 #include <lal/detail/macros/basic_convert.hpp>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <lal/graphs/output.hpp>
 #endif
 
@@ -67,7 +67,7 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-propagation_result AEF_BnB::propagate_LV__bridge__check_lowest_can_be_predicted(
+propagation_result AEF_BnB::propagate_LV_bridge_check_lowest_can_be_predicted(
 	const std::size_t path_idx, const LV_propagation_origin origin
 ) noexcept
 {
@@ -134,7 +134,7 @@ propagation_result AEF_BnB::propagate_LV__bridge__check_lowest_can_be_predicted(
 
 	if (not has_valid_LV_prediction(w)) {
 		m_predicted_LV[w] = prediction_LV_w;
-		m_predicted_LV__origin[w] = origin;
+		m_predicted_LV_origin[w] = origin;
 		return propagation_result::success;
 	}
 
@@ -143,7 +143,7 @@ propagation_result AEF_BnB::propagate_LV__bridge__check_lowest_can_be_predicted(
 			   : propagation_result::conflict_LV_propagation;
 }
 
-void AEF_BnB::propagate_LV__bridge__from_hub__h2(const std::size_t path_idx
+void AEF_BnB::propagate_LV_bridge_from_hub_h2(const std::size_t path_idx
 ) noexcept
 {
 	const auto& path = m_paths_in_tree[path_idx];
@@ -165,12 +165,12 @@ void AEF_BnB::propagate_LV__bridge__from_hub__h2(const std::size_t path_idx
 		assert(v != w);
 #endif
 		m_predicted_LV[v] = 2 * sign;
-		m_predicted_LV__origin[v] = LV_propagation_origin::bridge_hub_2;
+		m_predicted_LV_origin[v] = LV_propagation_origin::bridge_hub_2;
 		sign = -sign;
 		--i;
 	}
 }
-void AEF_BnB::propagate_LV__bridge__from_hub__h1(const std::size_t path_idx
+void AEF_BnB::propagate_LV_bridge_from_hub_h1(const std::size_t path_idx
 ) noexcept
 {
 	const auto& path = m_paths_in_tree[path_idx];
@@ -192,12 +192,12 @@ void AEF_BnB::propagate_LV__bridge__from_hub__h1(const std::size_t path_idx
 		assert(v != w);
 #endif
 		m_predicted_LV[v] = 2 * sign;
-		m_predicted_LV__origin[v] = LV_propagation_origin::bridge_hub_1;
+		m_predicted_LV_origin[v] = LV_propagation_origin::bridge_hub_1;
 		sign = -sign;
 		++i;
 	}
 }
-propagation_result AEF_BnB::propagate_LV__bridge__from_hub(
+propagation_result AEF_BnB::propagate_LV_bridge_from_hub(
 	const node h, const std::size_t path_idx
 ) noexcept
 {
@@ -206,7 +206,7 @@ propagation_result AEF_BnB::propagate_LV__bridge__from_hub(
 	const node w = path.get_lowest_lexicographic();
 #endif
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab()
 			  << "Propagate through a bridge from one of the hubs...\n";
 	std::cout << tab() << "    hub= " << h << '\n';
@@ -217,12 +217,12 @@ propagation_result AEF_BnB::propagate_LV__bridge__from_hub(
 #endif
 
 	m_predicted_LV[h] = m_node_level[h];
-	m_predicted_LV__origin[h] = LV_propagation_origin::self;
+	m_predicted_LV_origin[h] = LV_propagation_origin::self;
 
 	LV_propagation_origin origin;
 	if (h == path.get_h1()) {
 		origin = LV_propagation_origin::bridge_hub_1;
-		propagate_LV__bridge__from_hub__h1(path_idx);
+		propagate_LV_bridge_from_hub_h1(path_idx);
 #if defined DEBUG
 		if (is_vertex_assigned(w) and m_node_level[w] == 0) {
 			const std::size_t pw = path.get_position(w);
@@ -235,7 +235,7 @@ propagation_result AEF_BnB::propagate_LV__bridge__from_hub(
 	}
 	else {
 		origin = LV_propagation_origin::bridge_hub_2;
-		propagate_LV__bridge__from_hub__h2(path_idx);
+		propagate_LV_bridge_from_hub_h2(path_idx);
 #if defined DEBUG
 		if (is_vertex_assigned(w) and m_node_level[w] == 0) {
 			const std::size_t pw = path.get_position(w);
@@ -247,12 +247,12 @@ propagation_result AEF_BnB::propagate_LV__bridge__from_hub(
 #endif
 	}
 
-	return propagate_LV__bridge__check_lowest_can_be_predicted(
+	return propagate_LV_bridge_check_lowest_can_be_predicted(
 		path_idx, origin
 	);
 }
 
-void AEF_BnB::propagate_LV__bridge__from_lowest__level_0__towards_h2(
+void AEF_BnB::propagate_LV_bridge_from_lowest_level_0_towards_h2(
 	const std::size_t path_idx
 ) noexcept
 {
@@ -269,11 +269,11 @@ void AEF_BnB::propagate_LV__bridge__from_lowest__level_0__towards_h2(
 		assert(not has_valid_LV_prediction(v));
 #endif
 		m_predicted_LV[v] = 2 * sign;
-		m_predicted_LV__origin[v] = LV_propagation_origin::bridge_lowest_0;
+		m_predicted_LV_origin[v] = LV_propagation_origin::bridge_lowest_0;
 		sign = -sign;
 	}
 }
-void AEF_BnB::propagate_LV__bridge__from_lowest__level_0__towards_h1(
+void AEF_BnB::propagate_LV_bridge_from_lowest_level_0_towards_h1(
 	const std::size_t path_idx
 ) noexcept
 {
@@ -289,17 +289,17 @@ void AEF_BnB::propagate_LV__bridge__from_lowest__level_0__towards_h1(
 		assert(not has_valid_LV_prediction(v));
 #endif
 		m_predicted_LV[v] = 2 * sign;
-		m_predicted_LV__origin[v] = LV_propagation_origin::bridge_lowest_0;
+		m_predicted_LV_origin[v] = LV_propagation_origin::bridge_lowest_0;
 		sign = -sign;
 	}
 }
-void AEF_BnB::propagate_LV__bridge__from_lowest__level_0(const node u) noexcept
+void AEF_BnB::propagate_LV_bridge_from_lowest_level_0(const node u) noexcept
 {
 	const std::size_t path_idx = m_node_to_path_idx[u];
 	const auto& path = m_paths_in_tree[path_idx];
 	const node w = path.get_lowest_lexicographic();
 	const std::size_t pw = path.get_position(w);
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Propagate through a bridge from lowest 0...\n";
 	std::cout << tab() << "    w= " << w << '\n';
 #endif
@@ -310,7 +310,7 @@ void AEF_BnB::propagate_LV__bridge__from_lowest__level_0(const node u) noexcept
 #endif
 
 	m_predicted_LV[w] = 0;
-	m_predicted_LV__origin[w] = LV_propagation_origin::self;
+	m_predicted_LV_origin[w] = LV_propagation_origin::self;
 
 	if (path.get_num_nodes() == 3) {
 		return;
@@ -324,22 +324,22 @@ void AEF_BnB::propagate_LV__bridge__from_lowest__level_0(const node u) noexcept
 #endif
 
 	if (has_valid_LV_prediction(wm1)) {
-		propagate_LV__bridge__from_lowest__level_0__towards_h2(path_idx);
+		propagate_LV_bridge_from_lowest_level_0_towards_h2(path_idx);
 	}
 	else if (has_valid_LV_prediction(wp1)) {
-		propagate_LV__bridge__from_lowest__level_0__towards_h1(path_idx);
+		propagate_LV_bridge_from_lowest_level_0_towards_h1(path_idx);
 	}
 }
 
 propagation_result
-AEF_BnB::propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept
+AEF_BnB::propagate_LV_bridge_from_lowest_level_pm2(const node u) noexcept
 {
 	const auto& path = m_paths_in_tree[m_node_to_path_idx[u]];
 	const node w = path.get_lowest_lexicographic();
 	const std::size_t pw = path.get_position(w);
 	const std::size_t N = path.get_num_nodes();
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Propagate through a bridge from lowest +-2...\n";
 	std::cout << tab() << "    u= " << u << '\n';
 	std::cout << tab() << "    w= " << w << '\n';
@@ -352,7 +352,7 @@ AEF_BnB::propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept
 #endif
 
 	m_predicted_LV[w] = m_node_level[w];
-	m_predicted_LV__origin[w] = LV_propagation_origin::self;
+	m_predicted_LV_origin[w] = LV_propagation_origin::self;
 
 	int64_t sign;
 	std::size_t p;
@@ -363,7 +363,7 @@ AEF_BnB::propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept
 		const node v = path[p];
 		const int64_t prediction = 2 * sign;
 		m_predicted_LV[v] = prediction;
-		m_predicted_LV__origin[v] = LV_propagation_origin::bridge_lowest_pm2;
+		m_predicted_LV_origin[v] = LV_propagation_origin::bridge_lowest_pm2;
 
 		sign = -sign;
 		--p;
@@ -371,7 +371,7 @@ AEF_BnB::propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept
 	{
 		const node v = path[p];
 		if (v != path.get_h1() and m_predicted_LV[v] != 2 * sign) {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 			std::cout << tab() << "Found a conflict in the propagation\n";
 			std::cout << tab() << "    at vertex: " << v << '\n';
 			std::cout << tab()
@@ -390,7 +390,7 @@ AEF_BnB::propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept
 		const node v = path[p];
 		const int64_t prediction = 2 * sign;
 		m_predicted_LV[v] = prediction;
-		m_predicted_LV__origin[v] = LV_propagation_origin::bridge_lowest_pm2;
+		m_predicted_LV_origin[v] = LV_propagation_origin::bridge_lowest_pm2;
 
 		sign = -sign;
 		++p;
@@ -398,7 +398,7 @@ AEF_BnB::propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept
 	{
 		const node v = path[p];
 		if (v != path.get_h2() and m_predicted_LV[v] != 2 * sign) {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 			std::cout << tab() << "Found a conflict in the propagation\n";
 			std::cout << tab() << "    at vertex: " << v << '\n';
 			std::cout << tab()
@@ -414,7 +414,7 @@ AEF_BnB::propagate_LV__bridge__from_lowest__level_pm2(const node u) noexcept
 	return propagation_result::success;
 }
 
-propagation_result AEF_BnB::propagate_LV__bridge__from_internal(const node u
+propagation_result AEF_BnB::propagate_LV_bridge_from_internal(const node u
 ) noexcept
 {
 	const std::size_t path_idx = m_node_to_path_idx[u];
@@ -424,7 +424,7 @@ propagation_result AEF_BnB::propagate_LV__bridge__from_internal(const node u
 	const std::size_t pw = path.get_position(w);
 	const std::size_t pu = path.get_position(u);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Propagate through a bridge from internal...\n";
 	std::cout << tab() << "    u= " << u << '\n';
 	std::cout << tab() << "    w= " << w << '\n';
@@ -443,7 +443,7 @@ propagation_result AEF_BnB::propagate_LV__bridge__from_internal(const node u
 	}();
 
 	m_predicted_LV[u] = m_node_level[u];
-	m_predicted_LV__origin[u] = LV_propagation_origin::self;
+	m_predicted_LV_origin[u] = LV_propagation_origin::self;
 
 	std::size_t i;
 	int64_t sign;
@@ -456,7 +456,7 @@ propagation_result AEF_BnB::propagate_LV__bridge__from_internal(const node u
 		assert(not has_valid_LV_prediction(v));
 #endif
 		m_predicted_LV[v] = 2 * sign;
-		m_predicted_LV__origin[v] = orig;
+		m_predicted_LV_origin[v] = orig;
 		sign = -sign;
 		++i;
 	}
@@ -469,12 +469,12 @@ propagation_result AEF_BnB::propagate_LV__bridge__from_internal(const node u
 		assert(not has_valid_LV_prediction(v));
 #endif
 		m_predicted_LV[v] = 2 * sign;
-		m_predicted_LV__origin[v] = orig;
+		m_predicted_LV_origin[v] = orig;
 		sign = -sign;
 		--i;
 	}
 
-	return propagate_LV__bridge__check_lowest_can_be_predicted(path_idx, orig);
+	return propagate_LV_bridge_check_lowest_can_be_predicted(path_idx, orig);
 }
 
 } // namespace unconstrained

@@ -160,9 +160,9 @@ public:
 protected:
 
 	/// String for each column.
-	std::array<std::string, __treebank_feature_size> m_column_names;
+	std::array<std::string, _treebank_feature_size> m_column_names;
 	/// The list of features to be computed.
-	std::array<bool, __treebank_feature_size> m_what_fs;
+	std::array<bool, _treebank_feature_size> m_what_fs;
 
 	/// Process the treebank file or collection prior to processing.
 	bool m_check_before_process = true;
@@ -184,7 +184,7 @@ protected:
 	/// Initializes column names @ref m_column_names
 	void initialize_column_names() noexcept
 	{
-		for (std::size_t i = 0; i < __treebank_feature_size; ++i) {
+		for (std::size_t i = 0; i < _treebank_feature_size; ++i) {
 			m_column_names[i] = treebank_feature_index_to_string(i);
 		}
 	}

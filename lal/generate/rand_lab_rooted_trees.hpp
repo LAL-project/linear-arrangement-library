@@ -235,7 +235,7 @@ protected:
 	 * See @ref _rand_lab_rooted_trees::get_tree for details.
 	 * @returns A labelled rooted tree chosen uniformly at random.
 	 */
-	[[nodiscard]] graphs::rooted_tree __get_tree() noexcept
+	[[nodiscard]] graphs::rooted_tree _get_tree() noexcept
 	{
 		return m_Gen.get_tree();
 	}

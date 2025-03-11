@@ -144,7 +144,7 @@ public:
 	/// Adds a vertex to the graph.
 	virtual undirected_graph& add_node() noexcept
 	{
-		graph::__add_node();
+		graph::_add_node();
 		return *this;
 	}
 

@@ -180,7 +180,7 @@ public:
 	/// Sets the generator to its initial state.
 	void reset() noexcept
 	{
-		__reset();
+		_reset();
 		next();
 	}
 
@@ -199,10 +199,10 @@ protected:
 	 * @pre The generator must have been initialized.
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	[[nodiscard]] graphs::free_tree __get_tree() noexcept;
+	[[nodiscard]] graphs::free_tree _get_tree() noexcept;
 
 	/// Sets the generator to its initial state.
-	void __reset() noexcept;
+	void _reset() noexcept;
 
 private:
 

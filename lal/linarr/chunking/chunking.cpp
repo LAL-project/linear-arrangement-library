@@ -49,8 +49,8 @@
 namespace lal {
 namespace linarr {
 
-#define __ident(arr) detail::identity_arr(arr)
-#define __nonident(arr) detail::nonidentity_arr(arr)
+#define lal_ident_arr(arr) detail::identity_arr(arr)
+#define lal_nonident_arr(arr) detail::nonidentity_arr(arr)
 
 graphs::rooted_tree make_tree_from_chunk_sequence(const chunk_sequence& seq
 ) noexcept
@@ -110,15 +110,15 @@ graphs::rooted_tree chunk_syntactic_dependency_tree(
 ) noexcept
 {
 	linear_arrangement arr;
-	const auto __arr = __ident(arr);
+	const auto _arr = lal_ident_arr(arr);
 
 	if (algo == algorithms_chunking::Anderson) {
-		detail::chunks_Anderson C(rt, __arr);
+		detail::chunks_Anderson C(rt, _arr);
 		C.chunk_input_tree();
 		return make_tree_from_chunk_sequence(C.get_chunk_sequence());
 	}
 	else if (algo == algorithms_chunking::Macutek) {
-		detail::chunks_Macutek C(rt, __arr);
+		detail::chunks_Macutek C(rt, _arr);
 		C.chunk_input_tree();
 		return make_tree_from_chunk_sequence(C.get_chunk_sequence());
 	}
@@ -137,15 +137,15 @@ graphs::rooted_tree chunk_syntactic_dependency_tree(
 	const algorithms_chunking& algo
 ) noexcept
 {
-	const auto __arr = __nonident(arr);
+	const auto _arr = lal_nonident_arr(arr);
 
 	if (algo == algorithms_chunking::Anderson) {
-		detail::chunks_Anderson C(rt, __arr);
+		detail::chunks_Anderson C(rt, _arr);
 		C.chunk_input_tree();
 		return make_tree_from_chunk_sequence(C.get_chunk_sequence());
 	}
 	else if (algo == algorithms_chunking::Macutek) {
-		detail::chunks_Macutek C(rt, __arr);
+		detail::chunks_Macutek C(rt, _arr);
 		C.chunk_input_tree();
 		return make_tree_from_chunk_sequence(C.get_chunk_sequence());
 	}
@@ -165,15 +165,15 @@ chunk_sequence chunk_syntactic_dependency_tree_as_sequence(
 ) noexcept
 {
 	linear_arrangement arr;
-	const auto __arr = __ident(arr);
+	const auto _arr = lal_ident_arr(arr);
 
 	if (algo == algorithms_chunking::Anderson) {
-		detail::chunks_Anderson C(rt, __arr);
+		detail::chunks_Anderson C(rt, _arr);
 		C.chunk_input_tree();
 		return std::move(C.retrieve_chunk_sequence());
 	}
 	else if (algo == algorithms_chunking::Macutek) {
-		detail::chunks_Macutek C(rt, __arr);
+		detail::chunks_Macutek C(rt, _arr);
 		C.chunk_input_tree();
 		return std::move(C.retrieve_chunk_sequence());
 	}
@@ -192,15 +192,15 @@ chunk_sequence chunk_syntactic_dependency_tree_as_sequence(
 	const algorithms_chunking& algo
 ) noexcept
 {
-	const auto __arr = __nonident(arr);
+	const auto _arr = lal_nonident_arr(arr);
 
 	if (algo == algorithms_chunking::Anderson) {
-		detail::chunks_Anderson C(rt, __arr);
+		detail::chunks_Anderson C(rt, _arr);
 		C.chunk_input_tree();
 		return std::move(C.retrieve_chunk_sequence());
 	}
 	else if (algo == algorithms_chunking::Macutek) {
-		detail::chunks_Macutek C(rt, __arr);
+		detail::chunks_Macutek C(rt, _arr);
 		C.chunk_input_tree();
 		return std::move(C.retrieve_chunk_sequence());
 	}

@@ -54,8 +54,8 @@
 namespace lal {
 namespace linarr {
 
-#define __ident_arr(arr) detail::identity_arr(arr)
-#define __nonident_arr(arr) detail::nonidentity_arr(arr)
+#define lal_ident_arr(arr) detail::identity_arr(arr)
+#define lal_nonident_arr(arr) detail::nonidentity_arr(arr)
 
 // -----------------------------------------------------------------------------
 /* D */
@@ -69,8 +69,8 @@ uint64_t sum_edge_lengths(
 #endif
 
 	return (
-		arr.size() == 0 ? detail::sum_edge_lengths(g, __ident_arr(arr))
-						: detail::sum_edge_lengths(g, __nonident_arr(arr))
+		arr.size() == 0 ? detail::sum_edge_lengths(g, lal_ident_arr(arr))
+						: detail::sum_edge_lengths(g, lal_nonident_arr(arr))
 	);
 }
 
@@ -83,8 +83,8 @@ uint64_t sum_edge_lengths(
 #endif
 
 	return (
-		arr.size() == 0 ? detail::sum_edge_lengths(g, __ident_arr(arr))
-						: detail::sum_edge_lengths(g, __nonident_arr(arr))
+		arr.size() == 0 ? detail::sum_edge_lengths(g, lal_ident_arr(arr))
+						: detail::sum_edge_lengths(g, lal_nonident_arr(arr))
 	);
 }
 
@@ -101,10 +101,10 @@ numeric::rational mean_dependency_distance_rational(
 
 	return (
 		arr.size() == 0 ? detail::mean_sum_edge_lengths<numeric::rational>(
-							  g, __ident_arr(arr)
+							  g, lal_ident_arr(arr)
 						  )
 						: detail::mean_sum_edge_lengths<numeric::rational>(
-							  g, __nonident_arr(arr)
+							  g, lal_nonident_arr(arr)
 						  )
 	);
 }
@@ -119,10 +119,10 @@ numeric::rational mean_dependency_distance_rational(
 
 	return (
 		arr.size() == 0 ? detail::mean_sum_edge_lengths<numeric::rational>(
-							  g, __ident_arr(arr)
+							  g, lal_ident_arr(arr)
 						  )
 						: detail::mean_sum_edge_lengths<numeric::rational>(
-							  g, __nonident_arr(arr)
+							  g, lal_nonident_arr(arr)
 						  )
 	);
 }
@@ -139,8 +139,8 @@ double mean_dependency_distance(
 
 	return (
 		arr.size() == 0
-			? detail::mean_sum_edge_lengths<double>(g, __ident_arr(arr))
-			: detail::mean_sum_edge_lengths<double>(g, __nonident_arr(arr))
+			? detail::mean_sum_edge_lengths<double>(g, lal_ident_arr(arr))
+			: detail::mean_sum_edge_lengths<double>(g, lal_nonident_arr(arr))
 	);
 }
 double mean_dependency_distance(
@@ -153,8 +153,8 @@ double mean_dependency_distance(
 
 	return (
 		arr.size() == 0
-			? detail::mean_sum_edge_lengths<double>(g, __ident_arr(arr))
-			: detail::mean_sum_edge_lengths<double>(g, __nonident_arr(arr))
+			? detail::mean_sum_edge_lengths<double>(g, lal_ident_arr(arr))
+			: detail::mean_sum_edge_lengths<double>(g, lal_nonident_arr(arr))
 	);
 }
 

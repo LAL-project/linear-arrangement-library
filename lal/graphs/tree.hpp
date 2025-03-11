@@ -255,7 +255,7 @@ public:
 #if defined DEBUG
 		assert(has_node(u));
 #endif
-		return m_union_find__root_of[u];
+		return m_union_find_root_of[u];
 	}
 
 	/**
@@ -288,7 +288,7 @@ public:
 #if defined DEBUG
 		assert(has_node(u));
 #endif
-		return m_union_find__root_size[m_union_find__root_of[u]];
+		return m_union_find_root_size[m_union_find_root_of[u]];
 	}
 
 	/**
@@ -335,20 +335,20 @@ public:
 protected:
 
 	/// The root of every vertex in the union-find data structure
-	std::vector<node> m_union_find__root_of;
+	std::vector<node> m_union_find_root_of;
 	/**
 	 * @brief The size of the connected component that a @e root belongs to.
 	 *
 	 * Formally, @e m_size_of[v] is the size of the connected component of
 	 * a @e root vertex @e v. A vertex @e u is a root vertex if there
-	 * exists a vertex @e w such that @ref m_union_find__root_of[w] = u.
+	 * exists a vertex @e w such that @ref m_union_find_root_of[w] = u.
 	 *
 	 * In this context, root is within the union-find data structure.
 	 */
-	std::vector<uint64_t> m_union_find__root_size;
+	std::vector<uint64_t> m_union_find_root_size;
 
 	/// The type of this tree
-	std::array<bool, __tree_type_size> m_tree_type;
+	std::array<bool, _tree_type_size> m_tree_type;
 	/**
 	 * @brief Is the type of this tree valid?
 	 *
@@ -366,11 +366,11 @@ protected:
 	 */
 	void tree_only_init(const uint64_t n) noexcept
 	{
-		m_union_find__root_of = std::vector<uint64_t>(n);
-		m_union_find__root_size = std::vector<uint64_t>(n);
+		m_union_find_root_of = std::vector<uint64_t>(n);
+		m_union_find_root_size = std::vector<uint64_t>(n);
 		for (node u = 0; u < n; ++u) {
-			m_union_find__root_of[u] = u;
-			m_union_find__root_size[u] = 1;
+			m_union_find_root_of[u] = u;
+			m_union_find_root_size[u] = 1;
 		}
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 		tree_only_invalidate();
@@ -378,8 +378,8 @@ protected:
 	/// Clears the memory used by only class @ref tree.
 	void tree_only_clear() noexcept
 	{
-		m_union_find__root_of.clear();
-		m_union_find__root_size.clear();
+		m_union_find_root_of.clear();
+		m_union_find_root_size.clear();
 		std::fill(m_tree_type.begin(), m_tree_type.end() - 1, false);
 		tree_only_invalidate();
 	}
@@ -388,8 +388,8 @@ protected:
 	void tree_only_copy(const tree& t) noexcept
 	{
 		// copy this class' members
-		m_union_find__root_of = t.m_union_find__root_of;
-		m_union_find__root_size = t.m_union_find__root_size;
+		m_union_find_root_of = t.m_union_find_root_of;
+		m_union_find_root_size = t.m_union_find_root_size;
 		m_is_tree_type_valid = t.m_is_tree_type_valid;
 		m_tree_type = t.m_tree_type;
 	}
@@ -397,8 +397,8 @@ protected:
 	void tree_only_move(tree&& t) noexcept
 	{
 		// move this class' members
-		m_union_find__root_of = std::move(t.m_union_find__root_of);
-		m_union_find__root_size = std::move(t.m_union_find__root_size);
+		m_union_find_root_of = std::move(t.m_union_find_root_of);
+		m_union_find_root_size = std::move(t.m_union_find_root_size);
 		m_is_tree_type_valid = t.m_is_tree_type_valid;
 		m_tree_type = std::move(t.m_tree_type);
 
@@ -412,9 +412,9 @@ protected:
 	 */
 	void tree_only_add_node() noexcept
 	{
-		const node new_node = m_union_find__root_of.size();
-		m_union_find__root_of.push_back(new_node);
-		m_union_find__root_size.push_back(1);
+		const node new_node = m_union_find_root_of.size();
+		m_union_find_root_of.push_back(new_node);
+		m_union_find_root_size.push_back(1);
 		tree_only_invalidate();
 	}
 
@@ -544,10 +544,10 @@ protected:
 		const uint64_t n = get_num_nodes();
 		for (node u = 0; u < n; ++u) {
 			// all vertices point to root zero
-			m_union_find__root_of[u] = 0;
+			m_union_find_root_of[u] = 0;
 		}
 		// the size of the connected component of the root 0 is n
-		m_union_find__root_size[0] = n;
+		m_union_find_root_size[0] = n;
 	}
 
 	/// Empties the Union-Find data structure assuming that the tree has no edges.
@@ -555,8 +555,8 @@ protected:
 	{
 		for (node u = 0; u < get_num_nodes(); ++u) {
 			// all vertices point to root zero
-			m_union_find__root_of[u] = u;
-			m_union_find__root_size[u] = 1;
+			m_union_find_root_of[u] = u;
+			m_union_find_root_size[u] = 1;
 		}
 	}
 

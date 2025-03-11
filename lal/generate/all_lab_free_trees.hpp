@@ -213,7 +213,7 @@ public:
 	void reset() noexcept
 	{
 		activate_all_postprocessing_actions();
-		__reset();
+		_reset();
 		next();
 	}
 
@@ -232,10 +232,10 @@ protected:
 	 * @pre The generator must have been initialized.
 	 * @pre Method @ref next must have been called at least once.
 	 */
-	graphs::free_tree __get_tree() noexcept;
+	graphs::free_tree _get_tree() noexcept;
 
 	/// Sets the generator to its initial state.
-	void __reset() noexcept
+	void _reset() noexcept
 	{
 		m_reached_end = false;
 

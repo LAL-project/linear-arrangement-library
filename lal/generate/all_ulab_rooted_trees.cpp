@@ -95,7 +95,7 @@ void all_ulab_rooted_trees::next() noexcept
 
 /* PROTECTED */
 
-graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept
+graphs::rooted_tree all_ulab_rooted_trees::_get_tree() noexcept
 {
 	if (m_n == 0) {
 		return graphs::rooted_tree(graphs::free_tree(0), 0);
@@ -115,7 +115,7 @@ graphs::rooted_tree all_ulab_rooted_trees::__get_tree() noexcept
 	);
 }
 
-void all_ulab_rooted_trees::__reset() noexcept
+void all_ulab_rooted_trees::_reset() noexcept
 {
 	m_is_first = true;
 	m_reached_end = false;

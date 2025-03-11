@@ -187,7 +187,7 @@ public:
 	/**
 	 * @brief Retrieve the generated tree.
 	 *
-	 * This function first calls @ref __get_tree and then modifies the
+	 * This function first calls @ref _get_tree and then modifies the
 	 * generated tree according to the values:
 	 * - @ref set_normalize_tree
 	 * - @ref set_calculate_size_subtrees
@@ -199,7 +199,7 @@ public:
 	 */
 	[[nodiscard]] tree_t get_tree() noexcept
 	{
-		tree_t t = __get_tree();
+		tree_t t = _get_tree();
 
 		// free and rooted trees
 		if (m_normalize_tree) {
@@ -302,7 +302,7 @@ protected:
 	 * See the documentation of each child class to see the correct usage
 	 * of this method.
 	 */
-	[[nodiscard]] virtual tree_t __get_tree() noexcept = 0;
+	[[nodiscard]] virtual tree_t _get_tree() noexcept = 0;
 
 protected:
 

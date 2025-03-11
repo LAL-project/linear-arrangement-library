@@ -383,7 +383,7 @@ protected:
 	 * See @ref _rand_ulab_free_trees::get_tree for details.
 	 * @returns An unlabelled free tree chosen uniformly at random.
 	 */
-	[[nodiscard]] graphs::free_tree __get_tree() noexcept
+	[[nodiscard]] graphs::free_tree _get_tree() noexcept
 	{
 		return m_Gen.get_tree();
 	}

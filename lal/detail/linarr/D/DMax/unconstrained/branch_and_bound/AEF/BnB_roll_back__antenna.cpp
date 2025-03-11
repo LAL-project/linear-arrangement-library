@@ -48,14 +48,14 @@
 // C++ includes
 #if defined DEBUG
 #include <cassert>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
 
 // lal includes
 #include <lal/detail/macros/basic_convert.hpp>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <lal/graphs/output.hpp>
 #endif
 
@@ -67,9 +67,9 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-void AEF_BnB::roll_back_LV__antenna(const std::size_t path_idx) noexcept
+void AEF_BnB::roll_back_LV_antenna(const std::size_t path_idx) noexcept
 {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Roll back through an antenna...\n";
 #endif
 
@@ -84,7 +84,7 @@ void AEF_BnB::roll_back_LV__antenna(const std::size_t path_idx) noexcept
 #if defined DEBUG
 		assert(has_valid_LV_prediction(h1));
 #endif
-		m_predicted_LV__origin[h1] = LV_propagation_origin::none;
+		m_predicted_LV_origin[h1] = LV_propagation_origin::none;
 	}
 
 	for (std::size_t i = 1; i < N - 1; ++i) {
@@ -92,7 +92,7 @@ void AEF_BnB::roll_back_LV__antenna(const std::size_t path_idx) noexcept
 #if defined DEBUG
 		assert(has_valid_LV_prediction(w));
 #endif
-		m_predicted_LV__origin[w] = LV_propagation_origin::none;
+		m_predicted_LV_origin[w] = LV_propagation_origin::none;
 	}
 
 	const node h2 = path.get_h2();
@@ -100,7 +100,7 @@ void AEF_BnB::roll_back_LV__antenna(const std::size_t path_idx) noexcept
 #if defined DEBUG
 		assert(has_valid_LV_prediction(h2));
 #endif
-		m_predicted_LV__origin[h2] = LV_propagation_origin::none;
+		m_predicted_LV_origin[h2] = LV_propagation_origin::none;
 	}
 }
 

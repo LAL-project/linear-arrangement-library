@@ -325,7 +325,6 @@ const numeric::integer& _rand_ulab_free_trees::get_fn(const uint64_t n) noexcept
 		f_k -= numeric::rational(s, 2);
 
 		m_fn.emplace_back(f_k.to_integer());
-		//m_fn[k] = std::move(f_i__int);
 
 		++k;
 	}

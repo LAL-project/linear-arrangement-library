@@ -139,7 +139,7 @@ is_projective(const graphs::rooted_tree& rt, const arrangement_t& arr) noexcept
  * @pre Input @e arr is an arrangement of a connected bipartite graph.
  */
 template <Arrangement arrangement_t>
-[[nodiscard]] bool is_bipartite__connected(
+[[nodiscard]] bool is_bipartite_connected(
 	const properties::bipartite_graph_coloring& c, const arrangement_t& arr
 ) noexcept
 {

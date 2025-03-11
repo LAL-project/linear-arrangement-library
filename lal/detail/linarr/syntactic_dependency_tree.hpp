@@ -71,7 +71,7 @@ namespace detail {
 /// The array of all types of syntact dependency structures.
 constexpr inline std::array<
 	linarr::syntactic_dependency_tree_type,
-	linarr::__syntactic_dependency_tree_size>
+	linarr::_syntactic_dependency_tree_size>
 	array_of_syntactic_dependency_trees = make_array<
 		linarr::syntactic_dependency_tree_type,
 		linarr::syntactic_dependency_tree_type::EC1,

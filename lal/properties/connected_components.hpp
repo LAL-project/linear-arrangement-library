@@ -101,7 +101,7 @@ public:
 	void init(const std::size_t n) noexcept
 	{
 		m_node_to_cc.resize(n, n + 1);
-		m__graph_node__to__cc_node.resize(n, n + 1);
+		m_graph_node_to_cc_node.resize(n, n + 1);
 	}
 
 	/// Add a graph to the list of connected components.
@@ -109,14 +109,14 @@ public:
 	{
 		const auto n = g.get_num_nodes();
 		m_connected_components.push_back(std::forward<graph_t>(g));
-		m__cc_node__to__graph_node.emplace_back(n, n + 1);
+		m_cc_node_to_graph_node.emplace_back(n, n + 1);
 	}
 	/// Add a graph to the list of connected components.
 	void add_graph(const graph_t& g) noexcept
 	{
 		const auto n = g.get_num_nodes();
 		m_connected_components.push_back(g);
-		m__cc_node__to__graph_node.emplace_back(n, n + 1);
+		m_cc_node_to_graph_node.emplace_back(n, n + 1);
 	}
 
 	/**
@@ -137,7 +137,7 @@ public:
 	void set_label_graph_node_to_cc_node(const node u, const std::size_t label)
 		noexcept
 	{
-		m__graph_node__to__cc_node[u] = label;
+		m_graph_node_to_cc_node[u] = label;
 	}
 	/**
 	 * @brief Relates vertex @e u to the corresponding vertex within its connected component.
@@ -149,7 +149,7 @@ public:
 		const std::size_t cc_idx, const node u, const std::size_t label
 	) noexcept
 	{
-		m__cc_node__to__graph_node[cc_idx][u] = label;
+		m_cc_node_to_graph_node[cc_idx][u] = label;
 	}
 
 	/* GETTERS */
@@ -179,7 +179,7 @@ public:
 	[[nodiscard]] std::size_t get_label_graph_node_to_cc_node(const node u
 	) const noexcept
 	{
-		return m__graph_node__to__cc_node[u];
+		return m_graph_node_to_cc_node[u];
 	}
 	/**
 	 * @brief The corresponding vertex within its connected component.
@@ -191,7 +191,7 @@ public:
 		const std::size_t cc_idx, const node u
 	) const noexcept
 	{
-		return m__cc_node__to__graph_node[cc_idx][u];
+		return m_cc_node_to_graph_node[cc_idx][u];
 	}
 
 	/// A pointer to the beginning of the sequence of connected components.
@@ -223,10 +223,10 @@ private:
 
 	/// Relates the vertices in each connected components to their corresponding
 	/// vertex in the original graph.
-	std::vector<detail::array<std::size_t>> m__cc_node__to__graph_node;
+	std::vector<detail::array<std::size_t>> m_cc_node_to_graph_node;
 	/// Relates the vertices in the original graph components to their corresponding
 	/// vertex in the connected_component.
-	detail::array<std::size_t> m__graph_node__to__cc_node;
+	detail::array<std::size_t> m_graph_node_to_cc_node;
 
 	/// The label of the connected component a vertex belongs to.
 	detail::array<std::size_t> m_node_to_cc;

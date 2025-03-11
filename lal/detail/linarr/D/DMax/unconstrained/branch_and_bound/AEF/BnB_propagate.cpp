@@ -52,7 +52,7 @@
 
 // lal includes
 #include <lal/detail/macros/basic_convert.hpp>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <lal/graphs/output.hpp>
 #endif
 
@@ -75,7 +75,7 @@ propagation_result AEF_BnB::propagate_constraints(const node u) noexcept
 	}
 
 	if (m_t.get_degree(u) == 1) {
-		propagate_LV__antenna__from_leaf(u);
+		propagate_LV_antenna_from_leaf(u);
 		return propagation_result::success;
 	}
 
@@ -83,20 +83,20 @@ propagation_result AEF_BnB::propagate_constraints(const node u) noexcept
 		const std::size_t path_u_idx = m_node_to_path_idx[u];
 		const auto& path_u = m_paths_in_tree[path_u_idx];
 		if (path_u.is_antenna(m_t)) {
-			propagate_LV__antenna__from_internal(u);
+			propagate_LV_antenna_from_internal(u);
 		}
 		else {
 			const int64_t level_u = m_node_level[u];
 			if (path_u.get_lowest_lexicographic() == u) {
 				if (level_u == 2 or level_u == -2) {
-					return propagate_LV__bridge__from_lowest__level_pm2(u);
+					return propagate_LV_bridge_from_lowest_level_pm2(u);
 				}
 				else {
-					propagate_LV__bridge__from_lowest__level_0(u);
+					propagate_LV_bridge_from_lowest_level_0(u);
 				}
 			}
 			else {
-				return propagate_LV__bridge__from_internal(u);
+				return propagate_LV_bridge_from_internal(u);
 			}
 		}
 		return propagation_result::success;
@@ -116,7 +116,7 @@ propagation_result AEF_BnB::propagate_constraints(const node u) noexcept
 				// already happened.
 
 				// propagate freely! :)
-				propagate_LV__antenna__from_hub(u, v);
+				propagate_LV_antenna_from_hub(u, v);
 			}
 			else {
 				// emulate the propagation --> do not actually propagate since
@@ -125,7 +125,7 @@ propagation_result AEF_BnB::propagate_constraints(const node u) noexcept
 #if defined DEBUG
 				assert(has_valid_LV_prediction(v));
 				assert(
-					m_predicted_LV__origin[u] !=
+					m_predicted_LV_origin[u] !=
 					LV_propagation_origin::antenna_hub
 				);
 #endif
@@ -157,7 +157,7 @@ propagation_result AEF_BnB::propagate_constraints(const node u) noexcept
 			const node h2 = path_v.get_h2();
 			assert(u == h1 or u == h2);
 #endif
-			const auto r = propagate_LV__bridge__from_hub(u, path_v_idx);
+			const auto r = propagate_LV_bridge_from_hub(u, path_v_idx);
 			if (r != propagation_result::success) {
 				return r;
 			}

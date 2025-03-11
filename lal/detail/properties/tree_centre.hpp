@@ -121,7 +121,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	uint64_t size_trimmed = t.get_num_nodes_component(X);
 
 #if defined DEBUG
-	uint64_t __size_trimmed = 0; // for debugging purposes only
+	uint64_t _size_trimmed = 0; // for debugging purposes only
 #endif
 
 	// leaves left to process
@@ -139,7 +139,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 		[&](const auto&, node u) -> void
 		{
 #if defined DEBUG
-			++__size_trimmed;
+			++_size_trimmed;
 #endif
 
 			// 'trimmed_degree' must be the degree of the vertex
@@ -164,7 +164,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 
 #if defined DEBUG
 	// make sure that the method n_nodes_component returns a correct value
-	assert(__size_trimmed == size_trimmed);
+	assert(_size_trimmed == size_trimmed);
 #endif
 
 	// Third case: the component has three nodes or more...

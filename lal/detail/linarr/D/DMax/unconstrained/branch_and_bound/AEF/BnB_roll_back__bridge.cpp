@@ -48,14 +48,14 @@
 // C++ includes
 #if defined DEBUG
 #include <cassert>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
 
 // lal includes
 #include <lal/detail/macros/basic_convert.hpp>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <lal/graphs/output.hpp>
 #endif
 
@@ -67,7 +67,7 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-void AEF_BnB::roll_back_LV__bridge__from_hub__h2(const std::size_t path_idx
+void AEF_BnB::roll_back_LV_bridge_from_hub_h2(const std::size_t path_idx
 ) noexcept
 {
 	const auto& path = m_paths_in_tree[path_idx];
@@ -76,7 +76,7 @@ void AEF_BnB::roll_back_LV__bridge__from_hub__h2(const std::size_t path_idx
 	const auto stop = [&](const std::size_t k) -> bool
 	{
 		const node v = path[k];
-		return m_predicted_LV__origin[v] != LV_propagation_origin::bridge_hub_2;
+		return m_predicted_LV_origin[v] != LV_propagation_origin::bridge_hub_2;
 	};
 
 	std::size_t i = N - 2;
@@ -85,11 +85,11 @@ void AEF_BnB::roll_back_LV__bridge__from_hub__h2(const std::size_t path_idx
 #if defined DEBUG
 		assert(has_valid_LV_prediction(v));
 #endif
-		m_predicted_LV__origin[v] = LV_propagation_origin::none;
+		m_predicted_LV_origin[v] = LV_propagation_origin::none;
 		--i;
 	}
 }
-void AEF_BnB::roll_back_LV__bridge__from_hub__h1(const std::size_t path_idx
+void AEF_BnB::roll_back_LV_bridge_from_hub_h1(const std::size_t path_idx
 ) noexcept
 {
 	const auto& path = m_paths_in_tree[path_idx];
@@ -98,7 +98,7 @@ void AEF_BnB::roll_back_LV__bridge__from_hub__h1(const std::size_t path_idx
 	const auto stop = [&](const std::size_t k) -> bool
 	{
 		const node v = path[k];
-		return m_predicted_LV__origin[v] != LV_propagation_origin::bridge_hub_1;
+		return m_predicted_LV_origin[v] != LV_propagation_origin::bridge_hub_1;
 	};
 
 	std::size_t i = 1;
@@ -107,17 +107,17 @@ void AEF_BnB::roll_back_LV__bridge__from_hub__h1(const std::size_t path_idx
 #if defined DEBUG
 		assert(has_valid_LV_prediction(v));
 #endif
-		m_predicted_LV__origin[v] = LV_propagation_origin::none;
+		m_predicted_LV_origin[v] = LV_propagation_origin::none;
 		++i;
 	}
 }
-void AEF_BnB::roll_back_LV__bridge__from_hub(
+void AEF_BnB::roll_back_LV_bridge_from_hub(
 	const node h, const std::size_t path_idx
 ) noexcept
 {
 	const auto& path = m_paths_in_tree[path_idx];
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Roll back through a bridge from only one hub...\n";
 	std::cout << tab() << "    hub= " << h << '\n';
 	std::cout << tab() << "    is h1? " << std::boolalpha
@@ -127,14 +127,14 @@ void AEF_BnB::roll_back_LV__bridge__from_hub(
 #endif
 
 	if (h == path.get_h1()) {
-		roll_back_LV__bridge__from_hub__h1(path_idx);
+		roll_back_LV_bridge_from_hub_h1(path_idx);
 	}
 	else {
-		roll_back_LV__bridge__from_hub__h2(path_idx);
+		roll_back_LV_bridge_from_hub_h2(path_idx);
 	}
 }
 
-void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0__towards_h2(
+void AEF_BnB::roll_back_LV_bridge_from_lowest_level_0_towards_h2(
 	const std::size_t path_idx
 ) noexcept
 {
@@ -143,7 +143,7 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0__towards_h2(
 	const std::size_t pw = path.get_position(w);
 	const std::size_t N = path.get_num_nodes();
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "    Roll back towards h2...\n";
 #endif
 
@@ -152,13 +152,13 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0__towards_h2(
 #if defined DEBUG
 		assert(has_valid_LV_prediction(v));
 		assert(
-			m_predicted_LV__origin[v] == LV_propagation_origin::bridge_lowest_0
+			m_predicted_LV_origin[v] == LV_propagation_origin::bridge_lowest_0
 		);
 #endif
-		m_predicted_LV__origin[v] = LV_propagation_origin::none;
+		m_predicted_LV_origin[v] = LV_propagation_origin::none;
 	}
 }
-void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0__towards_h1(
+void AEF_BnB::roll_back_LV_bridge_from_lowest_level_0_towards_h1(
 	const std::size_t path_idx
 ) noexcept
 {
@@ -166,7 +166,7 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0__towards_h1(
 	const node w = path.get_lowest_lexicographic();
 	const std::size_t pw = path.get_position(w);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "    Roll back towards h1...\n";
 #endif
 
@@ -175,20 +175,20 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0__towards_h1(
 #if defined DEBUG
 		assert(has_valid_LV_prediction(v));
 		assert(
-			m_predicted_LV__origin[v] == LV_propagation_origin::bridge_lowest_0
+			m_predicted_LV_origin[v] == LV_propagation_origin::bridge_lowest_0
 		);
 #endif
-		m_predicted_LV__origin[v] = LV_propagation_origin::none;
+		m_predicted_LV_origin[v] = LV_propagation_origin::none;
 	}
 }
-void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0(const node u) noexcept
+void AEF_BnB::roll_back_LV_bridge_from_lowest_level_0(const node u) noexcept
 {
 	const std::size_t path_idx = m_node_to_path_idx[u];
 	const auto& path = m_paths_in_tree[path_idx];
 	const node w = path.get_lowest_lexicographic();
 	const std::size_t pw = path.get_position(w);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Roll back through a bridge from lowest 0...\n";
 	std::cout << tab() << "    w= " << w << '\n';
 #endif
@@ -197,7 +197,7 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0(const node u) noexcept
 	assert(w == u);
 #endif
 
-	m_predicted_LV__origin[w] = LV_propagation_origin::none;
+	m_predicted_LV_origin[w] = LV_propagation_origin::none;
 
 	if (path.get_num_nodes() == 3) {
 		return;
@@ -205,25 +205,25 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_0(const node u) noexcept
 
 	const node wm1 = path[pw - 1];
 	if (has_valid_LV_prediction(wm1) and
-		m_predicted_LV__origin[wm1] == LV_propagation_origin::bridge_lowest_0) {
-		roll_back_LV__bridge__from_lowest__level_0__towards_h1(path_idx);
+		m_predicted_LV_origin[wm1] == LV_propagation_origin::bridge_lowest_0) {
+		roll_back_LV_bridge_from_lowest_level_0_towards_h1(path_idx);
 	}
 
 	const node wp1 = path[pw + 1];
 	if (has_valid_LV_prediction(wp1) and
-		m_predicted_LV__origin[wp1] == LV_propagation_origin::bridge_lowest_0) {
-		roll_back_LV__bridge__from_lowest__level_0__towards_h2(path_idx);
+		m_predicted_LV_origin[wp1] == LV_propagation_origin::bridge_lowest_0) {
+		roll_back_LV_bridge_from_lowest_level_0_towards_h2(path_idx);
 	}
 }
 
-void AEF_BnB::roll_back_LV__bridge__from_lowest__level_pm2(const node u
+void AEF_BnB::roll_back_LV_bridge_from_lowest_level_pm2(const node u
 ) noexcept
 {
 	const auto& path = m_paths_in_tree[m_node_to_path_idx[u]];
 	const node w = path.get_lowest_lexicographic();
 	const std::size_t N = path.get_num_nodes();
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Roll back through a bridge from lowest +-2...\n";
 	std::cout << tab() << "    u= " << u << '\n';
 	std::cout << tab() << "    w= " << w << '\n';
@@ -232,11 +232,11 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_pm2(const node u
 	const auto stop = [&](const std::size_t k) -> bool
 	{
 		const node v = path[k];
-		return m_predicted_LV__origin[v] !=
+		return m_predicted_LV_origin[v] !=
 			   LV_propagation_origin::bridge_lowest_pm2;
 	};
 
-	m_predicted_LV__origin[w] = LV_propagation_origin::none;
+	m_predicted_LV_origin[w] = LV_propagation_origin::none;
 
 	std::size_t p = path.get_position(w) - 1;
 	while (p > 0 and not stop(p)) {
@@ -245,7 +245,7 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_pm2(const node u
 		assert(has_valid_LV_prediction(v));
 #endif
 
-		m_predicted_LV__origin[v] = LV_propagation_origin::none;
+		m_predicted_LV_origin[v] = LV_propagation_origin::none;
 		--p;
 	}
 
@@ -256,12 +256,12 @@ void AEF_BnB::roll_back_LV__bridge__from_lowest__level_pm2(const node u
 		assert(has_valid_LV_prediction(v));
 #endif
 
-		m_predicted_LV__origin[v] = LV_propagation_origin::none;
+		m_predicted_LV_origin[v] = LV_propagation_origin::none;
 		++p;
 	}
 }
 
-void AEF_BnB::roll_back_LV__bridge__from_internal(const node u) noexcept
+void AEF_BnB::roll_back_LV_bridge_from_internal(const node u) noexcept
 {
 	const auto& path = m_paths_in_tree[m_node_to_path_idx[u]];
 	const std::size_t N = path.get_num_nodes();
@@ -269,7 +269,7 @@ void AEF_BnB::roll_back_LV__bridge__from_internal(const node u) noexcept
 	const std::size_t pw = path.get_position(w);
 	const std::size_t pu = path.get_position(u);
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Roll back through a bridge from internal...\n";
 	std::cout << tab() << "    u= " << u << '\n';
 	std::cout << tab() << "    w= " << w << '\n';
@@ -287,13 +287,13 @@ void AEF_BnB::roll_back_LV__bridge__from_internal(const node u) noexcept
 					   : LV_propagation_origin::bridge_internal_right;
 	}();
 
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "    Origin detected: "
 			  << LV_propagation_origin_to_short_string(orig) << " -- "
 			  << LV_propagation_origin_to_string(orig) << '\n';
 #endif
 
-	m_predicted_LV__origin[u] = LV_propagation_origin::none;
+	m_predicted_LV_origin[u] = LV_propagation_origin::none;
 
 	std::size_t i;
 
@@ -303,7 +303,7 @@ void AEF_BnB::roll_back_LV__bridge__from_internal(const node u) noexcept
 #if defined DEBUG
 		assert(has_valid_LV_prediction(v));
 #endif
-		m_predicted_LV__origin[v] = LV_propagation_origin::none;
+		m_predicted_LV_origin[v] = LV_propagation_origin::none;
 		++i;
 	}
 
@@ -313,12 +313,12 @@ void AEF_BnB::roll_back_LV__bridge__from_internal(const node u) noexcept
 #if defined DEBUG
 		assert(has_valid_LV_prediction(v));
 #endif
-		m_predicted_LV__origin[v] = LV_propagation_origin::none;
+		m_predicted_LV_origin[v] = LV_propagation_origin::none;
 		--i;
 	}
 
-	if (m_predicted_LV__origin[w] == orig) {
-		m_predicted_LV__origin[w] = LV_propagation_origin::none;
+	if (m_predicted_LV_origin[w] == orig) {
+		m_predicted_LV_origin[w] = LV_propagation_origin::none;
 	}
 }
 

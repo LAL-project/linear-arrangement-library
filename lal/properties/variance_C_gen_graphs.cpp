@@ -54,25 +54,25 @@
 #define sorted_edge(u, v) (u < v ? edge(u, v) : edge(v, u))
 #define has_key(MAP, K, it) ((it = MAP.find(K)) != MAP.end())
 
-/* This macro has two local variables: __i, __j
- * The first variable, __i, iterates over Ni.
- * The first variable, __j, iterates over Nj.
+/* This macro has two local variables: _i, _j
+ * The first variable, _i, iterates over Ni.
+ * The first variable, _j, iterates over Nj.
  */
 #define iterate(Ni, Nj, JOB)                                                   \
 	{                                                                          \
-		std::size_t __i = 0;                                                   \
-		std::size_t __j = 0;                                                   \
-		while (__i < Ni.size() and __j < Nj.size()) {                          \
-			const auto __Ni_i = Ni[__i];                                       \
-			const auto __Nj_j = Nj[__j];                                       \
-			if (__Ni_i == __Nj_j) {                                            \
+		std::size_t _i = 0;                                                    \
+		std::size_t _j = 0;                                                    \
+		while (_i < Ni.size() and _j < Nj.size()) {                            \
+			const auto _Ni_i = Ni[_i];                                         \
+			const auto _Nj_j = Nj[_j];                                         \
+			if (_Ni_i == _Nj_j) {                                              \
 				JOB();                                                         \
-				++__i;                                                         \
-				++__j;                                                         \
+				++_i;                                                          \
+				++_j;                                                          \
 			}                                                                  \
 			else {                                                             \
-				__i += (__Ni_i < __Nj_j);                                      \
-				__j += (__Ni_i > __Nj_j);                                      \
+				_i += (_Ni_i < _Nj_j);                                         \
+				_j += (_Ni_i > _Nj_j);                                         \
 			}                                                                  \
 		}                                                                      \
 	}
@@ -257,7 +257,7 @@ void compute_data_gen_graphs(
 						[&]()
 						{
 							++common_ut;
-							deg_sum += g.get_degree(Nu[__j]);
+							deg_sum += g.get_degree(Nu[_j]);
 						}
 					);
 					H.insert(
@@ -305,7 +305,7 @@ void compute_data_gen_graphs(
 						[&]()
 						{
 							++common_us;
-							deg_sum += g.get_degree(Nu[__j]);
+							deg_sum += g.get_degree(Nu[_j]);
 						}
 					);
 					H.insert(
@@ -351,7 +351,7 @@ void compute_data_gen_graphs(
 					[&]()
 					{
 						++common_st;
-						deg_sum_st += g.get_degree(Nt[__j]);
+						deg_sum_st += g.get_degree(Nt[_j]);
 					}
 				);
 				H.insert(
@@ -367,7 +367,7 @@ void compute_data_gen_graphs(
 				[&]()
 				{
 					++common_st;
-					deg_sum_st += g.get_degree(Ns[__i]);
+					deg_sum_st += g.get_degree(Ns[_i]);
 				}
 			);
 		}

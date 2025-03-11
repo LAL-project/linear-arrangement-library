@@ -72,7 +72,7 @@ bool tree::can_add_edge(const node u, const node v) const noexcept
 	//     - the edge already exists, or
 	//     - there exists a path from 'u' to 'v' in the undirected
 	//       underlying structure, hence creating a cycle
-	return m_union_find__root_of[u] != m_union_find__root_of[v];
+	return m_union_find_root_of[u] != m_union_find_root_of[v];
 }
 
 bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept
@@ -87,8 +87,8 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept
 	}
 
 	// make a copy
-	std::vector<uint64_t> _root_of = m_union_find__root_of;
-	std::vector<uint64_t> _root_size = m_union_find__root_size;
+	std::vector<uint64_t> _root_of = m_union_find_root_of;
+	std::vector<uint64_t> _root_size = m_union_find_root_size;
 
 	for (const auto& [u, v] : edges) {
 #if defined DEBUG
@@ -112,8 +112,8 @@ bool tree::can_add_edges(const std::vector<edge>& edges) const noexcept
 std::vector<std::string> tree::get_tree_type_list() const noexcept
 {
 	std::vector<std::string> l;
-	l.reserve(__tree_type_size);
-	for (std::size_t i = 0; i < __tree_type_size; ++i) {
+	l.reserve(_tree_type_size);
+	for (std::size_t i = 0; i < _tree_type_size; ++i) {
 		if (m_tree_type[i]) {
 			l.emplace_back(detail::tree_type_string(static_cast<tree_type>(i)));
 		}
@@ -127,7 +127,7 @@ void tree::tree_only_actions_after_add_edge(const node u, const node v) noexcept
 {
 	m_is_tree_type_valid = false;
 	update_union_find_after_add_edge(
-		u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]
+		u, v, &m_union_find_root_of[0], &m_union_find_root_size[0]
 	);
 }
 
@@ -135,7 +135,7 @@ void tree::tree_only_actions_after_add_edges(const edge_list& e) noexcept
 {
 	m_is_tree_type_valid = false;
 	update_union_find_after_add_edges(
-		e, &m_union_find__root_of[0], &m_union_find__root_size[0]
+		e, &m_union_find_root_of[0], &m_union_find_root_size[0]
 	);
 }
 
@@ -143,7 +143,7 @@ void tree::tree_only_actions_after_add_edges_bulk() noexcept
 {
 	m_is_tree_type_valid = false;
 	update_union_find_after_add_edges_bulk(
-		&m_union_find__root_of[0], &m_union_find__root_size[0]
+		&m_union_find_root_of[0], &m_union_find_root_size[0]
 	);
 }
 
@@ -157,7 +157,7 @@ void tree::tree_only_actions_after_remove_edges_bulk() noexcept
 {
 	m_is_tree_type_valid = false;
 	update_union_find_after_remove_edges_bulk(
-		&m_union_find__root_of[0], &m_union_find__root_size[0]
+		&m_union_find_root_of[0], &m_union_find_root_size[0]
 	);
 }
 
@@ -172,7 +172,7 @@ void tree::tree_only_actions_after_remove_edge(const node u, const node v)
 {
 	m_is_tree_type_valid = false;
 	update_union_find_after_remove_edge(
-		u, v, &m_union_find__root_of[0], &m_union_find__root_size[0]
+		u, v, &m_union_find_root_of[0], &m_union_find_root_size[0]
 	);
 }
 
@@ -180,7 +180,7 @@ void tree::tree_only_actions_after_remove_edges(const edge_list& e) noexcept
 {
 	m_is_tree_type_valid = false;
 	update_union_find_after_remove_edges(
-		e, &m_union_find__root_of[0], &m_union_find__root_size[0]
+		e, &m_union_find_root_of[0], &m_union_find_root_size[0]
 	);
 }
 
@@ -189,25 +189,25 @@ void tree::tree_only_actions_after_remove_node(const node u) noexcept
 	m_is_tree_type_valid = false;
 
 #if defined DEBUG
-	assert(m_union_find__root_of[u] == u);
-	assert(m_union_find__root_size[u] == 1);
+	assert(m_union_find_root_of[u] == u);
+	assert(m_union_find_root_size[u] == 1);
 #endif
 
 	// update union-find data structure
 	{
-		auto e = m_union_find__root_of.begin();
+		auto e = m_union_find_root_of.begin();
 		std::advance(e, u);
-		m_union_find__root_of.erase(e);
+		m_union_find_root_of.erase(e);
 	}
 	{
-		auto e = m_union_find__root_size.begin();
+		auto e = m_union_find_root_size.begin();
 		std::advance(e, u);
-		m_union_find__root_size.erase(e);
+		m_union_find_root_size.erase(e);
 	}
 
 	// relabel the roots when necessary
-	for (node v = 0; v < m_union_find__root_of.size(); ++v) {
-		m_union_find__root_of[v] -= (m_union_find__root_of[v] > u);
+	for (node v = 0; v < m_union_find_root_of.size(); ++v) {
+		m_union_find_root_of[v] -= (m_union_find_root_of[v] > u);
 	}
 }
 
@@ -216,7 +216,7 @@ void tree::tree_only_actions_before_remove_edges_incident_to(const node u
 {
 	m_is_tree_type_valid = false;
 	update_union_find_before_remove_incident_edges_to(
-		u, &m_union_find__root_of[0], &m_union_find__root_size[0]
+		u, &m_union_find_root_of[0], &m_union_find_root_size[0]
 	);
 }
 

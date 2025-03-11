@@ -48,14 +48,14 @@
 // C++ includes
 #if defined DEBUG
 #include <cassert>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <iostream>
 #endif
 #endif
 
 // lal includes
 #include <lal/detail/macros/basic_convert.hpp>
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 #include <lal/graphs/output.hpp>
 #endif
 
@@ -67,9 +67,9 @@ namespace detail {
 namespace DMax {
 namespace unconstrained {
 
-void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept
+void AEF_BnB::propagate_LV_antenna_from_leaf(const node u) noexcept
 {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Found a trigger leaf for an antenna u= " << u
 			  << '\n';
 	std::cout << tab() << "    Of level value= " << m_node_level[u] << '\n';
@@ -80,7 +80,7 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept
 #endif
 
 	m_predicted_LV[u] = m_node_level[u];
-	m_predicted_LV__origin[u] = LV_propagation_origin::self;
+	m_predicted_LV_origin[u] = LV_propagation_origin::self;
 
 	const int64_t sign_u = m_node_level[u];
 
@@ -106,7 +106,7 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept
 #endif
 
 			m_predicted_LV[v] = prediction;
-			m_predicted_LV__origin[v] = LV_propagation_origin::antenna_leaf;
+			m_predicted_LV_origin[v] = LV_propagation_origin::antenna_leaf;
 			num_p2 += (prediction == +2);
 			num_m2 += (prediction == -2);
 			sign *= -1;
@@ -118,7 +118,7 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept
 			assert(not has_valid_LV_prediction(h2));
 #endif
 			m_predicted_LV[h2] = prediction;
-			m_predicted_LV__origin[h2] = LV_propagation_origin::antenna_leaf;
+			m_predicted_LV_origin[h2] = LV_propagation_origin::antenna_leaf;
 		}
 	}
 	else {
@@ -138,7 +138,7 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept
 #endif
 
 			m_predicted_LV[v] = prediction;
-			m_predicted_LV__origin[v] = LV_propagation_origin::antenna_leaf;
+			m_predicted_LV_origin[v] = LV_propagation_origin::antenna_leaf;
 			num_p2 += (prediction == +2);
 			num_m2 += (prediction == -2);
 			sign *= -1;
@@ -152,7 +152,7 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept
 #endif
 
 			m_predicted_LV[h1] = prediction;
-			m_predicted_LV__origin[h1] = LV_propagation_origin::antenna_leaf;
+			m_predicted_LV_origin[h1] = LV_propagation_origin::antenna_leaf;
 		}
 	}
 
@@ -164,9 +164,9 @@ void AEF_BnB::propagate_LV__antenna__from_leaf(const node u) noexcept
 #endif
 }
 
-void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept
+void AEF_BnB::propagate_LV_antenna_from_internal(const node u) noexcept
 {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab()
 			  << "Found a trigger internal vertex for an antenna u= " << u
 			  << '\n';
@@ -174,7 +174,7 @@ void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept
 #endif
 
 	m_predicted_LV[u] = m_node_level[u];
-	m_predicted_LV__origin[u] = LV_propagation_origin::self;
+	m_predicted_LV_origin[u] = LV_propagation_origin::self;
 
 	const int64_t sign_u = m_node_level[u] > 0 ? 1 : -1;
 
@@ -204,7 +204,7 @@ void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept
 #endif
 
 		m_predicted_LV[v] = prediction;
-		m_predicted_LV__origin[v] = LV_propagation_origin::antenna_internal;
+		m_predicted_LV_origin[v] = LV_propagation_origin::antenna_internal;
 		num_p2 += (prediction == +2);
 		num_m2 += (prediction == -2);
 		sign *= -1;
@@ -222,7 +222,7 @@ void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept
 #endif
 
 		m_predicted_LV[v] = prediction;
-		m_predicted_LV__origin[v] = LV_propagation_origin::antenna_internal;
+		m_predicted_LV_origin[v] = LV_propagation_origin::antenna_internal;
 		num_p2 += (prediction == +2);
 		num_m2 += (prediction == -2);
 		sign *= -1;
@@ -236,10 +236,10 @@ void AEF_BnB::propagate_LV__antenna__from_internal(const node u) noexcept
 #endif
 }
 
-void AEF_BnB::propagate_LV__antenna__from_hub(const node h, const node u)
+void AEF_BnB::propagate_LV_antenna_from_hub(const node h, const node u)
 	noexcept
 {
-#if defined __LAL_DEBUG_DMax_Unc_BnB
+#if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Found a trigger hub for an antenna h= " << h << '\n';
 	std::cout << tab() << "    Of level value= " << m_node_level[h] << '\n';
 #endif
@@ -250,10 +250,10 @@ void AEF_BnB::propagate_LV__antenna__from_hub(const node h, const node u)
 #endif
 
 	m_predicted_LV[h] = m_node_level[h];
-	m_predicted_LV__origin[h] = LV_propagation_origin::self;
+	m_predicted_LV_origin[h] = LV_propagation_origin::self;
 
 	m_predicted_LV[u] = -to_int64(m_t.get_degree(u));
-	m_predicted_LV__origin[u] = LV_propagation_origin::antenna_hub;
+	m_predicted_LV_origin[u] = LV_propagation_origin::antenna_hub;
 
 	const std::size_t path_idx = m_node_to_path_idx[u];
 	const auto& path = m_paths_in_tree[path_idx];
@@ -282,7 +282,7 @@ void AEF_BnB::propagate_LV__antenna__from_hub(const node h, const node u)
 #endif
 
 			m_predicted_LV[v] = prediction;
-			m_predicted_LV__origin[v] = LV_propagation_origin::antenna_hub;
+			m_predicted_LV_origin[v] = LV_propagation_origin::antenna_hub;
 			num_p2 += (prediction == +2);
 			num_m2 += (prediction == -2);
 			sign *= -1;
@@ -304,7 +304,7 @@ void AEF_BnB::propagate_LV__antenna__from_hub(const node h, const node u)
 #endif
 
 			m_predicted_LV[v] = prediction;
-			m_predicted_LV__origin[v] = LV_propagation_origin::antenna_hub;
+			m_predicted_LV_origin[v] = LV_propagation_origin::antenna_hub;
 			num_p2 += (prediction == +2);
 			num_m2 += (prediction == -2);
 			sign *= -1;

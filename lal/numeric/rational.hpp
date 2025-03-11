@@ -368,7 +368,7 @@ public:
 		r += i;
 		return r;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
@@ -391,7 +391,7 @@ public:
 		r += i;
 		return r;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -465,7 +465,7 @@ public:
 		mpq_add(r.m_val, r.m_val, m_val);
 		return r;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
@@ -488,7 +488,7 @@ public:
 		r -= i;
 		return r;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -562,7 +562,7 @@ public:
 		mpq_canonicalize(r.m_val);
 		return r;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Multiplication operator.
 	 * @param i An integer (basic type) number.
@@ -587,7 +587,7 @@ public:
 		mpq_canonicalize(r.m_val);
 		return r;
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Multiplication operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -673,7 +673,7 @@ public:
 			return r;
 		}
 	}
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
@@ -874,7 +874,7 @@ public:
 		std::swap(m_initialized, r.m_initialized);
 	}
 
-#if !defined __LAL_SWIG_PYTHON
+#if !defined LAL_SWIG_PYTHON
 	/**
 	 * @brief Swaps two rationals.
 	 * @param r1 Input rational.
