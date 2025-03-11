@@ -68,7 +68,7 @@ namespace detail {
  * @param[out] flux The flux at this position.
  * @param[out] cur_deps The dependencies crossing this position.
  */
-template <class depflux, class arrangement_t>
+template <class depflux, Arrangement arrangement_t>
 void calculate_dependencies_and_span(
 	const graphs::free_tree& t,
 	const arrangement_t& arr,
@@ -176,7 +176,7 @@ void calculate_dependencies_and_span(
  * @param arr Input linear arrangement.
  * @returns The set of dependency fluxes in the arrangement.
  */
-template <class depflux, class arrangement_t>
+template <class depflux, Arrangement arrangement_t>
 [[nodiscard]] std::vector<depflux> dependency_flux_compute(
 	const graphs::free_tree& t, const arrangement_t& arr
 ) noexcept

@@ -51,6 +51,7 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace detail {
@@ -61,7 +62,7 @@ namespace detail {
  * @param g Input directed graph.
  * @param arr Input linear arrangement.
  */
-template <class arrangement_t>
+template <Arrangement arrangement_t>
 [[nodiscard]] uint64_t right_branching_edges(
 	const graphs::directed_graph& g, const arrangement_t& arr
 ) noexcept
@@ -81,7 +82,7 @@ template <class arrangement_t>
  * @param g Input directed graph.
  * @param arr Input linear arrangement.
  */
-template <typename result_t, class arrangement_t>
+template <typename result_t, Arrangement arrangement_t>
 [[nodiscard]] result_t
 head_initial(const graphs::directed_graph& g, const arrangement_t& arr) noexcept
 {

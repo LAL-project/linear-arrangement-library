@@ -50,6 +50,7 @@
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace detail {
@@ -61,7 +62,7 @@ namespace detail {
  * @param g Input directed graph.
  * @param arr Input linear arrangement.
  */
-template <graphs::Graph graph_t, class arrangement_t>
+template <graphs::Graph graph_t, Arrangement arrangement_t>
 [[nodiscard]] uint64_t
 sum_edge_lengths(const graph_t& g, const arrangement_t& arr) noexcept
 {
@@ -89,7 +90,10 @@ sum_edge_lengths(const graph_t& g, const arrangement_t& arr) noexcept
  * @param g Input directed graph.
  * @param arr Input linear arrangement.
  */
-template <class result_t, graphs::Graph graph_t, class arrangement_t>
+template <
+	class result_t,
+	graphs::Graph graph_t,
+	Arrangement arrangement_t>
 [[nodiscard]] result_t
 mean_sum_edge_lengths(const graph_t& g, const arrangement_t& arr) noexcept
 {

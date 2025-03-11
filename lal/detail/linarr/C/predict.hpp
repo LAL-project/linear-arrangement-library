@@ -180,7 +180,7 @@ beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept
  * @param arr Input arrangement.
  * @returns The value of \f$E_2[C]\f$.
  */
-template <typename result_t, graphs::Graph graph_t, class arrangement_t>
+template <typename result_t, graphs::Graph graph_t, Arrangement arrangement_t>
 [[nodiscard]] inline result_t predict_C_using_edge_lengths(
 	const graph_t& g, const arrangement_t& arr
 ) noexcept

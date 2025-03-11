@@ -45,6 +45,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/chunking/chunk.hpp>
 #include <lal/detail/linarr/chunking/generic.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace detail {
@@ -58,7 +59,7 @@ namespace detail {
  *
  * @tparam arr_t Type of arrangement.
  */
-template <class arrangement_t>
+template <Arrangement arrangement_t>
 class chunks_Macutek : public chunks_generic<arrangement_t> {
 public:
 

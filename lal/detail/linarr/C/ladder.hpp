@@ -85,7 +85,10 @@ namespace ladder {
  * - one unit larger than the upper bound passed as parameter if \f$C>\f$ upper bound.
  * - \f$C\f$ if the number of crossings is less or equal than the upper bound.
  */
-template <bool decide_upper_bound, graphs::Graph graph_t, class arrangement_t>
+template <
+	bool decide_upper_bound,
+	graphs::Graph graph_t,
+	Arrangement arrangement_t>
 [[nodiscard]] uint64_t compute(
 	const graph_t& g,
 	const arrangement_t& arr,
@@ -157,7 +160,7 @@ template <bool decide_upper_bound, graphs::Graph graph_t, class arrangement_t>
  * @param arr Input arrangement.
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement.
  */
-template <graphs::Graph graph_t, class arrangement_t>
+template <graphs::Graph graph_t, Arrangement arrangement_t>
 [[nodiscard]] uint64_t
 n_C_ladder(const graph_t& g, const arrangement_t& arr) noexcept
 {
@@ -247,7 +250,7 @@ template <graphs::Graph graph_t>
  * @returns \f$C_{\pi}(G)\f$ on the input arrangement if it is less than the
  * upper bound. It returns a value one unit larger than the upper bound otherwise.
  */
-template <graphs::Graph graph_t, class arrangement_t>
+template <graphs::Graph graph_t, Arrangement arrangement_t>
 [[nodiscard]] uint64_t is_n_C_ladder_lesseq_than(
 	const graph_t& g, const arrangement_t& arr, const uint64_t upper_bound
 ) noexcept

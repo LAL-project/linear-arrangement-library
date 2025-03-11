@@ -69,10 +69,8 @@ namespace linarr {
 #define nullify(X) cl[enum_to_sizet(X)] = false;
 
 typedef syntactic_dependency_tree_type syndepstr_type;
-typedef detail::arrangement_wrapper<detail::arrangement_type::nonidentity>
-	arr_nonident;
 
-template <class arrangement_t>
+template <detail::Arrangement arrangement_t>
 void __get_yields(
 	const graphs::rooted_tree& t,
 	const arrangement_t& arr,
@@ -162,7 +160,7 @@ uint64_t __get_num_discontinuities(
 	return max_g;
 }
 
-template <class arrangement_t>
+template <detail::Arrangement arrangement_t>
 bool __is_WG1(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
 {
 	const uint64_t n = rT.get_num_nodes();
@@ -183,7 +181,7 @@ bool __is_WG1(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
 
 // The input tree has an "artificial" vertex pointing to the root of the
 // actual (input) tree. This artificial vertex was added to the arrangement.
-template <class arrangement_t>
+template <detail::Arrangement arrangement_t>
 uint64_t
 __is_1EC(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
 {
@@ -280,7 +278,7 @@ __is_1EC(const graphs::rooted_tree& rT, const arrangement_t& arr) noexcept
 	return _1ec;
 }
 
-template <class arrangement_t>
+template <detail::Arrangement arrangement_t>
 std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 	const graphs::rooted_tree& rT, const arrangement_t& arr, const uint64_t C
 ) noexcept
@@ -347,7 +345,7 @@ std::array<bool, __syntactic_dependency_tree_size> __get_syn_dep_tree_type(
 
 	// update the linear arrangement
 	linear_arrangement __arr;
-	if constexpr (std::is_same_v<arrangement_t, arr_nonident>) {
+	if constexpr (detail::is_nonidentity<arrangement_t>) {
 #if defined DEBUG
 		assert(arr.size() > 0);
 #endif

@@ -65,7 +65,7 @@ namespace detail {
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-template <class arrangement_t>
+template <Arrangement arrangement_t>
 [[nodiscard]] bool is_root_covered(
 	const graphs::rooted_tree& rt, const arrangement_t& arr
 ) noexcept
@@ -108,7 +108,7 @@ template <class arrangement_t>
  * @pre The input rooted tree must be a valid rooted tree
  * (see @ref lal::graphs::rooted_tree::is_rooted_tree).
  */
-template <class arrangement_t>
+template <Arrangement arrangement_t>
 [[nodiscard]] bool
 is_projective(const graphs::rooted_tree& rt, const arrangement_t& arr) noexcept
 {
@@ -138,7 +138,7 @@ is_projective(const graphs::rooted_tree& rt, const arrangement_t& arr) noexcept
  * @returns Whether or not the input arrangement is bipartite.
  * @pre Input @e arr is an arrangement of a connected bipartite graph.
  */
-template <class arrangement_t>
+template <Arrangement arrangement_t>
 [[nodiscard]] bool is_bipartite__connected(
 	const properties::bipartite_graph_coloring& c, const arrangement_t& arr
 ) noexcept
@@ -170,7 +170,7 @@ template <class arrangement_t>
  * @param arr Input linear arrangement.
  * @returns Whether or not the input arrangement is bipartite.
  */
-template <graphs::Graph graph_t, class arrangement_t>
+template <graphs::Graph graph_t, Arrangement arrangement_t>
 [[nodiscard]] bool
 is_bipartite(const graph_t& g, const arrangement_t& arr) noexcept
 {

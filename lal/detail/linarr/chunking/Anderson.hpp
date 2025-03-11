@@ -59,7 +59,7 @@ namespace detail {
  *
  * @tparam arr_t Type of arrangement.
  */
-template <class arrangement_t>
+template <Arrangement arrangement_t>
 class chunks_Anderson : public chunks_generic<arrangement_t> {
 public:
 

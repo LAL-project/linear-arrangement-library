@@ -107,12 +107,7 @@ public:
 	/// Returns the size of the arrangement.
 	[[nodiscard]] std::size_t size() const noexcept
 	{
-		if constexpr (type == arrangement_type::identity) {
-			return 0;
-		}
-		else {
-			return m_arr.size();
-		}
+		return m_arr.size();
 	}
 
 private:
@@ -125,6 +120,9 @@ private:
 [[nodiscard]] inline arrangement_wrapper<arrangement_type::identity>
 identity_arr(const linear_arrangement& arr) noexcept
 {
+#if defined DEBUG
+	assert(arr.size() == 0);
+#endif
 	return arrangement_wrapper<arrangement_type::identity>(arr);
 }
 
@@ -134,6 +132,21 @@ nonidentity_arr(const linear_arrangement& arr) noexcept
 {
 	return arrangement_wrapper<arrangement_type::nonidentity>(arr);
 }
+
+/**
+ * @brief A concept for @ref lal::detail::arrangement_wrapper.
+ * @tparam T The type to check.
+ */
+template <typename T>
+concept Arrangement =
+	std::is_same_v<T, arrangement_wrapper<arrangement_type::identity>> or
+	std::is_same_v<T, arrangement_wrapper<arrangement_type::nonidentity>> or
+	std::is_same_v<T, linear_arrangement>;
+
+template <Arrangement arrangement_t>
+constexpr bool is_nonidentity = std::is_same_v<
+	arrangement_t,
+	arrangement_wrapper<arrangement_type::nonidentity>>;
 
 } // namespace detail
 } // namespace lal

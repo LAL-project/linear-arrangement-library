@@ -51,6 +51,7 @@
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/array.hpp>
+#include <lal/detail/arrangement_wrapper.hpp>
 
 namespace lal {
 namespace detail {
@@ -400,7 +401,7 @@ from_head_vector_to_tree(
  * @param arr Linear arrangement of the vertices.
  * @returns A head vector encoding the tree.
  */
-template <class arrangement_t>
+template <Arrangement arrangement_t>
 [[nodiscard]] head_vector from_tree_to_head_vector(
 	const graphs::rooted_tree& t, const arrangement_t& arr
 ) noexcept
@@ -432,7 +433,7 @@ template <class arrangement_t>
  * @param arr Linear arrangement of the vertices.
  * @returns A head vector
  */
-template <class arrangement_t>
+template <detail::Arrangement arrangement_t>
 [[nodiscard]] head_vector from_tree_to_head_vector(
 	const graphs::free_tree& t, const arrangement_t& arr, const node r
 ) noexcept
