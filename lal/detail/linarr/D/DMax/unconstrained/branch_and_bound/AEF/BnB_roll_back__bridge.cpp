@@ -216,8 +216,7 @@ void AEF_BnB::roll_back_LV_bridge_from_lowest_level_0(const node u) noexcept
 	}
 }
 
-void AEF_BnB::roll_back_LV_bridge_from_lowest_level_pm2(const node u
-) noexcept
+void AEF_BnB::roll_back_LV_bridge_from_lowest_level_pm2(const node u) noexcept
 {
 	const auto& path = m_paths_in_tree[m_node_to_path_idx[u]];
 	const node w = path.get_lowest_lexicographic();

@@ -247,9 +247,7 @@ propagation_result AEF_BnB::propagate_LV_bridge_from_hub(
 #endif
 	}
 
-	return propagate_LV_bridge_check_lowest_can_be_predicted(
-		path_idx, origin
-	);
+	return propagate_LV_bridge_check_lowest_can_be_predicted(path_idx, origin);
 }
 
 void AEF_BnB::propagate_LV_bridge_from_lowest_level_0_towards_h2(

@@ -300,11 +300,9 @@ protected:
 	) noexcept;
 
 	/// Propagate level values at a bridge, starting at the second hub.
-	void propagate_LV_bridge_from_hub_h2(const std::size_t path_idx
-	) noexcept;
+	void propagate_LV_bridge_from_hub_h2(const std::size_t path_idx) noexcept;
 	/// Propagate level values at a bridge, starting at the first hub.
-	void propagate_LV_bridge_from_hub_h1(const std::size_t path_idx
-	) noexcept;
+	void propagate_LV_bridge_from_hub_h1(const std::size_t path_idx) noexcept;
 	/// Propagate level values at a bridge, starting at a hub @e h.
 	[[nodiscard]] propagation_result propagate_LV_bridge_from_hub(
 		const node h, const std::size_t path_idx
@@ -343,15 +341,12 @@ protected:
 	void roll_back_LV_antenna(const node u) noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at the second hub.
-	void roll_back_LV_bridge_from_hub_h2(const std::size_t path_idx
-	) noexcept;
+	void roll_back_LV_bridge_from_hub_h2(const std::size_t path_idx) noexcept;
 	/// Undo the propagation of level values at a bridge, starting at the first hub.
-	void roll_back_LV_bridge_from_hub_h1(const std::size_t path_idx
-	) noexcept;
+	void roll_back_LV_bridge_from_hub_h1(const std::size_t path_idx) noexcept;
 	/// Undo the propagation of level values at a bridge.
-	void roll_back_LV_bridge_from_hub(
-		const node h, const std::size_t path_idx
-	) noexcept;
+	void roll_back_LV_bridge_from_hub(const node h, const std::size_t path_idx)
+		noexcept;
 
 	/// Undo the propagation of level values at a bridge, starting at the lowest
 	/// lexicographic of level value \f$0\f$ towards the second hub.

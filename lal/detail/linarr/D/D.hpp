@@ -90,10 +90,7 @@ sum_edge_lengths(const graph_t& g, const arrangement_t& arr) noexcept
  * @param g Input directed graph.
  * @param arr Input linear arrangement.
  */
-template <
-	class result_t,
-	graphs::Graph graph_t,
-	Arrangement arrangement_t>
+template <class result_t, graphs::Graph graph_t, Arrangement arrangement_t>
 [[nodiscard]] result_t
 mean_sum_edge_lengths(const graph_t& g, const arrangement_t& arr) noexcept
 {

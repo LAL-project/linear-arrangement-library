@@ -104,11 +104,12 @@ double predicted_num_crossings(
 #endif
 
 	return (
-		arr.size() == 0
-			? detail::predict_C_using_edge_lengths<double>(g, lal_ident_arr(arr))
-			: detail::predict_C_using_edge_lengths<double>(
-				  g, lal_nonident_arr(arr)
-			  )
+		arr.size() == 0 ? detail::predict_C_using_edge_lengths<double>(
+							  g, lal_ident_arr(arr)
+						  )
+						: detail::predict_C_using_edge_lengths<double>(
+							  g, lal_nonident_arr(arr)
+						  )
 	);
 }
 
@@ -121,11 +122,12 @@ double predicted_num_crossings(
 #endif
 
 	return (
-		arr.size() == 0
-			? detail::predict_C_using_edge_lengths<double>(g, lal_ident_arr(arr))
-			: detail::predict_C_using_edge_lengths<double>(
-				  g, lal_nonident_arr(arr)
-			  )
+		arr.size() == 0 ? detail::predict_C_using_edge_lengths<double>(
+							  g, lal_ident_arr(arr)
+						  )
+						: detail::predict_C_using_edge_lengths<double>(
+							  g, lal_nonident_arr(arr)
+						  )
 	);
 }
 

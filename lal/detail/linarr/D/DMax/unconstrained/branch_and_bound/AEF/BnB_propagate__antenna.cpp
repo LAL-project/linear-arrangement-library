@@ -236,8 +236,7 @@ void AEF_BnB::propagate_LV_antenna_from_internal(const node u) noexcept
 #endif
 }
 
-void AEF_BnB::propagate_LV_antenna_from_hub(const node h, const node u)
-	noexcept
+void AEF_BnB::propagate_LV_antenna_from_hub(const node h, const node u) noexcept
 {
 #if defined LAL_DEBUG_DMax_Unc_BnB
 	std::cout << tab() << "Found a trigger hub for an antenna h= " << h << '\n';

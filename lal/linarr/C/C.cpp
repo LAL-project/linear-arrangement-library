@@ -69,7 +69,9 @@ uint64_t num_crossings(
 		case algorithms_C::brute_force:
 			return detail::crossings::n_C_brute_force(g, lal_ident_arr(arr));
 		case algorithms_C::dynamic_programming:
-			return detail::crossings::n_C_dynamic_programming(g, lal_ident_arr(arr));
+			return detail::crossings::n_C_dynamic_programming(
+				g, lal_ident_arr(arr)
+			);
 		case algorithms_C::ladder:
 			return detail::crossings::n_C_ladder(g, lal_ident_arr(arr));
 		case algorithms_C::stack_based:
