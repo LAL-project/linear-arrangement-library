@@ -606,9 +606,9 @@ inline void merge_arrangements(
 #endif
 	assert(linarr::is_arrangement(t, arr));
 	// sum of edge lengths prior to adjustments
-	const uint64_t _D1 = linarr::sum_edge_lengths(t, arr);
+	const uint64_t _sum_lengths_1 = linarr::sum_edge_lengths(t, arr);
 #if defined LAL_DEBUG_DMax_1_thistle
-	std::cout << "        _D1= " << _D1 << '\n';
+	std::cout << "        _sum_lengths_1= " << _sum_lengths_1 << '\n';
 #endif
 #endif
 
@@ -631,11 +631,11 @@ inline void merge_arrangements(
 	print_arrangement("After sorting all sequences of equal level value", arr);
 #endif
 	assert(linarr::is_arrangement(t, arr));
-	const uint64_t _D2 = linarr::sum_edge_lengths(t, arr);
+	const uint64_t _sum_lengths_2 = linarr::sum_edge_lengths(t, arr);
 #if defined LAL_DEBUG_DMax_1_thistle
-	std::cout << "        _D2= " << _D2 << '\n';
+	std::cout << "        _sum_lengths_2= " << _sum_lengths_2 << '\n';
 #endif
-	assert(_D2 == _D1);
+	assert(_sum_lengths_2 == _sum_lengths_1);
 #endif
 
 	adjust_nonneighbors_of_thistle_smart(
@@ -662,7 +662,7 @@ inline void merge_arrangements(
 #if defined LAL_DEBUG_DMax_1_thistle
 	std::cout << "        D= " << D << '\n';
 #endif
-	assert(D >= _D2);
+	assert(D >= _sum_lengths_2);
 #endif
 
 	if constexpr (make_arrangement) {

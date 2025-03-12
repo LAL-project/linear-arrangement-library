@@ -92,23 +92,23 @@ int AEF_BnB::process_end(const uint64_t D, const position pos) noexcept
 
 	{
 		uint64_t sum_cuts = 0;
-		uint64_t _D = 0;
+		uint64_t _sum_lengthgs = 0;
 		uint64_t current_cut = 0;
 		for (position_t i = 0ull; i < m_n_nodes; ++i) {
 			current_cut += m_node_right_degree[m_arr[i]];
 			current_cut -= m_node_left_degree[m_arr[i]];
-			_D += current_cut;
+			_sum_lengthgs += current_cut;
 			assert(m_cut_values[*i] == current_cut);
 			sum_cuts += m_cut_values[*i];
 		}
 
 #if defined LAL_DEBUG_DMax_Unc_BnB
-		std::cout << tab() << "sum by cuts= " << _D << '\n'
+		std::cout << tab() << "sum by cuts= " << _sum_lengthgs << '\n'
 				  << tab() << "D_current=   " << D << '\n';
 #endif
 
-		assert(_D == sum_cuts);
-		assert(_D == D);
+		assert(_sum_lengthgs == sum_cuts);
+		assert(_sum_lengthgs == D);
 	}
 #endif
 

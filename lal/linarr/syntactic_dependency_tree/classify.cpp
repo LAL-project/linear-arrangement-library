@@ -374,7 +374,7 @@ std::array<bool, _syntactic_dependency_tree_size> get_syn_dep_tree_type(
 		// calculate the number of crossings taking into account
 		// the edge from the artificial root to the root of the
 		// original tree
-		uint64_t _C = C;
+		uint64_t _crossings = C;
 		{
 			const node only_child = _rT.get_out_neighbors(0)[0];
 			const position poc = arr_wrapper[node_t{only_child}];
@@ -385,16 +385,16 @@ std::array<bool, _syntactic_dependency_tree_size> get_syn_dep_tree_type(
 				const position pu = arr_wrapper[u];
 				const position pv = arr_wrapper[v];
 				if (pu < pv) {
-					_C += 0 < pu and pu < poc and poc < pv;
+					_crossings += 0 < pu and pu < poc and poc < pv;
 				}
 				else {
-					_C += 0 < pv and pv < poc and poc < pu;
+					_crossings += 0 < pv and pv < poc and poc < pu;
 				}
 			}
 		}
 
 		// remove 1-ec from the types when needed
-		if (_C > 0 and not is_1EC(_rT, arr_wrapper)) {
+		if (_crossings > 0 and not is_1EC(_rT, arr_wrapper)) {
 			nullify(syndepstr_type::EC1);
 		}
 

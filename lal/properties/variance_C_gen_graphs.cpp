@@ -63,16 +63,16 @@
 		std::size_t _i = 0;                                                    \
 		std::size_t _j = 0;                                                    \
 		while (_i < Ni.size() and _j < Nj.size()) {                            \
-			const auto _Ni_i = Ni[_i];                                         \
-			const auto _Nj_j = Nj[_j];                                         \
-			if (_Ni_i == _Nj_j) {                                              \
+			const auto _neighs_i = Ni[_i];                                     \
+			const auto _neighs_j = Nj[_j];                                     \
+			if (_neighs_i == _neighs_j) {                                      \
 				JOB();                                                         \
 				++_i;                                                          \
 				++_j;                                                          \
 			}                                                                  \
 			else {                                                             \
-				_i += (_Ni_i < _Nj_j);                                         \
-				_j += (_Ni_i > _Nj_j);                                         \
+				_i += (_neighs_i < _neighs_j);                                 \
+				_j += (_neighs_i > _neighs_j);                                 \
 			}                                                                  \
 		}                                                                      \
 	}
