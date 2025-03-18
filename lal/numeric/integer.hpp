@@ -547,7 +547,7 @@ public:
 				mpz_neg(m_val, m_val);
 			}
 			else {
-				mpz_tdiv_q_ui(m_val, m_val, i);
+				mpz_tdiv_q_ui(m_val, m_val, static_cast<uint64_t>(i));
 			}
 		}
 		return *this;
