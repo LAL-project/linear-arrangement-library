@@ -62,7 +62,7 @@ class formatted_output {
 public:
 
 	/// The string that is written at the beginning of every line.
-	std::string tabulator_string;
+	std::string_view tabulator_string;
 	/// Returns the only instance of this class.
 	static formatted_output& get_instance() noexcept
 	{
@@ -108,7 +108,7 @@ operator<< (std::ostream& os, const undirected_graph& g) noexcept
 			os << '\n';
 		}
 	}
-	f.tabulator_string.resize(0);
+	f.tabulator_string = "";
 	return os;
 }
 
@@ -145,7 +145,7 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 			os << '\n';
 		}
 	}
-	f.tabulator_string.resize(0);
+	f.tabulator_string = "";
 	return os;
 }
 
@@ -186,7 +186,7 @@ operator<< (std::ostream& os, const rooted_tree& g) noexcept
 			os << '\n';
 		}
 	}
-	f.tabulator_string.resize(0);
+	f.tabulator_string = "";
 	return os;
 }
 
@@ -212,9 +212,13 @@ std::cout << "|   "_tab << g << '\n';
 struct tabulator {
 	/// The string that will become the tabulator string.
 	const std::string_view tabulator_string;
-	tabulator(const std::string_view str) noexcept
+	tabulator() noexcept = default;
+	explicit tabulator(std::string_view&& str) noexcept
 		: tabulator_string(str)
 	{ }
+	tabulator(const tabulator&) noexcept = default;
+	tabulator(tabulator&&) noexcept = default;
+	~tabulator() = default;
 };
 
 /**
@@ -227,8 +231,7 @@ struct tabulator {
  */
 inline std::ostream& operator<< (std::ostream& os, const tabulator& t) noexcept
 {
-	formatted_output& ti = formatted_output::get_instance();
-	ti.tabulator_string = std::string(t.tabulator_string);
+	formatted_output::get_instance().tabulator_string = t.tabulator_string;
 	return os;
 }
 
@@ -250,5 +253,5 @@ std::cout << "|   "_tab << g << '\n';
 [[nodiscard]] inline lal::graphs::tabulator
 operator""_tab (const char *str, const std::size_t s) noexcept
 {
-	return lal::graphs::tabulator{std::string_view{str, s}};
+	return lal::graphs::tabulator(std::string_view{str, s});
 }
