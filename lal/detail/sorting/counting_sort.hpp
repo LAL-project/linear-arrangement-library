@@ -123,11 +123,10 @@ struct memory {
  * and \cite Cormen2001a.
  *
  * @tparam value_t Iterated type
- * @tparam sort_type One of @ref lal::detail::sorting::sort_type::non_increasing
- * or @ref lal::detail::sorting::sort_type::non_decreasing.
+ * @tparam type One value from @ref lal::detail::sorting::sort_type.
  * @tparam memory_has_frequencies The memory passed as parameter already conatins
  * the frequencies for the counting sort algorithm. See code for more details.
- * @tparam value_iterator_t Iterator type. Can be inferred.
+ * @tparam iterator_t Iterator type. Can be inferred.
  * @tparam Callable The type of the function passed as parameter. Can be inferred.
  *
  * Function paremeters:
@@ -218,9 +217,8 @@ void counting_sort(
  * https://en.wikipedia.org/wiki/Counting_sort
  *
  * @tparam value_t Type of the values sorted.
- * @tparam sort_type One of @ref lal::detail::sorting::sort_type::non_increasing or
- * @ref lal::detail::sorting::sort_type::non_decreasing.
- * @tparam value_iterator_t Iterator over type 'value_t' type. Can be inferred.
+ * @tparam type One value from @ref lal::detail::sorting::sort_type.
+ * @tparam iterator_t Iterator over type 'value_t' type. Can be inferred.
  * @tparam Callable The type of the function passed as parameter. Can be inferred.
  *
  * @param begin Iterator at the beginning of the range.
