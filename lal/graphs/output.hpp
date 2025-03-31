@@ -212,12 +212,17 @@ std::cout << "|   "_tab << g << '\n';
 struct tabulator {
 	/// The string that will become the tabulator string.
 	const std::string_view tabulator_string;
+	/// Default constructor
 	tabulator() noexcept = default;
+	/// Move contructor
 	explicit tabulator(std::string_view&& str) noexcept
-		: tabulator_string(str)
+		: tabulator_string(std::move(str))
 	{ }
+	/// Default copy contructor
 	tabulator(const tabulator&) noexcept = default;
+	/// Default move contructor
 	tabulator(tabulator&&) noexcept = default;
+	/// Default destructor
 	~tabulator() = default;
 };
 
