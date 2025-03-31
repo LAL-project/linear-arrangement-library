@@ -53,6 +53,8 @@ namespace lal {
 namespace detail {
 namespace sorting {
 
+namespace bitsort {
+
 /**
  * @brief Sorts the elements within range [@e begin, @e end)
  * @tparam T The type of the values ot be sorted.
@@ -98,6 +100,8 @@ void bit_sort(
 	}
 }
 
+} // namespace bitsort
+
 /**
  * @brief Sort integer values increasingly.
  * @tparam T The type of the values ot be sorted.
@@ -132,7 +136,7 @@ void bit_sort_mem(
 		return;
 	}
 
-	bit_sort(begin, end, value_t{0}, seen);
+	bitsort::bit_sort(begin, end, value_t{0}, seen);
 }
 
 /**
@@ -171,7 +175,7 @@ void bit_sort(
 	// bit array
 	array<char> seen(M - m + 1, 0);
 
-	bit_sort(begin, end, m, seen.begin());
+	bitsort::bit_sort(begin, end, m, seen.begin());
 }
 
 } // namespace sorting
