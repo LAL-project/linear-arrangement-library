@@ -57,22 +57,19 @@ namespace sorting {
 template <typename iterator_t>
 void insertion_sort(const iterator_t begin, const iterator_t end) noexcept
 {
-	// TODO: do not std::swap elements in order to avoid copies
-	// and improve efficiency
+	typedef typename std::iterator_traits<iterator_t>::value_type T;
+
 	if (begin == end) {
 		return;
 	}
 	for (iterator_t i = begin + 1; i != end; ++i) {
-		iterator_t nj = i;
+		T&& x = std::move(*i);
 		iterator_t j = i - 1;
-		while (*j > *nj and j != begin) {
-			std::swap(*j, *nj);
+		while (*j > x and j != begin) {
+			*(j + 1) = std::move(*j);
 			--j;
-			--nj;
 		}
-		if (*j > *nj) {
-			std::swap(*j, *nj);
-		}
+		*(j + 1) = std::move(x);
 	}
 }
 
