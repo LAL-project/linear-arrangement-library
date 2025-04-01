@@ -54,12 +54,12 @@ namespace lal {
 /// Major version number of the library's current state. The year and month in which it was released.
 static const std::string __lal_major_verno = "24.10";
 /// Patch version number of the library's current state. Patch number.
-static const std::string __lal_patch_verno = "00";
+static const std::string __lal_patch_verno = "01";
 #else
 /// Major version number of the library's current state. The year and month in which it was released.
 static constexpr std::string_view __lal_major_verno = "24.10";
 /// Patch version number of the library's current state.
-static constexpr std::string_view __lal_patch_verno = "00";
+static constexpr std::string_view __lal_patch_verno = "01";
 #endif
 
 };
