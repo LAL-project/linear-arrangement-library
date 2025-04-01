@@ -76,7 +76,7 @@ And, please, also cite the Zenodo repository that corresponds to version 24.10.
 			year = 2024,
 			publisher = {Zenodo},
 			version = {v24.10},
-			doi = {10.5281/zenodo.13867226}
+			doi = {10.5281/zenodo.15120903}
 		}
 
 ## Documentation
