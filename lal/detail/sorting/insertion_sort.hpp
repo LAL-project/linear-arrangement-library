@@ -69,7 +69,9 @@ void insertion_sort(const iterator_t begin, const iterator_t end) noexcept
 			*(j + 1) = std::move(*j);
 			--j;
 		}
-		*(j + 1) = std::move(x);
+		if (j == begin) {
+			*j = std::move(x);
+		}
 	}
 }
 
