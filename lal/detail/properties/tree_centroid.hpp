@@ -243,7 +243,7 @@ find_centroidal_vertex(const tree_t& t, const node x) noexcept
 		const node u = queue.pop();
 
 		if (weight[u] >= ndiv2) {
-			if (c1 >= size_cc_x) {
+			if (c1 >= n + 1) {
 				// if the user requested just one centroidal vertex,
 				// stop now, there is no need to go on.
 				if constexpr (is_m1(mode)) {
