@@ -55,7 +55,7 @@ namespace lal {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 
 /// Total number of entries in the bibliography.
-static constexpr std::size_t num_bib_entries = 50;
+static constexpr std::size_t num_bib_entries = 52;
 
 /// A type-safe list of bibliographic entries.
 enum class bib_entries {
@@ -97,6 +97,8 @@ enum class bib_entries {
 	Nurse2018a,
 	/// Entry \cite Esteban2017a.
 	Esteban2017a,
+	/// Entry \cite Ferrer2017a.
+	Ferrer2017a,
 	/// Entry \cite Kahane2017a.
 	Kahane2017a,
 	/// Entry \cite Futrell2015a.
@@ -111,6 +113,8 @@ enum class bib_entries {
 	Gomez2011a,
 	/// Entry \cite Liu2010a.
 	Liu2010a,
+	/// Entry \cite Verbitsky2008a.
+	Verbitsky2008a,
 	/// Entry \cite Gildea2007a.
 	Gildea2007a,
 	/// Entry \cite Ferrer2004a.

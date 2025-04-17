@@ -312,6 +312,18 @@ static constexpr std::string_view Esteban2017a =
 	"    url = {https://arxiv.org/abs/1511.01061}\n"
 	"}";
 
+/// String for reference \cite Ferrer2017a.
+static constexpr std::string_view Ferrer2017a =
+	"@article{Ferrer2017a,\n"
+	"    title = {{Random Crossings in Dependency Trees}},\n"
+	"    author = {{Ferrer-i-Cancho}, Ramon},\n"
+	"    year = {2017},\n"
+	"    journal = {Glottometrics},\n"
+	"    volume = {37},\n"
+	"    pages = {1-12},\n"
+	"    issn = {2625-8226}\n"
+	"}";
+
 /// String for reference \cite Kahane2017a.
 static constexpr std::string_view Kahane2017a =
 	"@inproceedings{Kahane2017a,\n"
@@ -398,6 +410,19 @@ static constexpr std::string_view Liu2010a =
 	"    volume = {120},\n"
 	"    number = {6},  \n"
 	"    pages = {1567-1578}\n"
+	"}";
+
+/// String for reference \cite Verbitsky2008a.
+static constexpr std::string_view Verbitsky2008a =
+	"@article{Verbitsky2008a,\n"
+	"    title = {{On the obfuscation complexity of planar graphs}},\n"
+	"    author = {Verbitsky, Oleg},\n"
+	"    journal = {Theoretical Computer Science},\n"
+	"    volume = {396},\n"
+	"    number = {1},\n"
+	"    pages = {294-300},\n"
+	"    year = {2008},\n"
+	"    doi = {10.1016/j.tcs.2008.02.032}\n"
 	"}";
 
 /// String for reference \cite Gildea2007a.
@@ -714,6 +739,7 @@ static constexpr std::array<std::string_view, num_bib_entries> list_of_reference
 		Ferrer2018a,
 		Nurse2018a,
 		Esteban2017a,
+		Ferrer2017a,
 		Kahane2017a,
 		Futrell2015a,
 		Jing2015a,
@@ -721,6 +747,7 @@ static constexpr std::array<std::string_view, num_bib_entries> list_of_reference
 		Pitler2013a,
 		Gomez2011a,
 		Liu2010a,
+		Verbitsky2008a,
 		Gildea2007a,
 		Ferrer2004a,
 		Hochberg2003a,
