@@ -46,6 +46,9 @@
 #include <tuple>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
 #include <lal/numeric/integer.hpp>
@@ -130,6 +133,10 @@ public:
 	 */
 	void init(const uint64_t n, const uint64_t seed = 0) noexcept
 	{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+		register_bib_entry(bib_entries::Nijenhuis1978a);
+#endif
+
 		// setup memory
 		m_n = n;
 		m_head_vector.resize(m_n);

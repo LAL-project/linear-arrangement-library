@@ -60,6 +60,8 @@ namespace properties {
  * \f$\mathbb{E}[C]\f$.
  *
  * Returns \f$\mathbb{E}[C]\f$ as a rational value.
+ *
+ * This implements the formula in \cite Verbitsky2008a and \cite Ferrer2017a.
  * @param g The input graph.
  * @returns The expected value of the number of crossings as a rational value.
  */

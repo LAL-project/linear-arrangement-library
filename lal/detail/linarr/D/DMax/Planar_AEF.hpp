@@ -55,6 +55,9 @@
 #include <queue>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/linarr/D/DMax/utils.hpp>
 #include <lal/detail/linarr/D/Dopt_utils.hpp>
@@ -385,6 +388,10 @@ template <bool make_arrangement>
 	uint64_t>
 AEF(const graphs::free_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2024a);
+#endif
+
 	const uint64_t n = t.get_num_nodes();
 
 	// in case the tree is caterpillar and the arrangement is

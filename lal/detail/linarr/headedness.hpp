@@ -47,6 +47,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/numeric/rational.hpp>
@@ -57,7 +60,9 @@ namespace lal {
 namespace detail {
 
 /**
- * @brief Number of right branching edges in a directed graph
+ * @brief Number of right branching edges in a directed graph.
+ *
+ * See details in \cite Liu2010a.
  * @tparam arrangement_t Type of arrangement.
  * @param g Input directed graph.
  * @param arr Input linear arrangement.
@@ -67,6 +72,10 @@ template <Arrangement arrangement_t>
 	const graphs::directed_graph& g, const arrangement_t& arr
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Liu2010a);
+#endif
+
 	uint64_t edges_to_right = 0;
 	for (iterators::E_iterator e_it(g); not e_it.end(); e_it.next()) {
 		const auto [u, v] = e_it.get_edge_t();
@@ -76,7 +85,9 @@ template <Arrangement arrangement_t>
 }
 
 /**
- * @brief Proposition of right branching edges in a directed graph
+ * @brief Proposition of right branching edges in a directed graph.
+ *
+ * See details in \cite Liu2010a.
  * @tparam result_t Type of return value.
  * @tparam arrangement_t Type of arrangement.
  * @param g Input directed graph.
@@ -86,6 +97,10 @@ template <typename result_t, Arrangement arrangement_t>
 [[nodiscard]] result_t
 head_initial(const graphs::directed_graph& g, const arrangement_t& arr) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Liu2010a);
+#endif
+
 	static_assert(std::is_same_v<result_t, numeric::rational> or std::is_same_v<result_t, double>);
 
 #if defined DEBUG

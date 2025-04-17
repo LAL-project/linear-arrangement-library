@@ -45,6 +45,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/detail/graphs/traversal.hpp>
@@ -56,6 +59,10 @@ namespace properties {
 
 uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Jing2015a);
+#endif
+
 	const uint64_t n = t.get_num_nodes();
 
 #if defined DEBUG
@@ -81,6 +88,10 @@ uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept
 template <typename result>
 result MHD(const graphs::rooted_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Jing2015a);
+#endif
+
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 	assert(t.get_num_nodes() > 1);

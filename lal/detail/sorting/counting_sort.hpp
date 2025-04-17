@@ -46,6 +46,9 @@
 #include <numeric>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/detail/array.hpp>
 #include <lal/detail/type_traits/is_pointer_iterator.hpp>
 #include <lal/detail/sorting/sorting_types.hpp>
@@ -156,6 +159,10 @@ void counting_sort(
 	countingsort::memory<value_t>& mem
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Cormen2001a);
+#endif
+
 	// ensure the 'key' function is correct
 	static_assert(std::is_constructible_v<
 				  std::function<std::size_t(const value_t&)>,

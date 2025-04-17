@@ -47,6 +47,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/basic_types.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/graphs/rooted_tree.hpp>
@@ -143,6 +146,8 @@ void expand_branchless_path(
 
 /**
  * @brief Finds all branchless paths in a tree.
+ *
+ * The definition of branchless path used is the one in \cite Alemany2023a.
  * @tparam tree_t Type of tree.
  * @param t Input tree.
  * @returns The list of all branchless paths.
@@ -151,6 +156,10 @@ template <graphs::Tree tree_t>
 [[nodiscard]] std::vector<properties::branchless_path>
 branchless_paths_compute(const tree_t& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2023a);
+#endif
+
 	const uint64_t n = t.get_num_nodes();
 
 	// result of the function (to be returned)

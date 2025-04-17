@@ -45,6 +45,9 @@
 #include <optional>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/free_tree.hpp>
 #include <lal/iterators/E_iterator.hpp>
 #include <lal/detail/arrangement_wrapper.hpp>
@@ -181,6 +184,10 @@ template <class depflux, Arrangement arrangement_t>
 	const graphs::free_tree& t, const arrangement_t& arr
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Kahane2017a);
+#endif
+
 	const uint64_t n = t.get_num_nodes();
 	if (n == 1) {
 		return {};

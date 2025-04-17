@@ -47,6 +47,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
@@ -594,6 +597,10 @@ moment_out_degree(const graphs::directed_graph& g, const uint64_t p) noexcept
 [[nodiscard]] inline numeric::rational
 hubiness_rational(const graphs::free_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2018a);
+#endif
+
 	const uint64_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
@@ -632,6 +639,10 @@ hubiness_rational(const graphs::free_tree& t) noexcept
 [[nodiscard]] inline numeric::rational
 hubiness_rational(const graphs::rooted_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2018a);
+#endif
+
 	const uint64_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
@@ -659,6 +670,10 @@ hubiness_rational(const graphs::rooted_tree& t) noexcept
  */
 [[nodiscard]] inline double hubiness(const graphs::free_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2018a);
+#endif
+
 	const uint64_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear
@@ -688,6 +703,10 @@ hubiness_rational(const graphs::rooted_tree& t) noexcept
  */
 [[nodiscard]] inline double hubiness(const graphs::rooted_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2018a);
+#endif
+
 	const uint64_t n = t.get_num_nodes();
 
 	// for n <= 3, <k^2>_star = <k^2>_linear

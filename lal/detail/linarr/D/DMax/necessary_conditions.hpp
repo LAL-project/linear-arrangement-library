@@ -42,6 +42,9 @@
 #pragma once
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/detail/linarr/level_signature.hpp>
 
 namespace lal {
@@ -72,6 +75,11 @@ template <graphs::Graph graph_t, level_signature_type t>
 	const linear_arrangement& arr
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Nurse2018a);
+	register_bib_entry(bib_entries::Nurse2019a);
+#endif
+
 	const auto n = g.get_num_nodes();
 	if constexpr (t == level_signature_type::per_position) {
 		for (position_t p = 0ull; p < n - 1ull; ++p) {
@@ -115,6 +123,11 @@ template <graphs::Graph graph_t, level_signature_type t>
 	const linear_arrangement& arr
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Nurse2018a);
+	register_bib_entry(bib_entries::Nurse2019a);
+#endif
+
 	if constexpr (t == level_signature_type::per_position) {
 		for (iterators::E_iterator it(g); not it.end(); it.next()) {
 			const auto [u, v] = it.yield_edge_t();
@@ -161,6 +174,10 @@ template <graphs::Graph graph_t, level_signature_type t>
 	const linear_arrangement& arr
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Nurse2018a);
+	register_bib_entry(bib_entries::Nurse2019a);
+#endif
 
 	for (const properties::branchless_path& bp : bps) {
 		if (not bp.is_antenna(g)) {
@@ -207,6 +224,9 @@ template <graphs::Graph graph_t, level_signature_type t>
 	const linear_arrangement& arr
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2023a);
+#endif
 
 	for (const properties::branchless_path& bp : bps) {
 		if (bp.is_antenna(g)) {

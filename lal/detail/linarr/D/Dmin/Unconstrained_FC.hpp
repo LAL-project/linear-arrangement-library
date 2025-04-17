@@ -47,6 +47,10 @@
 #include <limits>
 #include <vector>
 
+// lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/linear_arrangement.hpp>
 #include <lal/detail/pairs_utils.hpp>
 #include <lal/detail/graphs/traversal.hpp>
@@ -721,6 +725,10 @@ template <bool make_arrangement>
 	uint64_t>
 FanChung_2(const graphs::free_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Chung1984a);
+#endif
+
 #if defined DEBUG
 	assert(t.is_tree());
 #endif

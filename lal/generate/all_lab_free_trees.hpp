@@ -42,6 +42,9 @@
 #pragma once
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/basic_types.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
@@ -144,6 +147,10 @@ public:
 	 */
 	void init(const uint64_t n) noexcept
 	{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+		register_bib_entry(bib_entries::Pruefer1918a);
+#endif
+
 		_tree_generator::init(n);
 		m_Prufer_seq.resize(m_n <= 2 ? 1 : m_n - 2, 0);
 		m_sm.resize(m_n <= 2 ? 1 : m_n - 2, 0);

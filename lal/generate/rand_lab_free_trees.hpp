@@ -45,6 +45,9 @@
 #include <random>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/basic_types.hpp>
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
@@ -118,6 +121,10 @@ public:
 	 */
 	void init(const uint64_t n, const uint64_t seed = 0) noexcept
 	{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+		register_bib_entry(bib_entries::Pruefer1918a);
+#endif
+
 		m_n = n;
 		m_Prufer_seq.resize(m_n <= 2 ? 2 : m_n - 2);
 

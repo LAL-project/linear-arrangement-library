@@ -48,6 +48,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/detail/properties/tree_centre.hpp>
 #include <lal/detail/array.hpp>
 #include <lal/detail/utilities/tree_isomorphism.hpp>
@@ -247,6 +250,10 @@ bool are_trees_isomorphic(
 	const graphs::free_tree& t1, const graphs::free_tree& t2
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Aho1974a);
+#endif
+
 	const auto discard = detail::fast_non_iso(t1, t2);
 	if (discard == 0) {
 		return true;

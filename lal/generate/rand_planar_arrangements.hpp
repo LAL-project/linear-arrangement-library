@@ -45,6 +45,9 @@
 #include <random>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/array.hpp>
@@ -60,6 +63,8 @@ namespace generate {
  * is, the arrangements are select from the can be seen as arrangements of
  * labelled trees. Therefore, this class will select u.a.r. one of the \f$n!\f$
  * arrangements for a star tree of \f$n\f$ vertices.
+ *
+ * This implements the algorithm in \cite Alemany2022c.
  *
  * See @ref LAL_concepts__linear_arrangement__types for the definition of
  * planar arrangements.

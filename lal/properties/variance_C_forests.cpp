@@ -40,6 +40,9 @@
  ********************************************************************/
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
@@ -142,6 +145,11 @@ inline void compute_data_forest(
 numeric::rational
 var_num_crossings_forest_rational(const graphs::undirected_graph& g) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2020a);
+	register_bib_entry(bib_entries::Alemany2020b);
+#endif
+
 	const uint64_t n = g.get_num_nodes();
 	const uint64_t m = g.get_num_edges();
 

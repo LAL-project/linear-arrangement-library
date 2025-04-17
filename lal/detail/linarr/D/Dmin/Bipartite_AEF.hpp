@@ -46,6 +46,9 @@
 #include <cstdint>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/detail/properties/bipartite_graph_colorability.hpp>
@@ -77,6 +80,10 @@ template <bool make_arrangement, graphs::Graph graph_t>
 	uint64_t>
 AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2024b);
+#endif
+
 	return bipartite_opt_utils::optimal_bipartite_arrangement_AEF<
 		make_arrangement,
 		sorting::sort_type::non_increasing>(g, c);

@@ -47,6 +47,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/numeric/rational.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/free_tree.hpp>
@@ -74,6 +77,11 @@ namespace properties {
 [[nodiscard]] inline numeric::rational
 exp_sum_edge_lengths_rational(const graphs::undirected_graph& g) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2004a);
+	register_bib_entry(bib_entries::Ferrer2019a);
+#endif
+
 	return numeric::rational((g.get_num_nodes() + 1) * g.get_num_edges(), 3);
 }
 
@@ -104,9 +112,15 @@ exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept
 [[nodiscard]] inline numeric::rational
 exp_sum_edge_lengths_rational(const graphs::free_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2004a);
+	register_bib_entry(bib_entries::Ferrer2019a);
+#endif
+
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
+
 	const uint64_t n = t.get_num_nodes();
 	return numeric::rational(n * n - 1, 3);
 }
@@ -125,6 +139,7 @@ exp_sum_edge_lengths_rational(const graphs::free_tree& t) noexcept
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
+
 	return exp_sum_edge_lengths_rational(t).to_double();
 }
 
@@ -141,9 +156,15 @@ exp_sum_edge_lengths_rational(const graphs::free_tree& t) noexcept
 [[nodiscard]] inline numeric::rational
 exp_sum_edge_lengths_rational(const graphs::rooted_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2004a);
+	register_bib_entry(bib_entries::Ferrer2019a);
+#endif
+
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
+
 	const uint64_t n = t.get_num_nodes();
 	return numeric::rational(n * n - 1, 3);
 }
@@ -162,6 +183,7 @@ exp_sum_edge_lengths_rational(const graphs::rooted_tree& t) noexcept
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
+
 	return exp_sum_edge_lengths_rational(t).to_double();
 }
 
@@ -185,6 +207,10 @@ exp_sum_edge_lengths_rational(const graphs::rooted_tree& t) noexcept
 exp_sum_edge_lengths_bipartite_rational(const graphs::undirected_graph& g
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2024b);
+#endif
+
 	return numeric::rational(g.get_num_nodes() * g.get_num_edges(), 2);
 }
 

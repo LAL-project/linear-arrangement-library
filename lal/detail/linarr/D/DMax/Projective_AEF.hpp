@@ -55,6 +55,9 @@
 #include <vector>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/linarr/D/DMax/utils.hpp>
 #include <lal/detail/linarr/D/Dopt_utils.hpp>
@@ -84,6 +87,10 @@ template <bool make_arrangement>
 	uint64_t>
 AEF(const graphs::rooted_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2024a);
+#endif
+
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif

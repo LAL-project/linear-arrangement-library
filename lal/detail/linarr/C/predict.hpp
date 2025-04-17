@@ -47,6 +47,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
@@ -185,6 +188,11 @@ template <typename result_t, graphs::Graph graph_t, Arrangement arrangement_t>
 	const graph_t& g, const arrangement_t& arr
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2014a);
+	register_bib_entry(bib_entries::Alemany2019a);
+#endif
+
 	result_t Ec2(0);
 	const uint64_t n = g.get_num_nodes();
 	const int64_t nn = to_int64(n);

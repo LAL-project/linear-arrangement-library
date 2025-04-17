@@ -40,6 +40,9 @@
  ********************************************************************/
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/properties/Q.hpp>
 #include <lal/properties/C_rla.hpp>
 #include <lal/properties/D_rla.hpp>
@@ -88,6 +91,10 @@ inline numeric::rational exp_sum_edge_lengths(const graphs::rooted_tree& t
 numeric::rational
 exp_sum_edge_lengths_projective_rational(const graphs::rooted_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2022b);
+#endif
+
 #if defined DEBUG
 	assert(t.is_rooted_tree());
 #endif
@@ -105,6 +112,10 @@ exp_sum_edge_lengths_projective_rational(const graphs::rooted_tree& t) noexcept
 numeric::rational
 exp_sum_edge_lengths_planar_rational(const graphs::free_tree& T) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2022c);
+#endif
+
 	const uint64_t n = T.get_num_nodes();
 
 	std::vector<detail::edge_size> edge_size(2 * (n - 1));
@@ -134,6 +145,10 @@ exp_sum_edge_lengths_planar_rational(const graphs::free_tree& T) noexcept
 numeric::rational
 var_sum_edge_lengths_rational(const graphs::undirected_graph& g) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Ferrer2019a);
+#endif
+
 	// E_rla[D]
 	const numeric::rational Ed = exp_sum_edge_lengths_rational(g);
 	// E_rla[D^2]

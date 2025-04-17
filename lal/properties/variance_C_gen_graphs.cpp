@@ -45,6 +45,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/numeric/rational.hpp>
 #include <lal/iterators/E_iterator.hpp>
@@ -495,6 +498,11 @@ numeric::rational var_num_crossings_rational(
 	const graphs::undirected_graph& g, const bool reuse
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2020a);
+	register_bib_entry(bib_entries::Alemany2020b);
+#endif
+
 	const uint64_t m = g.get_num_edges();
 
 	return var_num_crossings_rational(

@@ -42,6 +42,9 @@
 #pragma once
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/tree_generator.hpp>
 #include <lal/detail/array.hpp>
@@ -145,6 +148,10 @@ public:
 	 */
 	void init(const uint64_t n) noexcept
 	{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+		register_bib_entry(bib_entries::Beyer1980a);
+#endif
+
 		_tree_generator::init(n);
 		// resize the memory
 		m_save.resize(m_n + 1);

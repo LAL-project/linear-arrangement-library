@@ -61,6 +61,9 @@
 #endif
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/tree.hpp>
 #include <lal/graphs/free_tree.hpp>
@@ -821,6 +824,10 @@ AEF(const graphs::free_tree& t,
 	const std::vector<properties::branchless_path>& all_paths,
 	const array<std::size_t>& node_to_path) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2023a);
+#endif
+
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
@@ -971,10 +978,6 @@ AEF(const graphs::free_tree& t,
 
 #undef lal_level_position_
 #undef lal_level_vertex_
-
-#if defined LAL_DEBUG_DMax_1_thistle
-#undef LAL_DEBUG_DMax_1_thistle
-#endif
 
 } // namespace thistle_1
 } // namespace DMax

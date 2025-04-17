@@ -47,6 +47,9 @@
 #include <vector>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/detail/arrangement_wrapper.hpp>
 #include <lal/detail/graphs/utils.hpp>
 #include <lal/detail/array.hpp>
@@ -97,6 +100,10 @@ template <
 	const uint64_t upper_bound
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2019a);
+#endif
+
 	const uint64_t n = g.get_num_nodes();
 
 	/* compute number of crossings */

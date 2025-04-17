@@ -45,7 +45,10 @@
  *
  ********************************************************************/
 
-// DMax includes
+// lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB.hpp>
 
 namespace lal {
@@ -83,7 +86,11 @@ AEF_BnB::AEF_BnB(
 	  // orbits
 	  m_orbits(orbits),
 	  m_node_to_orbit(vertex_to_orbit)
-{ }
+{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2023a);
+#endif
+}
 
 void AEF_BnB::initialize(
 	const std::pair<uint64_t, linear_arrangement>& initial_DMax

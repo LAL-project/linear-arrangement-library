@@ -52,6 +52,9 @@
 #include <vector>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/free_tree.hpp>
 #include <lal/detail/linarr/D/Dmin/utils.hpp>
 #include <lal/detail/linarr/D/Dopt_utils.hpp>
@@ -86,6 +89,11 @@ template <bool make_arrangement>
 	uint64_t>
 HS(const graphs::free_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2022a);
+	register_bib_entry(bib_entries::Hochberg2003a);
+#endif
+
 #if defined DEBUG
 	assert(t.is_tree());
 #endif

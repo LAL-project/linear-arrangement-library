@@ -59,9 +59,14 @@ rand_projective_arrangements::rand_projective_arrangements(
 	: m_rT(rT),
 	  m_rdata(m_rT.get_num_nodes())
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2019a);
+#endif
+
 #if defined DEBUG
 	assert(m_rT.is_rooted_tree());
 #endif
+
 	if (seed == 0) {
 		std::random_device rd;
 		m_gen = std::mt19937(rd());

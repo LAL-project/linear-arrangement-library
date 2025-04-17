@@ -40,6 +40,9 @@
  ********************************************************************/
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/properties/Q.hpp>
 #include <lal/numeric/rational.hpp>
 
@@ -52,6 +55,11 @@ namespace properties {
 numeric::rational exp_num_crossings_rational(const graphs::undirected_graph& g
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Verbitsky2008a);
+	register_bib_entry(bib_entries::Ferrer2017a);
+#endif
+
 	return numeric::rational(num_pairs_independent_edges_integer(g), 3);
 }
 

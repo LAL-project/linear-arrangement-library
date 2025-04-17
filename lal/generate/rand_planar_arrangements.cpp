@@ -61,9 +61,14 @@ rand_planar_arrangements::rand_planar_arrangements(
 	  m_rdata(m_T.get_num_nodes()),
 	  m_previous_root(m_T.get_num_nodes() + 1)
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2022a);
+#endif
+
 #if defined DEBUG
 	assert(m_T.is_tree());
 #endif
+
 	if (seed == 0) {
 		std::random_device rd;
 		m_gen = std::mt19937(rd());
@@ -86,9 +91,14 @@ rand_planar_arrangements::rand_planar_arrangements(
 	  m_rdata(m_T.get_num_nodes()),
 	  m_previous_root(m_T.get_num_nodes() + 1)
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2022a);
+#endif
+
 #if defined DEBUG
 	assert(m_T.is_tree());
 #endif
+
 	if (seed == 0) {
 		std::random_device rd;
 		m_gen = std::mt19937(rd());

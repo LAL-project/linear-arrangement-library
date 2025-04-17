@@ -45,6 +45,9 @@
 #include <algorithm>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/array.hpp>
@@ -222,6 +225,10 @@ inline void assign_name_and_keep(
 	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Aho1974a);
+#endif
+
 	const auto discard = fast_non_iso(t1, t2);
 	if (discard == 0) {
 		return true;

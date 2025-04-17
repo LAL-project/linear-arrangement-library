@@ -46,6 +46,9 @@
 #include <sstream>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/basic_types.hpp>
 #include <lal/linear_arrangement.hpp>
 #include <lal/graphs/free_tree.hpp>
@@ -464,6 +467,7 @@ template <detail::Arrangement arrangement_t>
 		   |------------| > (n-1) two's
 	@endverbatim
  *
+ * The concept of level sequence is defined in \cite Wright1981a.
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
@@ -483,6 +487,10 @@ template <graphs::Tree tree_t>
 	const bool check
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Wright1986a);
+#endif
+
 #if defined DEBUG
 	// a little sanity check
 	assert(L[0] == 0);
@@ -546,6 +554,7 @@ template <graphs::Tree tree_t>
 		   |------------| > (n-1) two's
 	@endverbatim
  *
+ * The concept of level sequence is defined in \cite Wright1981a.
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
@@ -565,6 +574,10 @@ template <graphs::Tree tree_t>
 	const bool check
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Wright1986a);
+#endif
+
 #if defined DEBUG
 	// a little sanity check
 	assert(L[0] == 0);
@@ -652,6 +665,7 @@ template <graphs::Tree tree_t>
 			|------------| > (n-1) two's
 	@endverbatim
  *
+ * The concept of level sequence is defined in \cite Wright1981a.
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
@@ -756,6 +770,10 @@ template <graphs::Tree tree_t>
 	const bool check
 ) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Pruefer1918a);
+#endif
+
 	// initialisation
 	const uint64_t L = n - 2;
 	array<uint64_t> degree(n, 1);

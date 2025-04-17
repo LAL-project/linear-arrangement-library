@@ -47,6 +47,9 @@
 #include <map>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/free_tree.hpp>
 #include <lal/generate/rand_ulab_rooted_trees.hpp>
 #include <lal/generate/tree_generator.hpp>
@@ -139,6 +142,12 @@ public:
 	 */
 	void init(const uint64_t n, const uint64_t seed = 0) noexcept
 	{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+		register_bib_entry(bib_entries::Wilf1981a);
+		register_bib_entry(bib_entries::Otter1948a);
+		register_bib_entry(bib_entries::GiacXcas_Manual);
+#endif
+
 		_rand_ulab_rooted_trees::init(n, seed);
 		// force the addition of the necessary values for m_fn and m_rn
 		std::ignore = get_fn(n);

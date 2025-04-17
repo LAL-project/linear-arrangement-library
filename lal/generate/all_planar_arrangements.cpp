@@ -48,6 +48,9 @@
 #include <algorithm>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/detail/generate/make_arrangement.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/sorting/bit_sort.hpp>
@@ -61,6 +64,10 @@ all_planar_arrangements::all_planar_arrangements(const graphs::free_tree& T
 	  m_intervals(m_T.get_num_nodes()),
 	  m_memory_bit_sort(T.get_num_nodes(), 0)
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Alemany2022c);
+#endif
+
 #if defined DEBUG
 	assert(m_T.is_tree());
 #endif

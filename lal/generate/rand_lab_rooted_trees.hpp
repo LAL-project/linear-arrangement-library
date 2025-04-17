@@ -45,6 +45,9 @@
 #include <random>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/generate/rand_lab_free_trees.hpp>
 
@@ -117,6 +120,10 @@ public:
 	 */
 	void init(const uint64_t n, const uint64_t seed = 0) noexcept
 	{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+		register_bib_entry(bib_entries::Pruefer1918a);
+#endif
+
 		_rand_lab_free_trees::init(n, seed);
 	}
 

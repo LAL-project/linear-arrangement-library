@@ -42,6 +42,9 @@
 #pragma once
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/linarr/chunking/chunk.hpp>
 #include <lal/detail/linarr/chunking/generic.hpp>
@@ -71,7 +74,12 @@ public:
 	chunks_Anderson(const graphs::rooted_tree& rt, const arrangement_t& arr)
 		noexcept
 		: generic(rt, arr)
-	{ }
+	{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+		register_bib_entry(bib_entries::Anderson2019a);
+		register_bib_entry(bib_entries::Anderson2021a);
+#endif
+	}
 
 	/**
 	 * @brief Main method of this class

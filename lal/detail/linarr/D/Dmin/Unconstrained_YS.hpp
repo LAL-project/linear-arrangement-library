@@ -44,6 +44,10 @@
 #endif
 #include <vector>
 
+// lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/linear_arrangement.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/graphs/size_subtrees.hpp>
@@ -406,6 +410,11 @@ template <bool make_arrangement>
 	uint64_t>
 YossiShiloach(const graphs::free_tree& t) noexcept
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	register_bib_entry(bib_entries::Shiloach1979a);
+	register_bib_entry(bib_entries::Esteban2017a);
+#endif
+
 #if defined DEBUG
 	assert(t.is_tree());
 #endif
