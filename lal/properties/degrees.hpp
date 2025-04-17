@@ -594,8 +594,8 @@ moment_out_degree(const graphs::directed_graph& g, const uint64_t p) noexcept
  * @pre The tree @e t is a valid tree. Method graphs::free_tree::is_tree returns true.
  * @pre \f$n > 3\f$.
  */
-[[nodiscard]] inline numeric::rational
-hubiness_rational(const graphs::free_tree& t) noexcept;
+[[nodiscard]] numeric::rational hubiness_rational(const graphs::free_tree& t
+) noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -616,8 +616,8 @@ hubiness_rational(const graphs::free_tree& t) noexcept;
  * returns true.
  * @pre \f$n > 3\f$.
  */
-[[nodiscard]] inline numeric::rational
-hubiness_rational(const graphs::rooted_tree& t) noexcept;
+[[nodiscard]] numeric::rational hubiness_rational(const graphs::rooted_tree& t
+) noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as a floating point value.
