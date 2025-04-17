@@ -52,6 +52,8 @@
 
 namespace lal {
 
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+
 /// Total number of entries in the bibliography.
 static constexpr std::size_t num_bib_entries = 50;
 
@@ -158,5 +160,7 @@ enum class bib_entries {
 	/// Entry \cite GiacXcas_Manual.
 	GiacXcas_Manual,
 };
+
+#endif
 
 } // namespace lal

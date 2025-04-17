@@ -55,6 +55,8 @@
 
 namespace lal {
 
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+
 /// The list of bibliographic entries. Activated or not.
 static std::array<bool, num_bib_entries> m_entry_used = []()
 {
@@ -94,5 +96,7 @@ inline void register_bib_entry(const bib_entries& entry) noexcept
 		set_entry(entry);
 	}
 }
+
+#endif
 
 } // namespace lal

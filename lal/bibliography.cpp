@@ -54,6 +54,8 @@
 
 namespace lal {
 
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+
 void print() noexcept
 {
 	for (std::size_t i = 0; i < num_bib_entries; ++i) {
@@ -62,5 +64,7 @@ void print() noexcept
 		}
 	}
 }
+
+#endif
 
 } // namespace lal

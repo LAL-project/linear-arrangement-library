@@ -57,6 +57,8 @@
 namespace lal {
 namespace detail {
 
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+
 // clang-format off
 
 /// String for reference \cite Alemany2024b.
@@ -747,6 +749,8 @@ static constexpr std::array<std::string_view, num_bib_entries> list_of_reference
 }();
 
 // clang-format on
+
+#endif
 
 } // namespace detail
 } // namespace lal
