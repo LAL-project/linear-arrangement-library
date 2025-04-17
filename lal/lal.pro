@@ -84,6 +84,8 @@ INCLUDEPATH += ..
 # lal/detail/linarr/D/DMax/1_eq_thistle_AEF.hpp
 #DEFINES += LAL_DEBUG_DMax_1_thistle
 
+DEFINES += LAL_REGISTER_BIBLIOGRAPHY
+
 # -------------
 # PROJECT FILES
 DISTFILES += \
