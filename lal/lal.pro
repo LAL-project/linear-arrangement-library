@@ -343,6 +343,7 @@ SOURCES += \
 	properties/bipartite_graph_colorability.cpp \
 	properties/branchless_paths_compute.cpp \
 	properties/connected_components_compute.cpp \
+	properties/degrees.cpp \
 	properties/hierarchical_distance.cpp \
 	properties/maximum_spanning_trees.cpp \
 	properties/tree_centre.cpp \

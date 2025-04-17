@@ -595,27 +595,7 @@ moment_out_degree(const graphs::directed_graph& g, const uint64_t p) noexcept
  * @pre \f$n > 3\f$.
  */
 [[nodiscard]] inline numeric::rational
-hubiness_rational(const graphs::free_tree& t) noexcept
-{
-#if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2018a);
-#endif
-
-	const uint64_t n = t.get_num_nodes();
-
-	// for n <= 3, <k^2>_star = <k^2>_linear
-	// which means that hubiness is not defined:
-	// division by 0.
-#if defined DEBUG
-	assert(t.is_tree());
-	assert(n > 3);
-#endif
-
-	const numeric::rational k2_tree = moment_degree_rational(t, 2);
-	const numeric::rational k2_linear = numeric::rational(4 * n - 6, n);
-	const numeric::rational k2_star = numeric::rational(n - 1);
-	return (k2_tree - k2_linear) / (k2_star - k2_linear);
-}
+hubiness_rational(const graphs::free_tree& t) noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -637,27 +617,7 @@ hubiness_rational(const graphs::free_tree& t) noexcept
  * @pre \f$n > 3\f$.
  */
 [[nodiscard]] inline numeric::rational
-hubiness_rational(const graphs::rooted_tree& t) noexcept
-{
-#if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2018a);
-#endif
-
-	const uint64_t n = t.get_num_nodes();
-
-	// for n <= 3, <k^2>_star = <k^2>_linear
-	// which means that hubiness is not defined:
-	// division by 0.
-#if defined DEBUG
-	assert(t.is_rooted_tree());
-	assert(n > 3);
-#endif
-
-	const numeric::rational k2_tree = moment_degree_rational(t, 2);
-	const numeric::rational k2_linear = numeric::rational(4 * n - 6, n);
-	const numeric::rational k2_star = numeric::rational(n - 1);
-	return (k2_tree - k2_linear) / (k2_star - k2_linear);
-}
+hubiness_rational(const graphs::rooted_tree& t) noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as a floating point value.
@@ -668,28 +628,7 @@ hubiness_rational(const graphs::rooted_tree& t) noexcept
  * @pre The tree @e t is a valid tree. Method graphs::free_tree::is_tree returns true.
  * @pre \f$n > 3\f$.
  */
-[[nodiscard]] inline double hubiness(const graphs::free_tree& t) noexcept
-{
-#if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2018a);
-#endif
-
-	const uint64_t n = t.get_num_nodes();
-
-	// for n <= 3, <k^2>_star = <k^2>_linear
-	// which means that hubiness is not defined:
-	// division by 0.
-#if defined DEBUG
-	assert(t.is_tree());
-	assert(n > 3);
-#endif
-
-	const double k2_tree = moment_degree(t, 2);
-	const double k2_linear =
-		static_cast<double>(4 * n - 6) / static_cast<double>(n);
-	const double k2_star = static_cast<double>(n - 1);
-	return (k2_tree - k2_linear) / (k2_star - k2_linear);
-}
+[[nodiscard]] double hubiness(const graphs::free_tree& t) noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as a floating point value.
@@ -701,28 +640,7 @@ hubiness_rational(const graphs::rooted_tree& t) noexcept
  * returns true.
  * @pre \f$n > 3\f$.
  */
-[[nodiscard]] inline double hubiness(const graphs::rooted_tree& t) noexcept
-{
-#if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2018a);
-#endif
-
-	const uint64_t n = t.get_num_nodes();
-
-	// for n <= 3, <k^2>_star = <k^2>_linear
-	// which means that hubiness is not defined:
-	// division by 0.
-#if defined DEBUG
-	assert(t.is_rooted_tree());
-	assert(n > 3);
-#endif
-
-	const double k2_tree = moment_degree(t, 2);
-	const double k2_linear =
-		static_cast<double>(4 * n - 6) / static_cast<double>(n);
-	const double k2_star = static_cast<double>(n - 1);
-	return (k2_tree - k2_linear) / (k2_star - k2_linear);
-}
+[[nodiscard]] double hubiness(const graphs::rooted_tree& t) noexcept;
 
 } // namespace properties
 } // namespace lal
