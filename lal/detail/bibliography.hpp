@@ -48,8 +48,10 @@
 #pragma once
 
 // C++ includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
 #include <string_view>
 #include <array>
+#endif
 
 // lal includes
 #include <lal/bibliography.hpp>

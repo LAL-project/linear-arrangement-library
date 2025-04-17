@@ -48,7 +48,9 @@
 #pragma once
 
 // C++ includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
 #include <cstddef>
+#endif
 
 namespace lal {
 
