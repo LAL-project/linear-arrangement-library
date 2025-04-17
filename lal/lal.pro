@@ -91,9 +91,12 @@ DISTFILES += \
 
 HEADERS += \
 	basic_types.hpp \
+	bibliography.hpp \
+	bibliography_entries.hpp \
 	detail/arrangement_wrapper.hpp \
 	detail/array.hpp \
 	detail/avl.hpp \
+	detail/bibliography.hpp \
 	detail/generate/make_arrangement.hpp \
 	detail/linarr/C/brute_force.hpp \
 	detail/linarr/C/crossings.hpp \
@@ -277,6 +280,7 @@ HEADERS += \
 	lal_version.hpp
 
 SOURCES += \
+	bibliography.cpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_constraints.cpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_execution.cpp \
 	detail/linarr/D/DMax/unconstrained/branch_and_bound/AEF/BnB_execution_independent_set.cpp \
