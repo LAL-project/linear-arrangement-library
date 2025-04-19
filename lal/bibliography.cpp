@@ -46,7 +46,9 @@
  ********************************************************************/
 
 // C++ includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
 #include <iostream>
+#endif
 
 // lal includes
 #include <lal/bibliography.hpp>
