@@ -81,7 +81,7 @@ template <bool make_arrangement, graphs::Graph graph_t>
 AEF(const graph_t& g, const properties::bipartite_graph_coloring& c) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2024b);
+	bibliography::register_entry(bibliography::entries::Alemany2024b);
 #endif
 
 	return bipartite_opt_utils::optimal_bipartite_arrangement_AEF<

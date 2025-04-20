@@ -825,7 +825,7 @@ AEF(const graphs::free_tree& t,
 	const array<std::size_t>& node_to_path) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2023a);
+	bibliography::register_entry(bibliography::entries::Alemany2023a);
 #endif
 
 #if defined DEBUG

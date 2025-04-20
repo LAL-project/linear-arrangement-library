@@ -160,7 +160,7 @@ void counting_sort(
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Cormen2001a);
+	bibliography::register_entry(bibliography::entries::Cormen2001a);
 #endif
 
 	// ensure the 'key' function is correct

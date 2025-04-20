@@ -65,7 +65,7 @@ all_planar_arrangements::all_planar_arrangements(const graphs::free_tree& T
 	  m_memory_bit_sort(T.get_num_nodes(), 0)
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2022c);
+	bibliography::register_entry(bibliography::entries::Alemany2022c);
 #endif
 
 #if defined DEBUG

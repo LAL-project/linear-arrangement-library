@@ -146,8 +146,8 @@ numeric::rational
 var_num_crossings_forest_rational(const graphs::undirected_graph& g) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2020a);
-	register_bib_entry(bib_entries::Alemany2020b);
+	bibliography::register_entry(bibliography::entries::Alemany2020a);
+	bibliography::register_entry(bibliography::entries::Alemany2020b);
 #endif
 
 	const uint64_t n = g.get_num_nodes();

@@ -76,7 +76,7 @@ public:
 		: generic(rt, arr)
 	{
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-		register_bib_entry(bib_entries::Macutek2021a);
+		bibliography::register_entry(bibliography::entries::Macutek2021a);
 #endif
 	}
 

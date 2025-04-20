@@ -76,8 +76,8 @@ public:
 		: generic(rt, arr)
 	{
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-		register_bib_entry(bib_entries::Anderson2019a);
-		register_bib_entry(bib_entries::Anderson2021a);
+		bibliography::register_entry(bibliography::entries::Anderson2019a);
+		bibliography::register_entry(bibliography::entries::Anderson2021a);
 #endif
 	}
 

@@ -67,9 +67,9 @@ all_projective_arrangements::all_projective_arrangements(
 	  m_intervals(m_rT.get_num_nodes())
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Futrell2015a);
-	register_bib_entry(bib_entries::Gildea2007a);
-	register_bib_entry(bib_entries::Alemany2022c);
+	bibliography::register_entry(bibliography::entries::Futrell2015a);
+	bibliography::register_entry(bibliography::entries::Gildea2007a);
+	bibliography::register_entry(bibliography::entries::Alemany2022c);
 #endif
 
 #if defined DEBUG

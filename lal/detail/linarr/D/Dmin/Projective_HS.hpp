@@ -89,8 +89,8 @@ template <bool make_arrangement>
 HS(const graphs::rooted_tree& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Hochberg2003a);
-	register_bib_entry(bib_entries::Alemany2022a);
+	bibliography::register_entry(bibliography::entries::Hochberg2003a);
+	bibliography::register_entry(bibliography::entries::Alemany2022a);
 #endif
 
 #if defined DEBUG

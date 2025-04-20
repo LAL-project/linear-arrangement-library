@@ -62,7 +62,7 @@ rand_planar_arrangements::rand_planar_arrangements(
 	  m_previous_root(m_T.get_num_nodes() + 1)
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2022a);
+	bibliography::register_entry(bibliography::entries::Alemany2022a);
 #endif
 
 #if defined DEBUG
@@ -92,7 +92,7 @@ rand_planar_arrangements::rand_planar_arrangements(
 	  m_previous_root(m_T.get_num_nodes() + 1)
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2022a);
+	bibliography::register_entry(bibliography::entries::Alemany2022a);
 #endif
 
 #if defined DEBUG

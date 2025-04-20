@@ -73,7 +73,7 @@ template <Arrangement arrangement_t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Liu2010a);
+	bibliography::register_entry(bibliography::entries::Liu2010a);
 #endif
 
 	uint64_t edges_to_right = 0;
@@ -98,7 +98,7 @@ template <typename result_t, Arrangement arrangement_t>
 head_initial(const graphs::directed_graph& g, const arrangement_t& arr) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Liu2010a);
+	bibliography::register_entry(bibliography::entries::Liu2010a);
 #endif
 
 	static_assert(std::is_same_v<result_t, numeric::rational> or std::is_same_v<result_t, double>);

@@ -76,8 +76,8 @@ template <graphs::Graph graph_t, level_signature_type t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Nurse2018a);
-	register_bib_entry(bib_entries::Nurse2019a);
+	bibliography::register_entry(bibliography::entries::Nurse2018a);
+	bibliography::register_entry(bibliography::entries::Nurse2019a);
 #endif
 
 	const auto n = g.get_num_nodes();
@@ -124,8 +124,8 @@ template <graphs::Graph graph_t, level_signature_type t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Nurse2018a);
-	register_bib_entry(bib_entries::Nurse2019a);
+	bibliography::register_entry(bibliography::entries::Nurse2018a);
+	bibliography::register_entry(bibliography::entries::Nurse2019a);
 #endif
 
 	if constexpr (t == level_signature_type::per_position) {
@@ -175,8 +175,8 @@ template <graphs::Graph graph_t, level_signature_type t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Nurse2018a);
-	register_bib_entry(bib_entries::Nurse2019a);
+	bibliography::register_entry(bibliography::entries::Nurse2018a);
+	bibliography::register_entry(bibliography::entries::Nurse2019a);
 #endif
 
 	for (const properties::branchless_path& bp : bps) {
@@ -225,7 +225,7 @@ template <graphs::Graph graph_t, level_signature_type t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2023a);
+	bibliography::register_entry(bibliography::entries::Alemany2023a);
 #endif
 
 	for (const properties::branchless_path& bp : bps) {

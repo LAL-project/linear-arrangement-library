@@ -92,7 +92,7 @@ numeric::rational
 exp_sum_edge_lengths_projective_rational(const graphs::rooted_tree& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2022b);
+	bibliography::register_entry(bibliography::entries::Alemany2022b);
 #endif
 
 #if defined DEBUG
@@ -113,7 +113,7 @@ numeric::rational
 exp_sum_edge_lengths_planar_rational(const graphs::free_tree& T) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2022c);
+	bibliography::register_entry(bibliography::entries::Alemany2022c);
 #endif
 
 	const uint64_t n = T.get_num_nodes();
@@ -146,7 +146,7 @@ numeric::rational
 var_sum_edge_lengths_rational(const graphs::undirected_graph& g) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2019a);
+	bibliography::register_entry(bibliography::entries::Ferrer2019a);
 #endif
 
 	// E_rla[D]

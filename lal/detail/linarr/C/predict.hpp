@@ -189,8 +189,8 @@ template <typename result_t, graphs::Graph graph_t, Arrangement arrangement_t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2014a);
-	register_bib_entry(bib_entries::Alemany2019a);
+	bibliography::register_entry(bibliography::entries::Ferrer2014a);
+	bibliography::register_entry(bibliography::entries::Alemany2019a);
 #endif
 
 	result_t Ec2(0);

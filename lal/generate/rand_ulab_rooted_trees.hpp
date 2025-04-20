@@ -134,7 +134,7 @@ public:
 	void init(const uint64_t n, const uint64_t seed = 0) noexcept
 	{
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-		register_bib_entry(bib_entries::Nijenhuis1978a);
+		bibliography::register_entry(bibliography::entries::Nijenhuis1978a);
 #endif
 
 		// setup memory

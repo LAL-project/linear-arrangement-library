@@ -226,7 +226,7 @@ inline void assign_name_and_keep(
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Aho1974a);
+	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
 
 	const auto discard = fast_non_iso(t1, t2);

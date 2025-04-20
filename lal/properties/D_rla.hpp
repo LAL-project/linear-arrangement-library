@@ -78,8 +78,8 @@ namespace properties {
 exp_sum_edge_lengths_rational(const graphs::undirected_graph& g) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2004a);
-	register_bib_entry(bib_entries::Ferrer2019a);
+	bibliography::register_entry(bibliography::entries::Ferrer2004a);
+	bibliography::register_entry(bibliography::entries::Ferrer2019a);
 #endif
 
 	return numeric::rational((g.get_num_nodes() + 1) * g.get_num_edges(), 3);
@@ -113,8 +113,8 @@ exp_sum_edge_lengths(const graphs::undirected_graph& g) noexcept
 exp_sum_edge_lengths_rational(const graphs::free_tree& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2004a);
-	register_bib_entry(bib_entries::Ferrer2019a);
+	bibliography::register_entry(bibliography::entries::Ferrer2004a);
+	bibliography::register_entry(bibliography::entries::Ferrer2019a);
 #endif
 
 #if defined DEBUG
@@ -157,8 +157,8 @@ exp_sum_edge_lengths_rational(const graphs::free_tree& t) noexcept
 exp_sum_edge_lengths_rational(const graphs::rooted_tree& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2004a);
-	register_bib_entry(bib_entries::Ferrer2019a);
+	bibliography::register_entry(bibliography::entries::Ferrer2004a);
+	bibliography::register_entry(bibliography::entries::Ferrer2019a);
 #endif
 
 #if defined DEBUG
@@ -208,7 +208,7 @@ exp_sum_edge_lengths_bipartite_rational(const graphs::undirected_graph& g
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2024b);
+	bibliography::register_entry(bibliography::entries::Alemany2024b);
 #endif
 
 	return numeric::rational(g.get_num_nodes() * g.get_num_edges(), 2);

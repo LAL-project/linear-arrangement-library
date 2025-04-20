@@ -54,7 +54,7 @@ template <graphs::Tree tree_t>
 numeric::rational hubiness_general_rational(const tree_t& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2018a);
+	bibliography::register_entry(bibliography::entries::Ferrer2018a);
 #endif
 
 	const uint64_t n = t.get_num_nodes();
@@ -87,7 +87,7 @@ template <graphs::Tree tree_t>
 double hubiness_general(const tree_t& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Ferrer2018a);
+	bibliography::register_entry(bibliography::entries::Ferrer2018a);
 #endif
 
 	const uint64_t n = t.get_num_nodes();

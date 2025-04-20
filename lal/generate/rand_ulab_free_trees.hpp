@@ -143,9 +143,9 @@ public:
 	void init(const uint64_t n, const uint64_t seed = 0) noexcept
 	{
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-		register_bib_entry(bib_entries::Wilf1981a);
-		register_bib_entry(bib_entries::Otter1948a);
-		register_bib_entry(bib_entries::GiacXcas_Manual);
+		bibliography::register_entry(bibliography::entries::Wilf1981a);
+		bibliography::register_entry(bibliography::entries::Otter1948a);
+		bibliography::register_entry(bibliography::entries::GiacXcas_Manual);
 #endif
 
 		_rand_ulab_rooted_trees::init(n, seed);

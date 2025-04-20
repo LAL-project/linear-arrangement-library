@@ -185,7 +185,7 @@ template <class depflux, Arrangement arrangement_t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Kahane2017a);
+	bibliography::register_entry(bibliography::entries::Kahane2017a);
 #endif
 
 	const uint64_t n = t.get_num_nodes();

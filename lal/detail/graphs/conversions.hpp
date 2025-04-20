@@ -488,7 +488,7 @@ template <graphs::Tree tree_t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Wright1986a);
+	bibliography::register_entry(bibliography::entries::Wright1986a);
 #endif
 
 #if defined DEBUG
@@ -575,7 +575,7 @@ template <graphs::Tree tree_t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Wright1986a);
+	bibliography::register_entry(bibliography::entries::Wright1986a);
 #endif
 
 #if defined DEBUG
@@ -771,7 +771,7 @@ template <graphs::Tree tree_t>
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Pruefer1918a);
+	bibliography::register_entry(bibliography::entries::Pruefer1918a);
 #endif
 
 	// initialisation

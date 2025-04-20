@@ -88,7 +88,7 @@ AEF_BnB::AEF_BnB(
 	  m_node_to_orbit(vertex_to_orbit)
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2023a);
+	bibliography::register_entry(bibliography::entries::Alemany2023a);
 #endif
 }
 

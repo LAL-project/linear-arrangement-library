@@ -251,7 +251,7 @@ bool are_trees_isomorphic(
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Aho1974a);
+	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
 
 	const auto discard = detail::fast_non_iso(t1, t2);

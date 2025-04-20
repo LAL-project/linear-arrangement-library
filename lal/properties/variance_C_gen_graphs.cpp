@@ -499,8 +499,8 @@ numeric::rational var_num_crossings_rational(
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2020a);
-	register_bib_entry(bib_entries::Alemany2020b);
+	bibliography::register_entry(bibliography::entries::Alemany2020a);
+	bibliography::register_entry(bibliography::entries::Alemany2020b);
 #endif
 
 	const uint64_t m = g.get_num_edges();

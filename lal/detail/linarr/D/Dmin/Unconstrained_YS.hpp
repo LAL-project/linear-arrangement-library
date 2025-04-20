@@ -411,8 +411,8 @@ template <bool make_arrangement>
 YossiShiloach(const graphs::free_tree& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Shiloach1979a);
-	register_bib_entry(bib_entries::Esteban2017a);
+	bibliography::register_entry(bibliography::entries::Shiloach1979a);
+	bibliography::register_entry(bibliography::entries::Esteban2017a);
 #endif
 
 #if defined DEBUG

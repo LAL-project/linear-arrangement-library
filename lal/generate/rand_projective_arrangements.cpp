@@ -60,7 +60,7 @@ rand_projective_arrangements::rand_projective_arrangements(
 	  m_rdata(m_rT.get_num_nodes())
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2019a);
+	bibliography::register_entry(bibliography::entries::Alemany2019a);
 #endif
 
 #if defined DEBUG

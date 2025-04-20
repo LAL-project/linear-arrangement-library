@@ -157,7 +157,7 @@ template <graphs::Tree tree_t>
 branchless_paths_compute(const tree_t& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2023a);
+	bibliography::register_entry(bibliography::entries::Alemany2023a);
 #endif
 
 	const uint64_t n = t.get_num_nodes();

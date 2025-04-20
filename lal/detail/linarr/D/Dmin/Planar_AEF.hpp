@@ -86,7 +86,7 @@ template <bool make_arrangement>
 AEF(const graphs::free_tree& t) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-	register_bib_entry(bib_entries::Alemany2022a);
+	bibliography::register_entry(bibliography::entries::Alemany2022a);
 #endif
 
 #if defined DEBUG

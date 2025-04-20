@@ -122,7 +122,7 @@ public:
 	void init(const uint64_t n, const uint64_t seed = 0) noexcept
 	{
 #if defined LAL_REGISTER_BIBLIOGRAPHY
-		register_bib_entry(bib_entries::Pruefer1918a);
+		bibliography::register_entry(bibliography::entries::Pruefer1918a);
 #endif
 
 		m_n = n;
