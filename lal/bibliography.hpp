@@ -85,4 +85,21 @@ inline void register_bib_entry(const bib_entries& entry) noexcept
 
 #endif
 
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+
+/// Prints the bibliographic entries set to used.
+void print() noexcept;
+
+#else
+
+/**
+ * @brief Prints the bibliographic entries set to used.
+ *
+ * This function is not implemented if the library was not compiled with the
+ * symbol 'LAL_REGISTER_BIBLIOGRAPHY'.
+ */
+inline void print() noexcept { }
+
+#endif
+
 } // namespace lal
