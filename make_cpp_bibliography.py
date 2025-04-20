@@ -1,7 +1,10 @@
 license_header = ''
 with open('lal/license_header', 'r') as f:
+	i = 0
 	for line in f:
-		license_header += line
+		i += 1
+		if not (33 <= i and i <= 45):
+			license_header += line
 
 bibliography_bib = open('doxyconfig/bibliography.bib', 'r')
 bibliography_hpp_detail = open('lal/detail/bibliography.hpp', 'w')
@@ -74,7 +77,7 @@ for line in bibliography_bib:
 		entry = ''
 
 num_entries = len(all_entry_names)
-type_string = f'std::array<std::string_view, num_bib_entries>'
+type_string = f'std::array<std::string_view, bibliography::num_entries>'
 
 bibliography_hpp_detail.write(f'/// All bibliographic entries as an array.\n')
 bibliography_hpp_detail.write(f'static constexpr {type_string} list_of_references = []()\n')
@@ -103,15 +106,16 @@ bibliography_entries_hpp.write('#include <cstddef>\n')
 bibliography_entries_hpp.write('#endif\n')
 bibliography_entries_hpp.write('\n')
 bibliography_entries_hpp.write('namespace lal {\n')
+bibliography_entries_hpp.write('namespace bibliography {\n')
 bibliography_entries_hpp.write('\n')
 bibliography_entries_hpp.write('#if defined LAL_REGISTER_BIBLIOGRAPHY\n')
 bibliography_entries_hpp.write('\n')
 bibliography_entries_hpp.write(f'/// Total number of entries in the bibliography.\n')
-bibliography_entries_hpp.write(f'static constexpr std::size_t num_bib_entries = {num_entries};\n')
+bibliography_entries_hpp.write(f'static constexpr std::size_t num_entries = {num_entries};\n')
 bibliography_entries_hpp.write('\n')
 
 bibliography_entries_hpp.write('/// A type-safe list of bibliographic entries.\n')
-bibliography_entries_hpp.write('enum class bib_entries {\n')
+bibliography_entries_hpp.write('enum class entries {\n')
 for entry_name in all_entry_names:
 	bibliography_entries_hpp.write(f'\t/// Entry \\cite {entry_name}.\n')
 	bibliography_entries_hpp.write(f'\t{entry_name},\n')
@@ -120,4 +124,5 @@ bibliography_entries_hpp.write('\n')
 bibliography_entries_hpp.write('#endif\n')
 bibliography_entries_hpp.write('\n')
 
+bibliography_entries_hpp.write('} // namespace bibliography\n')
 bibliography_entries_hpp.write('} // namespace lal\n')

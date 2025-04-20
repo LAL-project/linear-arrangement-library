@@ -40,14 +40,15 @@
 #endif
 
 namespace lal {
+namespace bibliography {
 
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 
 /// Total number of entries in the bibliography.
-static constexpr std::size_t num_bib_entries = 52;
+static constexpr std::size_t num_entries = 52;
 
 /// A type-safe list of bibliographic entries.
-enum class bib_entries {
+enum class entries {
 	/// Entry \cite Alemany2024b.
 	Alemany2024b,
 	/// Entry \cite Alemany2024a.
@@ -156,4 +157,5 @@ enum class bib_entries {
 
 #endif
 
+} // namespace bibliography
 } // namespace lal

@@ -706,9 +706,9 @@ static constexpr std::string_view GiacXcas_Manual =
 	"}";
 
 /// All bibliographic entries as an array.
-static constexpr std::array<std::string_view, num_bib_entries> list_of_references = []()
+static constexpr std::array<std::string_view, bibliography::num_entries> list_of_references = []()
 {
-	return std::array<std::string_view, num_bib_entries>{
+	return std::array<std::string_view, bibliography::num_entries>{
 		Alemany2024b,
 		Alemany2024a,
 		Alemany2023a,

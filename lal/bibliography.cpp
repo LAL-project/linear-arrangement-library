@@ -30,19 +30,6 @@
  *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *         Webpage: https://cqllab.upc.edu/people/lalemany/
  *
- *     Juan Luis Esteban (esteban@cs.upc.edu)
- *         LOGPROG: Logics and Programming Research Group
- *         Office 110, Omega building
- *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *         Webpage: https://www.cs.upc.edu/~esteban/
- *
- *     Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
- *         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
- *         CQL (Complexity and Quantitative Linguistics Lab)
- *         Office 220, Omega building
- *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
- *
  ********************************************************************/
 
 // C++ includes
@@ -55,12 +42,13 @@
 #include <lal/detail/bibliography.hpp>
 
 namespace lal {
+namespace bibliography {
 
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 
 void print() noexcept
 {
-	for (std::size_t i = 0; i < num_bib_entries; ++i) {
+	for (std::size_t i = 0; i < num_entries; ++i) {
 		if (m_entry_used[i]) {
 			std::cout << detail::list_of_references[i] << '\n';
 		}
@@ -69,4 +57,5 @@ void print() noexcept
 
 #endif
 
+} // namespace bibliography
 } // namespace lal
