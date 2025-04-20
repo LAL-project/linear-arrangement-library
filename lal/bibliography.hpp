@@ -30,19 +30,6 @@
  *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *         Webpage: https://cqllab.upc.edu/people/lalemany/
  *
- *     Juan Luis Esteban (esteban@cs.upc.edu)
- *         LOGPROG: Logics and Programming Research Group
- *         Office 110, Omega building
- *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *         Webpage: https://www.cs.upc.edu/~esteban/
- *
- *     Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
- *         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
- *         CQL (Complexity and Quantitative Linguistics Lab)
- *         Office 220, Omega building
- *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
- *
  ********************************************************************/
 
 #pragma once
@@ -84,9 +71,6 @@ inline bool is_entry_set(const bib_entries& entry) noexcept
 {
 	return m_entry_used[static_cast<std::size_t>(entry)];
 }
-
-/// Prints the bibliographic entries set to used.
-void print() noexcept;
 
 /**
  * @brief Register a specific bibliography entry into the manager.
