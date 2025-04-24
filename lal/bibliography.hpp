@@ -48,7 +48,7 @@ namespace bibliography {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 
 /// The list of bibliographic entries. Activated or not.
-static std::array<bool, num_entries> m_entry_used = []()
+static std::array<bool, num_entries> entries_used = []()
 {
 	std::array<bool, num_entries> res;
 	res.fill(false);
@@ -56,28 +56,28 @@ static std::array<bool, num_entries> m_entry_used = []()
 }();
 
 /// Set a particular bibliographic entry to used.
-inline void set_entry(const entries& entry) noexcept
+constexpr inline void set_entry(const entries& entry) noexcept
 {
-	m_entry_used[static_cast<std::size_t>(entry)] = true;
+	entries_used[static_cast<std::size_t>(entry)] = true;
 }
 
 /// Set a particular bibliographic entry to not used.
-inline void unset_entry(const entries& entry) noexcept
+constexpr inline void unset_entry(const entries& entry) noexcept
 {
-	m_entry_used[static_cast<std::size_t>(entry)] = false;
+	entries_used[static_cast<std::size_t>(entry)] = false;
 }
 
 /// Is a particular bibliographic entry set?
-inline bool is_entry_set(const entries& entry) noexcept
+constexpr inline bool is_entry_set(const entries& entry) noexcept
 {
-	return m_entry_used[static_cast<std::size_t>(entry)];
+	return entries_used[static_cast<std::size_t>(entry)];
 }
 
 /**
  * @brief Register a specific bibliography entry into the manager.
  * @param entry The specific entry to set.
  */
-inline void register_entry(const entries& entry) noexcept
+constexpr inline void register_entry(const entries& entry) noexcept
 {
 	if (not is_entry_set(entry)) [[unlikely]] {
 		set_entry(entry);
