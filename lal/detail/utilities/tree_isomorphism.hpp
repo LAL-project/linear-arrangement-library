@@ -123,56 +123,6 @@ template <graphs::Tree tree_t>
 /**
  * @brief Assigns a name to node 'u', root of the current subtree.
  *
- * This function stores the names of every node in the subtree rooted at 'u'.
- * This is useful if we want to make lots of comparisons between subtrees
- *
- * For further details on the algorithm, see \cite Aho1974a.
- * @param t Input rooted tree
- * @param u Root of the subtree whose name we want to calculate
- * @param idx A pointer to the position within @e names that will contain the
- * name of the first child of 'u'. The position @e names[idx+1] will contain the
- * name of the second child of 'u'.
- * @param aux_memory_for_names Auxiliary memory used to sort names of subtrees.
- * @param keep_name_of An array of strings where the names are stored
- * (as in a dynamic programming algorithm). The size of this array must be at
- * least the number of vertices in the subtree of 't' rooted at 'u'. Actually,
- * less memory suffices, but better be safe than sorry.
- */
-inline void assign_name_and_keep(
-	const graphs::rooted_tree& t,
-	const node u,
-	std::size_t idx,
-	array<std::string>& aux_memory_for_names,
-	array<std::string>& keep_name_of
-) noexcept
-{
-	if (t.get_out_degree(u) == 0) {
-		keep_name_of[u] = "10";
-		return;
-	}
-
-	// make childrens' names
-	const std::size_t begin_idx = idx;
-	for (node v : t.get_out_neighbors(u)) {
-		// make the name for v
-		assign_name_and_keep(t, v, idx + 1, aux_memory_for_names, keep_name_of);
-
-		aux_memory_for_names[idx] = keep_name_of[v];
-		++idx;
-	}
-	std::sort(&aux_memory_for_names[begin_idx], &aux_memory_for_names[idx]);
-
-	// join the names in a single string to make the name of vertex 'v'
-	keep_name_of[u] = "1";
-	for (std::size_t j = begin_idx; j < idx; ++j) {
-		keep_name_of[u] += aux_memory_for_names[j];
-	}
-	keep_name_of[u] += "0";
-}
-
-/**
- * @brief Assigns a name to node 'u', root of the current subtree.
- *
  * For further details on the algorithm, see \cite Aho1974a for further details.
  * @param t Input rooted tree
  * @param u Root of the subtree whose name we want to calculate
@@ -198,7 +148,7 @@ inline void assign_name_and_keep(
 
 	// make childrens' names
 	const std::size_t begin_idx = idx;
-	for (node v : t.get_out_neighbors(u)) {
+	for (const node v : t.get_out_neighbors(u)) {
 		// make the name for v
 		names[idx] = assign_name(t, v, names, idx + 1);
 		++idx;
@@ -228,14 +178,6 @@ inline void assign_name_and_keep(
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
-
-	const auto discard = fast_non_iso(t1, t2);
-	if (discard == 0) {
-		return true;
-	}
-	if (discard == 1) {
-		return false;
-	}
 
 	array<std::string> names(t1.get_num_nodes());
 	const std::string name_r1 = assign_name(t1, t1.get_root(), names, 0);
