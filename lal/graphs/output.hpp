@@ -135,7 +135,7 @@ operator<< (std::ostream& os, const directed_graph& g) noexcept
 			os << '\n';
 		}
 	}
-	os << f.tabulator_string << "\nin:\n";
+	os << "\nin:\n";
 	for (node u = 0; u < n; ++u) {
 		os << f.tabulator_string << u << ':';
 		for (const node v : g.get_in_neighbors(u)) {
@@ -175,7 +175,7 @@ operator<< (std::ostream& os, const rooted_tree& g) noexcept
 			os << '\n';
 		}
 	}
-	os << f.tabulator_string << "\nin:\n";
+	os << "\nin:\n";
 	for (node u = 0; u < n; ++u) {
 		os << f.tabulator_string
 		   << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
