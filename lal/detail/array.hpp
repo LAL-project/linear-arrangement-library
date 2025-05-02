@@ -171,7 +171,7 @@ public:
 	[[nodiscard]] bool operator== (const array& d) const noexcept
 	{
 		if (size() != d.size()) {
-			return size() < d.size();
+			return false;
 		}
 
 		for (std::size_t i = 0; i < size(); ++i) {
