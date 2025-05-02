@@ -43,12 +43,15 @@
 
 // C++ includes
 #include <algorithm>
+#include <iostream>
 
 // lal includes
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 #include <lal/bibliography.hpp>
 #endif
+#include <lal/graphs/output.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
 #include <lal/detail/array.hpp>
 
@@ -120,69 +123,218 @@ template <graphs::Tree tree_t>
 	return 2;
 }
 
-/**
- * @brief Assigns a name to node 'u', root of the current subtree.
- *
- * For further details on the algorithm, see \cite Aho1974a for further details.
- * @param t Input rooted tree
- * @param u Root of the subtree whose name we want to calculate
- * @param names An array of strings where the names are stored (as in a dynamic
- * programming algorithm). The size of this array must be at least the number of
- * vertices in the subtree of 't' rooted at 'u'. Actually, less memory suffices,
- * but I don't know how much less: better be safe than sorry.
- * @param idx A pointer to the position within @e names that will contain the
- * name of the first child of 'u'. The position @e names[idx+1] will contain the
- * name of the second child of 'u'.
- * @returns The code for the subtree rooted at 'u'.
- */
-[[nodiscard]] inline std::string assign_name(
-	const graphs::rooted_tree& t,
-	const node u,
-	array<std::string>& names,
-	std::size_t idx
+template <typename T>
+inline std::ostream&
+operator<< (std::ostream& os, const std::vector<T>& v) noexcept
+{
+	if (v.size() > 0) {
+		os << v[0];
+		for (std::size_t i = 1; i < v.size(); ++i) {
+			os << ' ' << v[i];
+		}
+	}
+	return os;
+}
+
+typedef std::vector<std::size_t> AHUTuple;
+
+struct tuple_node {
+	AHUTuple tuple;
+	node v;
+	[[nodiscard]] inline bool operator< (const tuple_node& t) const noexcept
+	{
+		return tuple < t.tuple;
+	}
+	[[nodiscard]] inline bool operator== (const tuple_node& t) const noexcept
+	{
+		return tuple == t.tuple;
+	}
+};
+
+typedef std::vector<std::vector<node>> LevelList;
+
+inline void gather_vertices_by_level(
+	const graphs::rooted_tree& t, LevelList& levels
 ) noexcept
 {
-	if (t.get_out_degree(u) == 0) {
-		return std::string("10");
-	}
 
-	// make childrens' names
-	const std::size_t begin_idx = idx;
-	for (const node v : t.get_out_neighbors(u)) {
-		// make the name for v
-		names[idx] = assign_name(t, v, names, idx + 1);
-		++idx;
-	}
-	std::sort(&names[begin_idx], &names[idx]);
+	const uint64_t n = t.get_num_nodes();
+	array<uint64_t> height(n);
+	height[t.get_root()] = 0;
+	levels.push_back({t.get_root()});
 
-	// join the names in a single string to make the name of vertex 'v'
-	std::string name = "1";
-	for (std::size_t j = begin_idx; j < idx; ++j) {
-		name += names[j];
-	}
-	name += "0";
+	BFS bfs(t);
+	bfs.set_use_rev_edges(false);
+	bfs.set_process_neighbour(
+		[&](const auto&, const node v, const node w, const bool)
+		{
+			height[w] = height[v] + 1;
+			if (levels.size() <= height[w]) {
+				levels.emplace_back(0);
+			}
+			levels[height[w]].push_back(w);
+		}
+	);
+	bfs.start_at(t.get_root());
+}
 
-	return name;
+inline void calculate_ids(
+	const graphs::rooted_tree& t,
+	const array<tuple_node>& S,
+	array<AHUTuple>& tuple_ids
+) noexcept
+{
+
+	const auto assign_id = [&](const std::size_t j, const std::size_t id)
+	{
+		const node v = S[j].v;
+		const node parent = t.get_in_neighbors(v)[0];
+		tuple_ids[parent].push_back(id);
+	};
+
+	std::size_t id = 1;
+	std::size_t j = 0;
+	assign_id(j, id);
+
+	++j;
+	while (j < S.size()) {
+		if (S[j].tuple != S[j - 1].tuple) {
+			++id;
+		}
+		assign_id(j, id);
+		++j;
+	}
 }
 
 /**
  * @brief Test whether two rooted trees are isomorphic or not.
+ *
+ * See \cite Aho1974a for further details on the algorithm.
  * @param t1 First rooted tree.
  * @param t2 Second rooted tree.
  * @returns True or false.
  */
 [[nodiscard]] inline bool are_rooted_trees_isomorphic(
-	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
+	const graphs::rooted_tree& t_1, const graphs::rooted_tree& t_2
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
 
-	array<std::string> names(t1.get_num_nodes());
-	const std::string name_r1 = assign_name(t1, t1.get_root(), names, 0);
-	const std::string name_r2 = assign_name(t2, t2.get_root(), names, 0);
-	return name_r1 == name_r2;
+	const uint64_t n = t_1.get_num_nodes();
+
+	LevelList levels_1, levels_2;
+
+	std::cout << "tree 1:\n";
+	std::cout << "·    "_tab << t_1 << '\n';
+	std::cout << "tree 2:\n";
+	std::cout << "·    "_tab << t_2 << '\n';
+
+	std::cout << "Levels for tree 1...\n";
+	gather_vertices_by_level(t_1, levels_1);
+	std::cout << "Levels for tree 2...\n";
+	gather_vertices_by_level(t_2, levels_2);
+
+	std::cout << "(1) Vertices by level:\n";
+	for (std::size_t i = 0; i < levels_1.size(); ++i) {
+		std::cout << "    " << i << ": " << levels_1[i] << '\n';
+	}
+	std::cout << '\n';
+	std::cout << "(2) Vertices by level:\n";
+	for (std::size_t i = 0; i < levels_2.size(); ++i) {
+		std::cout << "    " << i << ": " << levels_2[i] << '\n';
+	}
+	std::cout << '\n';
+
+	// different depth levels, the trees are not isomorphic
+	if (levels_1.size() != levels_2.size()) {
+		return false;
+	}
+
+	array<AHUTuple> tuple_ids_1(n);
+	array<AHUTuple> tuple_ids_2(n);
+
+	for (node u = 0; u < n; ++u) {
+		if (t_1.get_out_degree(u) == 0) {
+			tuple_ids_1[u] = {0};
+		}
+		if (t_2.get_out_degree(u) == 0) {
+			tuple_ids_2[u] = {0};
+		}
+	}
+
+	array<tuple_node> S_1;
+	array<tuple_node> S_2;
+
+	bool stop = false;
+	std::size_t h = levels_1.size() - 1;
+	while (not stop) {
+		std::cout << "h= " << h << '\n';
+
+		if (h == 0) {
+			stop = true;
+		}
+
+		// Step 1: Construct the sequences of tuples of the current level.
+		std::cout << "Step 1...\n";
+		S_1.resize<false>(levels_1[h].size());
+		{
+			std::size_t idx = 0;
+			for (const node v : levels_1[h]) {
+				S_1[idx].tuple = std::move(tuple_ids_1[v]);
+				S_1[idx].v = v;
+				++idx;
+			}
+		}
+		S_2.resize<false>(levels_2[h].size());
+		{
+			std::size_t idx = 0;
+			for (const node v : levels_2[h]) {
+				S_2[idx].tuple = std::move(tuple_ids_2[v]);
+				S_2[idx].v = v;
+				++idx;
+			}
+		}
+
+		// Step 2: Sort the sequences of the current level. If they differ,
+		// the trees are *not* isomorphic.
+		std::cout << "Step 2...\n";
+		std::sort(S_1.begin(), S_1.end());
+		std::sort(S_2.begin(), S_2.end());
+
+		std::cout << "(1) Tuples of level " << h << '\n';
+		for (std::size_t i = 0; i < S_1.size(); ++i) {
+			std::cout << "    " << i << ": " << S_1[i].v << " <-> "
+					  << S_1[i].tuple << '\n';
+		}
+
+		std::cout << "(2) Tuples of level " << h << '\n';
+		for (std::size_t i = 0; i < S_2.size(); ++i) {
+			std::cout << "    " << i << ": " << S_2[i].v << " <-> "
+					  << S_2[i].tuple << '\n';
+		}
+
+		if (S_1 != S_2) {
+			return false;
+		}
+
+		// Step 3: Construct the ids of the current tuples.
+		if (h > 0) {
+			std::cout << "Step 3...\n";
+			calculate_ids(t_1, S_1, tuple_ids_1);
+			calculate_ids(t_2, S_2, tuple_ids_2);
+
+			--h;
+		}
+
+		std::cout << "    next h= " << h << '\n';
+
+		// char step;
+		// std::cin >> step;
+	}
+
+	return true;
 }
 
 } // namespace detail
