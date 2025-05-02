@@ -77,7 +77,7 @@ std::vector<std::vector<node>> vertex_orbits_compute(const graphs::free_tree& t
 				continue;
 			}
 
-			if (detail::are_rooted_trees_isomorphic(rts[u], rts[v])) {
+			if (detail::are_trees_isomorphic(rts[u], rts[v])) {
 				orbits.back().push_back(v);
 				has_orbit[v] = 1;
 			}
