@@ -85,6 +85,11 @@ bool are_trees_isomorphic(
 	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
 
+#if defined DEBUG
+	assert(t1.is_tree());
+	assert(t2.is_tree());
+#endif
+
 	{
 		const auto discard = detail::fast_non_iso(t1, t2);
 		if (discard == 0) {
@@ -96,9 +101,6 @@ bool are_trees_isomorphic(
 	}
 
 	const uint64_t n = t1.get_num_nodes();
-	if (n == 3) {
-		return true;
-	}
 
 	// find centres of the trees
 	const auto c1 = detail::retrieve_centre(t1, 0);
@@ -111,29 +113,25 @@ bool are_trees_isomorphic(
 		return false;
 	}
 
-	const graphs::rooted_tree rt1(t1, c1.first);
+	const graphs::rooted_tree rt1(t1, c1.first, false, false);
+	graphs::rooted_tree rt2(t2, c2.first, false, false);
 
 	// the centres have only one vertex
 	if (size1 == 1) {
-		return detail::are_rooted_trees_isomorphic(
-			rt1, graphs::rooted_tree(t2, c2.first)
-		);
+		return detail::are_rooted_trees_isomorphic(rt1, rt2);
 	}
 
 	// the centres have two vertices
 
 	// try with the first centre of the second tree
-	const bool iso1 = detail::are_rooted_trees_isomorphic(
-		rt1, graphs::rooted_tree(t2, c2.first)
-	);
+	const bool iso1 = detail::are_rooted_trees_isomorphic(rt1, rt2);
 	if (iso1) {
 		return true;
 	}
 
 	// try with the second centre of the second tree
-	return detail::are_rooted_trees_isomorphic(
-		rt1, graphs::rooted_tree(t2, c2.second)
-	);
+	rt2.init_rooted(t2, c2.second, false, false);
+	return detail::are_rooted_trees_isomorphic(rt1, rt2);
 }
 
 } // namespace utilities
