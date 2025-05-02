@@ -192,9 +192,9 @@ public:
 		m_is_terminate_set = false;
 	}
 	/// Set the function that controls the termination of the loop.
-	void set_terminate(const BFS_bool_one& f) noexcept
+	void set_terminate(BFS_bool_one&& f) noexcept
 	{
-		m_terminate = f;
+		m_terminate = std::move(f);
 		m_is_terminate_set = true;
 	}
 
@@ -207,9 +207,9 @@ public:
 		m_is_process_current_set = false;
 	}
 	/// Set the function that controls the processing of the current node.
-	void set_process_current(const BFS_process_one& f) noexcept
+	void set_process_current(BFS_process_one&& f) noexcept
 	{
-		m_process_current = f;
+		m_process_current = std::move(f);
 		m_is_process_current_set = true;
 	}
 
@@ -223,9 +223,9 @@ public:
 		m_is_process_neighbour_set = false;
 	}
 	/// Set the function that controls the processing of the current neighbour.
-	void set_process_neighbour(const BFS_process_two& f) noexcept
+	void set_process_neighbour(BFS_process_two&& f) noexcept
 	{
-		m_process_neighbour = f;
+		m_process_neighbour = std::move(f);
 		m_is_process_neighbour_set = true;
 	}
 
@@ -240,9 +240,9 @@ public:
 		m_is_add_node_set = false;
 	}
 	/// Set the function that controls when a node is to be added to the queue.
-	void set_node_add(const BFS_bool_two& f) noexcept
+	void set_node_add(BFS_bool_two&& f) noexcept
 	{
-		m_add_node = f;
+		m_add_node = std::move(f);
 		m_is_add_node_set = true;
 	}
 

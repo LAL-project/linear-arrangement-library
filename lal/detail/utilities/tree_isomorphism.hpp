@@ -30,159 +30,110 @@
  *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
  *         Webpage: https://cqllab.upc.edu/people/lalemany/
  *
- *     Ramon Ferrer i Cancho (rferrericancho@cs.upc.edu)
- *         LQMC (Quantitative, Mathematical, and Computational Linguisitcs)
- *         CQL (Complexity and Quantitative Linguistics Lab)
- *         Office 220, Omega building
- *         Jordi Girona St 1-3, Campus Nord UPC, 08034 Barcelona.   CATALONIA, SPAIN
- *         Webpage: https://cqllab.upc.edu/people/rferrericancho/
- *
  ********************************************************************/
 
 #pragma once
-
-// C++ includes
-#include <algorithm>
 
 // lal includes
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 #include <lal/bibliography.hpp>
 #endif
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/detail/macros/basic_convert.hpp>
-#include <lal/detail/array.hpp>
+#include <lal/detail/properties/tree_centre.hpp>
+#include <lal/detail/utilities/tree_isomorphism_large.hpp>
+#include <lal/detail/utilities/tree_isomorphism_small.hpp>
+#include <lal/detail/utilities/tree_isomorphism_fast_noniso.hpp>
 
 namespace lal {
 namespace detail {
 
-/**
- * @brief Fast tree non-isomorphism test.
- *
- * @tparam tree_t Tree type.
- * @param t1 One tree.
- * @param t2 Another tree.
- * @returns Whether the input trees are, might be, or are not isomorphic.
- * @returns 0 if the trees ARE isomorphic
- * @returns 1 if the trees ARE NOT isomorphic:
- * - number of vertices do not coincide,
- * - number of leaves do not coincide,
- * - second moment of degree do not coincide,
- * - maximum vertex degrees do not coincide,
- * @returns 2 if the trees MIGHT BE isomorphic
- */
-template <graphs::Tree tree_t>
-[[nodiscard]] char fast_non_iso(const tree_t& t1, const tree_t& t2) noexcept
-{
-	// check number of nodes
-	if (t1.get_num_nodes() != t2.get_num_nodes()) {
-		return 1;
-	}
-
-	const uint64_t n = t1.get_num_nodes();
-
-	// trees ARE isomorphic
-	if (n <= 2) {
-		return 0;
-	}
-
-	uint64_t nL_t1 = 0;		// number of leaves of t1
-	uint64_t nL_t2 = 0;		// number of leaves of t2
-	uint64_t k2_t1 = 0;		// sum of squared degrees of t1
-	uint64_t k2_t2 = 0;		// sum of squared degrees of t2
-	uint64_t maxdeg_t1 = 0; // max degree of t1
-	uint64_t maxdeg_t2 = 0; // max degree of t2
-	for (node u = 0; u < n; ++u) {
-		const uint64_t ku1 = to_uint64(t1.get_degree(u));
-		const uint64_t ku2 = to_uint64(t2.get_degree(u));
-
-		nL_t1 += t1.get_degree(u) == 1;
-		nL_t2 += t2.get_degree(u) == 1;
-		k2_t1 += ku1 * ku1;
-		k2_t2 += ku2 * ku2;
-		maxdeg_t1 = (maxdeg_t1 < ku1 ? ku1 : maxdeg_t1);
-		maxdeg_t2 = (maxdeg_t2 < ku2 ? ku2 : maxdeg_t2);
-	}
-
-	// check number of leaves
-	if (nL_t1 != nL_t2) {
-		return 1;
-	}
-	// check maximum degree
-	if (maxdeg_t1 != maxdeg_t2) {
-		return 1;
-	}
-	// check sum of squared degrees
-	if (k2_t1 != k2_t2) {
-		return 1;
-	}
-
-	// trees MIGHT BE isomorphic
-	return 2;
-}
-
-/**
- * @brief Assigns a name to node 'u', root of the current subtree.
- *
- * For further details on the algorithm, see \cite Aho1974a for further details.
- * @param t Input rooted tree
- * @param u Root of the subtree whose name we want to calculate
- * @param names An array of strings where the names are stored (as in a dynamic
- * programming algorithm). The size of this array must be at least the number of
- * vertices in the subtree of 't' rooted at 'u'. Actually, less memory suffices,
- * but I don't know how much less: better be safe than sorry.
- * @param idx A pointer to the position within @e names that will contain the
- * name of the first child of 'u'. The position @e names[idx+1] will contain the
- * name of the second child of 'u'.
- * @returns The code for the subtree rooted at 'u'.
- */
-[[nodiscard]] inline std::string assign_name(
-	const graphs::rooted_tree& t,
-	const node u,
-	array<std::string>& names,
-	std::size_t idx
-) noexcept
-{
-	if (t.get_out_degree(u) == 0) {
-		return std::string("10");
-	}
-
-	// make childrens' names
-	const std::size_t begin_idx = idx;
-	for (const node v : t.get_out_neighbors(u)) {
-		// make the name for v
-		names[idx] = assign_name(t, v, names, idx + 1);
-		++idx;
-	}
-	std::sort(&names[begin_idx], &names[idx]);
-
-	// join the names in a single string to make the name of vertex 'v'
-	std::string name = "1";
-	for (std::size_t j = begin_idx; j < idx; ++j) {
-		name += names[j];
-	}
-	name += "0";
-
-	return name;
-}
-
-/**
- * @brief Test whether two rooted trees are isomorphic or not.
- * @param t1 First rooted tree.
- * @param t2 Second rooted tree.
- * @returns True or false.
- */
 [[nodiscard]] inline bool are_rooted_trees_isomorphic(
 	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
 ) noexcept
 {
-#if defined LAL_REGISTER_BIBLIOGRAPHY
-	bibliography::register_entry(bibliography::entries::Aho1974a);
+	const uint64_t n = t1.get_num_nodes();
+	if (n < 40) {
+		return are_rooted_trees_isomorphic_small(t1, t2);
+	}
+	return are_rooted_trees_isomorphic_large(t1, t2);
+}
+
+[[nodiscard]] inline bool are_trees_isomorphic(
+	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
+) noexcept
+{
+#if defined DEBUG
+	assert(t1.is_rooted_tree());
+	assert(t2.is_rooted_tree());
 #endif
 
-	array<std::string> names(t1.get_num_nodes());
-	const std::string name_r1 = assign_name(t1, t1.get_root(), names, 0);
-	const std::string name_r2 = assign_name(t2, t2.get_root(), names, 0);
-	return name_r1 == name_r2;
+	{
+		const auto discard = fast_non_iso(t1, t2);
+		if (discard == 0) {
+			return true;
+		}
+		if (discard == 1) {
+			return false;
+		}
+	}
+
+	return are_rooted_trees_isomorphic(t1, t2);
+}
+
+[[nodiscard]] inline bool are_trees_isomorphic(
+	const graphs::free_tree& t1, const graphs::free_tree& t2
+) noexcept
+{
+#if defined DEBUG
+	assert(t1.is_tree());
+	assert(t2.is_tree());
+#endif
+
+	{
+		const auto discard = fast_non_iso(t1, t2);
+		if (discard == 0) {
+			return true;
+		}
+		if (discard == 1) {
+			return false;
+		}
+	}
+
+	const uint64_t n = t1.get_num_nodes();
+	if (n <= 3) {
+		return true;
+	}
+
+	// find centres of the trees
+	const auto c1 = retrieve_centre(t1, 0);
+	const auto c2 = retrieve_centre(t2, 0);
+
+	// check centre sizes
+	const uint64_t size1 = (c1.second < n ? 2 : 1);
+	const uint64_t size2 = (c2.second < n ? 2 : 1);
+	if (size1 != size2) {
+		return false;
+	}
+
+	const graphs::rooted_tree rt1(t1, c1.first, false, false);
+	graphs::rooted_tree rt2(t2, c2.first, false, false);
+
+	// the centres have only one vertex
+	if (size1 == 1) {
+		return are_rooted_trees_isomorphic(rt1, rt2);
+	}
+
+	// the centres have two vertices
+
+	// try with the first centre of the second tree
+	const bool iso1 = are_rooted_trees_isomorphic(rt1, rt2);
+	if (iso1) {
+		return true;
+	}
+
+	// try with the second centre of the second tree
+	rt2.init_rooted(t2, c2.second, false, false);
+	return are_rooted_trees_isomorphic(rt1, rt2);
 }
 
 } // namespace detail
