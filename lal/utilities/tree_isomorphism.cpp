@@ -101,6 +101,9 @@ bool are_trees_isomorphic(
 	}
 
 	const uint64_t n = t1.get_num_nodes();
+	if (n <= 3) {
+		return true;
+	}
 
 	// find centres of the trees
 	const auto c1 = detail::retrieve_centre(t1, 0);
