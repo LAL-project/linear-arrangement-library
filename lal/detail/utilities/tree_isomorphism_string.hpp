@@ -167,7 +167,7 @@ namespace isomorphism {
 	std::size_t idx
 ) noexcept
 {
-	if (t.get_degree(r) == 1) {
+	if (t.get_degree(r) == 0) {
 		return std::string("10");
 	}
 
