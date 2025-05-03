@@ -48,7 +48,14 @@ bool are_trees_isomorphic(
 	assert(t2.is_rooted_tree());
 #endif
 
-	return detail::are_trees_isomorphic(t1, t2);
+	if (t1.get_num_nodes() < 40) {
+		return detail::are_trees_isomorphic<
+			detail::isomorphism::algorithm::string,
+			true>(t1, t2);
+	}
+	return detail::are_trees_isomorphic<
+		detail::isomorphism::algorithm::tuple,
+		true>(t1, t2);
 }
 
 bool are_trees_isomorphic(
@@ -60,7 +67,36 @@ bool are_trees_isomorphic(
 	assert(t2.is_tree());
 #endif
 
-	return detail::are_trees_isomorphic(t1, t2);
+	if (t1.get_num_nodes() < 40) {
+		return detail::are_trees_isomorphic<
+			detail::isomorphism::algorithm::string,
+			true>(t1, t2);
+	}
+	return detail::are_trees_isomorphic<
+		detail::isomorphism::algorithm::tuple,
+		true>(t1, t2);
+}
+
+bool are_trees_isomorphic(
+	const graphs::free_tree& t1,
+	const node r1,
+	const graphs::free_tree& t2,
+	const node r2
+) noexcept
+{
+#if defined DEBUG
+	assert(t1.is_tree());
+	assert(t2.is_tree());
+#endif
+
+	if (t1.get_num_nodes() < 40) {
+		return detail::are_trees_isomorphic<
+			detail::isomorphism::algorithm::string,
+			true>(t1, r1, t2, r2);
+	}
+	return detail::are_trees_isomorphic<
+		detail::isomorphism::algorithm::tuple,
+		true>(t1, r1, t2, r2);
 }
 
 } // namespace utilities

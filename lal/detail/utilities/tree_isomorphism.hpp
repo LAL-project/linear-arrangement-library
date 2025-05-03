@@ -40,24 +40,41 @@
 #endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/properties/tree_centre.hpp>
-#include <lal/detail/utilities/tree_isomorphism_large.hpp>
-#include <lal/detail/utilities/tree_isomorphism_small.hpp>
+#include <lal/detail/utilities/tree_isomorphism_tuple.hpp>
+#include <lal/detail/utilities/tree_isomorphism_string.hpp>
 #include <lal/detail/utilities/tree_isomorphism_fast_noniso.hpp>
 
 namespace lal {
 namespace detail {
+namespace isomorphism {
 
-[[nodiscard]] inline bool are_rooted_trees_isomorphic(
-	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
+enum class algorithm {
+	string,
+	tuple
+};
+
+template <isomorphism::algorithm algo>
+[[nodiscard]] inline bool iso_func(
+	const graphs::free_tree& T1,
+	const node r1,
+	const graphs::free_tree& T2,
+	const node r2
 ) noexcept
 {
-	const uint64_t n = t1.get_num_nodes();
-	if (n < 40) {
-		return are_rooted_trees_isomorphic_small(t1, t2);
+	if constexpr (algo == isomorphism::algorithm::string) {
+		return are_rooted_trees_isomorphic_string(T1, r1, T2, r2);
 	}
-	return are_rooted_trees_isomorphic_large(t1, t2);
+	else if constexpr (algo == isomorphism::algorithm::tuple) {
+		return are_rooted_trees_isomorphic_tuple(T1, r1, T2, r2);
+	}
+	else {
+		static_assert(false);
+	}
 }
 
+} // namespace isomorphism
+
+template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 [[nodiscard]] inline bool are_trees_isomorphic(
 	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
 ) noexcept
@@ -67,7 +84,7 @@ namespace detail {
 	assert(t2.is_rooted_tree());
 #endif
 
-	{
+	if constexpr (check_fast_noniso) {
 		const auto discard = fast_non_iso(t1, t2);
 		if (discard == 0) {
 			return true;
@@ -77,9 +94,52 @@ namespace detail {
 		}
 	}
 
-	return are_rooted_trees_isomorphic(t1, t2);
+	if constexpr (algo == isomorphism::algorithm::string) {
+		return are_rooted_trees_isomorphic_string(t1, t2);
+	}
+	else if constexpr (algo == isomorphism::algorithm::tuple) {
+		return are_rooted_trees_isomorphic_tuple(t1, t2);
+	}
+	else {
+		static_assert(false);
+	}
 }
 
+template <isomorphism::algorithm algo, bool check_fast_noniso = true>
+[[nodiscard]] inline bool are_trees_isomorphic(
+	const graphs::free_tree& t1,
+	const node r1,
+	const graphs::free_tree& t2,
+	const node r2
+) noexcept
+{
+#if defined DEBUG
+	assert(t1.is_tree());
+	assert(t2.is_tree());
+#endif
+
+	if constexpr (check_fast_noniso) {
+		const auto discard = fast_non_iso(t1, t2);
+		if (discard == 0) {
+			return true;
+		}
+		if (discard == 1) {
+			return false;
+		}
+	}
+
+	if constexpr (algo == isomorphism::algorithm::string) {
+		return are_rooted_trees_isomorphic_string(t1, r1, t2, r2);
+	}
+	else if constexpr (algo == isomorphism::algorithm::tuple) {
+		return are_rooted_trees_isomorphic_tuple(t1, r1, t2, r2);
+	}
+	else {
+		static_assert(false);
+	}
+}
+
+template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 [[nodiscard]] inline bool are_trees_isomorphic(
 	const graphs::free_tree& t1, const graphs::free_tree& t2
 ) noexcept
@@ -89,7 +149,7 @@ namespace detail {
 	assert(t2.is_tree());
 #endif
 
-	{
+	if constexpr (check_fast_noniso) {
 		const auto discard = fast_non_iso(t1, t2);
 		if (discard == 0) {
 			return true;
@@ -115,25 +175,21 @@ namespace detail {
 		return false;
 	}
 
-	const graphs::rooted_tree rt1(t1, c1.first, false, false);
-	graphs::rooted_tree rt2(t2, c2.first, false, false);
-
 	// the centres have only one vertex
 	if (size1 == 1) {
-		return are_rooted_trees_isomorphic(rt1, rt2);
+		return isomorphism::iso_func<algo>(t1, c1.first, t2, c2.first);
 	}
 
 	// the centres have two vertices
 
 	// try with the first centre of the second tree
-	const bool iso1 = are_rooted_trees_isomorphic(rt1, rt2);
+	const bool iso1 = isomorphism::iso_func<algo>(t1, c1.first, t2, c2.first);
 	if (iso1) {
 		return true;
 	}
 
 	// try with the second centre of the second tree
-	rt2.init_rooted(t2, c2.second, false, false);
-	return are_rooted_trees_isomorphic(rt1, rt2);
+	return isomorphism::iso_func<algo>(t1, c1.first, t2, c2.second);
 }
 
 } // namespace detail

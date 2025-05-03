@@ -101,7 +101,46 @@ inline void gather_vertices_by_level(
 }
 
 /**
+ * @brief Distributes the vertices of the tree @e t over height levels.
+ * @param t Free tree.
+ * @param r Root of the tree.
+ * @param[out] levels A series of lists of vertices per height level.
+ * @param[out] parents A vector of the parent of each vertex.
+ */
+inline void gather_vertices_by_level(
+	const graphs::free_tree& t,
+	const node r,
+	LevelList& levels,
+	array<node>& parents
+) noexcept
+{
+
+	const uint64_t n = t.get_num_nodes();
+	array<uint64_t> height(n);
+	height[r] = 0;
+	parents[r] = n + 1;
+	levels.push_back({r});
+
+	BFS bfs(t);
+	bfs.set_use_rev_edges(false);
+	bfs.set_process_neighbour(
+		[&](const auto&, const node v, const node w, const bool)
+		{
+			height[w] = height[v] + 1;
+			parents[w] = v;
+			if (levels.size() <= height[w]) {
+				levels.emplace_back(0);
+			}
+			levels[height[w]].push_back(w);
+		}
+	);
+	bfs.start_at(r);
+}
+
+/**
  * @brief Assign ids to the vertices in the level previous to the current one.
+ *
+ * For rooted trees.
  * @param t Rooted tree.
  * @param S Sequence of tuple identifiers that determines the current level.
  * @param[out] tuple_ids The tuple and id for every vertex of the tree.
@@ -134,6 +173,42 @@ inline void calculate_ids(
 	}
 }
 
+/**
+ * @brief Assign ids to the vertices in the level previous to the current one.
+ *
+ * For free trees.
+ * @param parents Head vector of the tree.
+ * @param S Sequence of tuple identifiers that determines the current level.
+ * @param[out] tuple_ids The tuple and id for every vertex of the tree.
+ */
+inline void calculate_ids(
+	const array<node>& parents,
+	const array<tuple_node>& S,
+	array<AHUTuple>& tuple_ids
+) noexcept
+{
+
+	const auto assign_id = [&](const std::size_t j, const std::size_t id)
+	{
+		const node v = S[j].v;
+		const node parent = parents[v];
+		tuple_ids[parent].push_back(id);
+	};
+
+	std::size_t id = 1;
+	std::size_t j = 0;
+	assign_id(j, id);
+
+	++j;
+	while (j < S.size()) {
+		if (S[j].tuple != S[j - 1].tuple) {
+			++id;
+		}
+		assign_id(j, id);
+		++j;
+	}
+}
+
 } // namespace isomorphism
 
 /**
@@ -144,20 +219,20 @@ inline void calculate_ids(
  * @param t2 Second rooted tree.
  * @returns True or false.
  */
-[[nodiscard]] inline bool are_rooted_trees_isomorphic_large(
-	const graphs::rooted_tree& t_1, const graphs::rooted_tree& t_2
+[[nodiscard]] inline bool are_rooted_trees_isomorphic_tuple(
+	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
 ) noexcept
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
 
-	const uint64_t n = t_1.get_num_nodes();
+	const uint64_t n = t1.get_num_nodes();
 
 	isomorphism::LevelList levels_1, levels_2;
 
-	isomorphism::gather_vertices_by_level(t_1, levels_1);
-	isomorphism::gather_vertices_by_level(t_2, levels_2);
+	isomorphism::gather_vertices_by_level(t1, levels_1);
+	isomorphism::gather_vertices_by_level(t2, levels_2);
 
 	// different depth levels, the trees are not isomorphic
 	if (levels_1.size() != levels_2.size()) {
@@ -168,16 +243,16 @@ inline void calculate_ids(
 	array<isomorphism::AHUTuple> tuple_ids_2(n);
 
 	for (node u = 0; u < n; ++u) {
-		if (t_1.get_out_degree(u) == 0) {
+		if (t1.get_out_degree(u) == 0) {
 			tuple_ids_1[u] = {0};
 		}
-		if (t_2.get_out_degree(u) == 0) {
+		if (t2.get_out_degree(u) == 0) {
 			tuple_ids_2[u] = {0};
 		}
 	}
 
-	array<isomorphism::tuple_node> S_1;
-	array<isomorphism::tuple_node> S_2;
+	array<isomorphism::tuple_node> S1;
+	array<isomorphism::tuple_node> S2;
 
 	bool stop = false;
 	std::size_t h = levels_1.size() - 1;
@@ -187,38 +262,135 @@ inline void calculate_ids(
 		}
 
 		// Step 1: Construct the sequences of tuples of the current level.
-		S_1.resize<false>(levels_1[h].size());
+		S1.resize<false>(levels_1[h].size());
 		{
 			std::size_t idx = 0;
 			for (const node v : levels_1[h]) {
-				S_1[idx].tuple = std::move(tuple_ids_1[v]);
-				S_1[idx].v = v;
+				S1[idx].tuple = std::move(tuple_ids_1[v]);
+				S1[idx].v = v;
 				++idx;
 			}
 		}
-		S_2.resize<false>(levels_2[h].size());
+		S2.resize<false>(levels_2[h].size());
 		{
 			std::size_t idx = 0;
 			for (const node v : levels_2[h]) {
-				S_2[idx].tuple = std::move(tuple_ids_2[v]);
-				S_2[idx].v = v;
+				S2[idx].tuple = std::move(tuple_ids_2[v]);
+				S2[idx].v = v;
 				++idx;
 			}
 		}
 
 		// Step 2: Sort the sequences of the current level. If they differ,
 		// the trees are *not* isomorphic.
-		std::sort(S_1.begin(), S_1.end());
-		std::sort(S_2.begin(), S_2.end());
+		std::sort(S1.begin(), S1.end());
+		std::sort(S2.begin(), S2.end());
 
-		if (S_1 != S_2) {
+		if (S1 != S2) {
 			return false;
 		}
 
 		// Step 3: Construct the ids of the current tuples.
 		if (h > 0) {
-			isomorphism::calculate_ids(t_1, S_1, tuple_ids_1);
-			isomorphism::calculate_ids(t_2, S_2, tuple_ids_2);
+			isomorphism::calculate_ids(t1, S1, tuple_ids_1);
+			isomorphism::calculate_ids(t2, S2, tuple_ids_2);
+
+			--h;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * @brief Test whether two rooted trees are isomorphic or not.
+ *
+ * See \cite Aho1974a for further details on the algorithm.
+ * @param t1 First rooted tree.
+ * @param t2 Second rooted tree.
+ * @returns True or false.
+ */
+[[nodiscard]] inline bool are_rooted_trees_isomorphic_tuple(
+	const graphs::free_tree& t1,
+	const node r1,
+	const graphs::free_tree& t2,
+	const node r2
+) noexcept
+{
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	bibliography::register_entry(bibliography::entries::Aho1974a);
+#endif
+
+	const uint64_t n = t1.get_num_nodes();
+
+	isomorphism::LevelList levels_1, levels_2;
+
+	array<node> parents_1(n);
+	array<node> parents_2(n);
+
+	isomorphism::gather_vertices_by_level(t1, r1, levels_1, parents_1);
+	isomorphism::gather_vertices_by_level(t2, r2, levels_2, parents_2);
+
+	// different depth levels, the trees are not isomorphic
+	if (levels_1.size() != levels_2.size()) {
+		return false;
+	}
+
+	array<isomorphism::AHUTuple> tuple_ids_1(n);
+	array<isomorphism::AHUTuple> tuple_ids_2(n);
+
+	for (node u = 0; u < n; ++u) {
+		if (t1.get_degree(u) == 1) {
+			tuple_ids_1[u] = {0};
+		}
+		if (t2.get_degree(u) == 1) {
+			tuple_ids_2[u] = {0};
+		}
+	}
+
+	array<isomorphism::tuple_node> S1;
+	array<isomorphism::tuple_node> S2;
+
+	bool stop = false;
+	std::size_t h = levels_1.size() - 1;
+	while (not stop) {
+		if (h == 0) {
+			stop = true;
+		}
+
+		// Step 1: Construct the sequences of tuples of the current level.
+		S1.resize<false>(levels_1[h].size());
+		{
+			std::size_t idx = 0;
+			for (const node v : levels_1[h]) {
+				S1[idx].tuple = std::move(tuple_ids_1[v]);
+				S1[idx].v = v;
+				++idx;
+			}
+		}
+		S2.resize<false>(levels_2[h].size());
+		{
+			std::size_t idx = 0;
+			for (const node v : levels_2[h]) {
+				S2[idx].tuple = std::move(tuple_ids_2[v]);
+				S2[idx].v = v;
+				++idx;
+			}
+		}
+
+		// Step 2: Sort the sequences of the current level. If they differ,
+		// the trees are *not* isomorphic.
+		std::sort(S1.begin(), S1.end());
+		std::sort(S2.begin(), S2.end());
+
+		if (S1 != S2) {
+			return false;
+		}
+
+		// Step 3: Construct the ids of the current tuples.
+		if (h > 0) {
+			isomorphism::calculate_ids(parents_1, S1, tuple_ids_1);
+			isomorphism::calculate_ids(parents_2, S2, tuple_ids_2);
 
 			--h;
 		}

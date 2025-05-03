@@ -82,5 +82,27 @@ namespace utilities {
 	const graphs::free_tree& t1, const graphs::free_tree& t2
 ) noexcept;
 
+/**
+ * @brief Isomorphism test for unlabelled rooted trees.
+ *
+ * See @ref LAL_concepts__tree_isomorphism for a short definition of what tree
+ * isomorphism is.
+ *
+ * The algorithm implemented in this function can be found in \cite Aho1974a.
+ * @param t1 Input free tree.
+ * @param r1 Root of the first tree.
+ * @param t2 Input free tree.
+ * @param r2 Root of the second tree.
+ * @returns Whether or not the input trees are isomorphic.
+ * @pre Both input trees are valid free trees (see
+ * @ref lal::graphs::free_tree::is_tree).
+ */
+[[nodiscard]] bool are_trees_isomorphic(
+	const graphs::free_tree& t1,
+	const node r1,
+	const graphs::free_tree& t2,
+	const node r2
+) noexcept;
+
 } // namespace utilities
 } // namespace lal

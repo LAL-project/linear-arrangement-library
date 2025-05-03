@@ -44,7 +44,7 @@
 #include <lal/graphs/rooted_tree.hpp>
 
 #include <lal/detail/array.hpp>
-#include <lal/detail/utilities/tree_isomorphism.hpp>
+#include <lal/utilities/tree_isomorphism.hpp>
 
 namespace lal {
 namespace properties {
@@ -53,11 +53,6 @@ std::vector<std::vector<node>> vertex_orbits_compute(const graphs::free_tree& t
 ) noexcept
 {
 	const uint64_t n = t.get_num_nodes();
-
-	detail::array<graphs::rooted_tree> rts(n);
-	for (node u = 0; u < n; ++u) {
-		rts[u] = graphs::rooted_tree(t, u);
-	}
 
 	// detail::array<std::string> names(n);
 	detail::array<char> has_orbit(n, 0);
@@ -77,7 +72,7 @@ std::vector<std::vector<node>> vertex_orbits_compute(const graphs::free_tree& t
 				continue;
 			}
 
-			if (detail::are_trees_isomorphic(rts[u], rts[v])) {
+			if (utilities::are_trees_isomorphic(t, u, t, v)) {
 				orbits.back().push_back(v);
 				has_orbit[v] = 1;
 			}
