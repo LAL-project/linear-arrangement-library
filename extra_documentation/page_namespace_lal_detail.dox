@@ -137,6 +137,12 @@ namespace DMax {
 
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/// Namespace tree isomorphism algorithms.
+namespace isomorphism { }
+
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 /// Sorting algorithms.
 namespace sorting {
 } // -- namespace sorting
