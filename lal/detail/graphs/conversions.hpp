@@ -467,7 +467,7 @@ template <detail::Arrangement arrangement_t>
 		   |------------| > (n-1) two's
 	@endverbatim
  *
- * The concept of level sequence is defined in \cite Wright1981a.
+ * The concept of level sequence is defined in \cite Wright1986a.
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
@@ -554,7 +554,7 @@ template <graphs::Tree tree_t>
 		   |------------| > (n-1) two's
 	@endverbatim
  *
- * The concept of level sequence is defined in \cite Wright1981a.
+ * The concept of level sequence is defined in \cite Wright1986a.
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
@@ -665,7 +665,7 @@ template <graphs::Tree tree_t>
 			|------------| > (n-1) two's
 	@endverbatim
  *
- * The concept of level sequence is defined in \cite Wright1981a.
+ * The concept of level sequence is defined in \cite Wright1986a.
  * @tparam tree_t The type of tree.
  * @param L The level sequence, in preorder.
  * @param n Number of nodes of the tree.
