@@ -53,8 +53,8 @@ namespace isomorphism {
  * @brief Assigns a name to node 'u', root of the current subtree.
  *
  * For further details on the algorithm, see \cite Aho1974a for further details.
- * @param t Input rooted tree
- * @param u Root of the subtree whose name we want to calculate
+ * @param t Input rooted tree.
+ * @param u Root of the subtree whose name we want to calculate.
  * @param names An array of strings where the names are stored (as in a dynamic
  * programming algorithm). The size of this array must be at least the number of
  * vertices in the subtree of 't' rooted at 'u'. Actually, less memory suffices,
@@ -98,8 +98,8 @@ namespace isomorphism {
  * @brief Assigns a name to node 'u', root of the current subtree.
  *
  * For further details on the algorithm, see \cite Aho1974a for further details.
- * @param t Input rooted tree
- * @param u Parent of the root of the subtree whose name we want to calculate.
+ * @param t Input rooted tree.
+ * @param p Parent of the root of the subtree whose name we want to calculate.
  * @param u Root of the subtree whose name we want to calculate.
  * @param names An array of strings where the names are stored (as in a dynamic
  * programming algorithm). The size of this array must be at least the number of
@@ -149,8 +149,8 @@ namespace isomorphism {
  * @brief Assigns a name to node 'u', root of the current subtree.
  *
  * For further details on the algorithm, see \cite Aho1974a for further details.
- * @param t Input rooted tree
- * @param r Root of the tree.
+ * @param t Input rooted tree, as a @ref lal::graphs::free_tree object.
+ * @param r Root of the input tree.
  * @param names An array of strings where the names are stored (as in a dynamic
  * programming algorithm). The size of this array must be at least the number of
  * vertices in the subtree of 't' rooted at 'u'. Actually, less memory suffices,
@@ -198,7 +198,7 @@ namespace isomorphism {
  * @param r1 Root of the first tree.
  * @param t2 Second tree.
  * @param r2 Root of the second tree.
- * @returns True or false.
+ * @returns Whether the two rooted trees are isomorphic or not.
  */
 [[nodiscard]] inline bool are_rooted_trees_isomorphic_string(
 	const graphs::free_tree& t1,
@@ -221,7 +221,7 @@ namespace isomorphism {
  * @brief Test whether two rooted trees are isomorphic or not.
  * @param t1 First tree.
  * @param t2 Second tree.
- * @returns True or false.
+ * @returns Whether the two rooted trees are isomorphic or not.
  */
 [[nodiscard]] inline bool are_rooted_trees_isomorphic_string(
 	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2

@@ -48,11 +48,43 @@ namespace lal {
 namespace detail {
 namespace isomorphism {
 
+/// The different isomorphism algorithms implemented.
 enum class algorithm {
+	/**
+	 * @brief A string-based algorithm.
+	 *
+	 * This algorithm builds an identifier string for each vertex over the
+	 * alphabet {0, 1}. The size of the strings is proportional to the size
+	 * of the subtree rooted at a specific vertex.
+	 *
+	 * This is based on \cite Aho1974a.
+	 *
+	 * See function @ref lal::detail::are_rooted_trees_isomorphic_string.
+	 */
 	string,
+	/**
+	 * @brief A tuple-based algorithm.
+	 *
+	 * This implementation uses tuples to build an identifier of every vertex.
+	 * The tuple is constructed using integer values, which can be safely
+	 * assumed to be under 2^64. This algorithm is more memory friendly.
+	 *
+	 * This algorithm implements the algorithm described in \cite Aho1974a.
+	 *
+	 * See function @ref lal::detail::are_rooted_trees_isomorphic_tuple.
+	 */
 	tuple
 };
 
+/**
+ * @brief Calls one of the isomorphism algorithms.
+ * @tparam algo The algorithm to call.
+ * @param T1 Input rooted tree as a @ref lal::graphs::free_tree object.
+ * @param r1 Root of the first tree.
+ * @param T2 Input rooted tree as a @ref lal::graphs::free_tree object.
+ * @param r2 Root of the second tree.
+ * @returns Whether or not the rooted trees are isomorphic.
+ */
 template <isomorphism::algorithm algo>
 [[nodiscard]] inline bool iso_func(
 	const graphs::free_tree& T1,
@@ -74,6 +106,14 @@ template <isomorphism::algorithm algo>
 
 } // namespace isomorphism
 
+/**
+ * @brief Calls one of the isomorphism algorithms.
+ * @tparam algo The algorithm to call.
+ * @tparam check_fast_noniso Use a fast algorithm to discard isomorphism.
+ * @param t1 Input rooted tree.
+ * @param t2 Input rooted tree.
+ * @returns Whether or not the rooted trees are isomorphic.
+ */
 template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 [[nodiscard]] inline bool are_trees_isomorphic(
 	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
@@ -105,6 +145,16 @@ template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 	}
 }
 
+/**
+ * @brief Calls one of the isomorphism algorithms.
+ * @tparam algo The algorithm to call.
+ * @tparam check_fast_noniso Use a fast algorithm to discard isomorphism.
+ * @param t1 Input rooted tree as a @ref lal::graphs::free_tree object.
+ * @param r1 Root of the first tree.
+ * @param t2 Input rooted tree as a @ref lal::graphs::free_tree object.
+ * @param r2 Root of the second tree.
+ * @returns Whether or not the rooted trees are isomorphic.
+ */
 template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 [[nodiscard]] inline bool are_trees_isomorphic(
 	const graphs::free_tree& t1,
@@ -139,6 +189,14 @@ template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 	}
 }
 
+/**
+ * @brief Calls one of the isomorphism algorithms.
+ * @tparam algo The algorithm to call.
+ * @tparam check_fast_noniso Use a fast algorithm to discard isomorphism.
+ * @param t1 Input free tree.
+ * @param t2 Input free tree.
+ * @returns Whether or not the rooted trees are isomorphic.
+ */
 template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 [[nodiscard]] inline bool are_trees_isomorphic(
 	const graphs::free_tree& t1, const graphs::free_tree& t2

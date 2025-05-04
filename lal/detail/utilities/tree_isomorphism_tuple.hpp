@@ -102,7 +102,7 @@ inline void gather_vertices_by_level(
 
 /**
  * @brief Distributes the vertices of the tree @e t over height levels.
- * @param t Free tree.
+ * @param t Input rooted tree tree, as a @ref lal::graphs::free_tree object.
  * @param r Root of the tree.
  * @param[out] levels A series of lists of vertices per height level.
  * @param[out] parents A vector of the parent of each vertex.
@@ -139,9 +139,7 @@ inline void gather_vertices_by_level(
 
 /**
  * @brief Assign ids to the vertices in the level previous to the current one.
- *
- * For rooted trees.
- * @param t Rooted tree.
+ * @param t Input rooted tree.
  * @param S Sequence of tuple identifiers that determines the current level.
  * @param[out] tuple_ids The tuple and id for every vertex of the tree.
  */
@@ -175,8 +173,6 @@ inline void calculate_ids(
 
 /**
  * @brief Assign ids to the vertices in the level previous to the current one.
- *
- * For free trees.
  * @param parents Head vector of the tree.
  * @param S Sequence of tuple identifiers that determines the current level.
  * @param[out] tuple_ids The tuple and id for every vertex of the tree.
@@ -217,7 +213,7 @@ inline void calculate_ids(
  * See \cite Aho1974a for further details on the algorithm.
  * @param t1 First rooted tree.
  * @param t2 Second rooted tree.
- * @returns True or false.
+ * @returns Whether the two rooted trees are isomorphic or not.
  */
 [[nodiscard]] inline bool are_rooted_trees_isomorphic_tuple(
 	const graphs::rooted_tree& t1, const graphs::rooted_tree& t2
@@ -307,8 +303,10 @@ inline void calculate_ids(
  *
  * See \cite Aho1974a for further details on the algorithm.
  * @param t1 First rooted tree.
+ * @param r1 Root of the first tree.
  * @param t2 Second rooted tree.
- * @returns True or false.
+ * @param r2 Root of the second tree.
+ * @returns Whether the two rooted trees are isomorphic or not.
  */
 [[nodiscard]] inline bool are_rooted_trees_isomorphic_tuple(
 	const graphs::free_tree& t1,
