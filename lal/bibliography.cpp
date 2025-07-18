@@ -49,7 +49,7 @@ namespace bibliography {
 void print() noexcept
 {
 	for (std::size_t i = 0; i < num_entries; ++i) {
-		if (m_entry_used[i]) {
+		if (is_entry_set(static_cast<entries>(i))) {
 			std::cout << detail::list_of_references[i] << '\n';
 		}
 	}
