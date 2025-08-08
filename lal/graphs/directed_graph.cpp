@@ -117,6 +117,7 @@ directed_graph& directed_graph::remove_node(
 #if defined DEBUG
 	assert(has_node(u));
 #endif
+
 	// ---------------------------------
 	// remove every edge incident to 'u'
 	remove_edges_incident_to(u, norm, check_norm);

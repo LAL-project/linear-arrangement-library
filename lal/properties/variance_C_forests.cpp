@@ -103,6 +103,8 @@ inline void compute_data_forest(
 #if defined DEBUG
 	assert(psi % 2 == 0);
 #endif
+	[[assume(psi % 2 == 0)]];
+
 	psi /= 2;
 
 	// ------------------------
@@ -137,6 +139,8 @@ inline void compute_data_forest(
 	assert(n_paths_5 % 2 == 0);
 	assert(Phi_2 % 2 == 0);
 #endif
+	[[assume(n_paths_5 % 2 == 0)]];
+	[[assume(Phi_2 % 2 == 0)]];
 
 	n_paths_5 /= 2;
 	Phi_2 /= 2;

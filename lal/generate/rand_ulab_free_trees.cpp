@@ -173,6 +173,7 @@ uint64_t _rand_ulab_free_trees::forest(
 #if defined DEBUG
 		assert(q >= 1);
 #endif
+		[[assume(q >= 1)]];
 
 		// this node should be connected to the root of T
 		m_head_vector[nt] = 0;
@@ -225,6 +226,7 @@ void _rand_ulab_free_trees::bicenter(const uint64_t n) noexcept
 #if defined DEBUG
 	assert(n % 2 == 0);
 #endif
+	[[assume(n % 2 == 0)]];
 
 	if (n == 0) {
 		return;

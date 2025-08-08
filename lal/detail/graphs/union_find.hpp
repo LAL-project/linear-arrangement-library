@@ -249,6 +249,7 @@ void update_unionfind_after_remove_edge(
 #if defined DEBUG
 	assert(root_of[u] == root_of[v]);
 #endif
+	[[assume(root_of[u] == root_of[v])]];
 
 	const uint64_t size_uv = root_size[root_of[u]];
 

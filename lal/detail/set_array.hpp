@@ -157,6 +157,8 @@ public:
 #if defined DEBUG
 		assert(i < size());
 #endif
+		[[assume(i < m_size)]];
+
 		return m_values[i];
 	}
 
@@ -194,6 +196,7 @@ public:
 #if defined DEBUG
 			assert(m_size < m_values.size());
 #endif
+			[[assume(m_size < m_values.size())]];
 
 			m_position[idx_v] = m_size;
 			m_values[m_size++] = std::move(v);
@@ -211,6 +214,7 @@ public:
 #if defined DEBUG
 			assert(m_size < m_values.size());
 #endif
+			[[assume(m_size < m_values.size())]];
 
 			m_position[idx_v] = m_size;
 			m_values[m_size++] = std::move(v);
@@ -228,6 +232,7 @@ public:
 #if defined DEBUG
 			assert(m_size > 0);
 #endif
+			[[assume(m_size > 0)]];
 
 			const auto pos_v = m_position[idx_v];
 			const auto idx_last_value = index(m_values[m_size - 1]);

@@ -98,6 +98,8 @@ HS(const graphs::rooted_tree& t) noexcept
 #endif
 
 	const uint64_t n = t.get_num_nodes();
+	[[assume(n > 0)]];
+
 	const node r = t.get_root();
 	if (n == 1) {
 		if constexpr (make_arrangement) {

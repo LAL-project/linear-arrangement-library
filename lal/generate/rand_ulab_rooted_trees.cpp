@@ -132,6 +132,8 @@ std::pair<uint64_t, uint64_t> _rand_ulab_rooted_trees::ranrut(
 	assert(j > 0);
 	assert(d > 0);
 #endif
+	[[assume(j > 0)]];
+	[[assume(d > 0)]];
 
 	// -------------------------------------------------------------
 	// Generate T' (a random rooted tree of n - j*d nodes)

@@ -471,6 +471,8 @@ template <graphs::Graph graph_t>
 		return cs;
 	}
 
+	[[assume(n >= 4)]];
+
 	/* compute C for every linear arrangement */
 	for (std::size_t i = 0; i < arrs.size(); ++i) {
 #if defined DEBUG

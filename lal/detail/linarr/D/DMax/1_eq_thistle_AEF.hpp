@@ -238,6 +238,7 @@ inline void construct_initial_arrangement(
 #if defined DEBUG
 	assert(left == right);
 #endif
+	[[assume(left == right)]];
 
 #if defined LAL_DEBUG_DMax_1_thistle
 	std::cout << "        Level per vertex:\n";

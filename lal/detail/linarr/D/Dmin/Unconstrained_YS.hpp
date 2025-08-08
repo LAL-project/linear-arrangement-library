@@ -212,6 +212,7 @@ void calculate_mla(
 #if defined DEBUG
 	assert(size_tree > 0);
 #endif
+	[[assume(size_tree > 0)]];
 
 	// Base case
 	if (size_tree == 1) {

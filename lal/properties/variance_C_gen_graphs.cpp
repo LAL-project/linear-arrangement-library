@@ -205,6 +205,8 @@ void compute_data_gen_graphs(
 #if defined DEBUG
 	assert(psi % 2 == 0);
 #endif
+	[[assume(psi % 2 == 0)]];
+
 	psi /= 2;
 
 	// hash table to reuse computations
@@ -396,6 +398,10 @@ void compute_data_gen_graphs(
 	assert(n_paths_5 % 2 == 0);
 	assert(pair_C3_L2 % 3 == 0);
 #endif
+	[[assume(Phi_2 % 2 == 0)]];
+	[[assume(n_cycles_4 % 4 == 0)]];
+	[[assume(n_paths_5 % 2 == 0)]];
+	[[assume(pair_C3_L2 % 3 == 0)]];
 
 	Lambda_2 += Lambda_1;
 	Phi_2 /= 2;

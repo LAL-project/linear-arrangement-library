@@ -66,6 +66,7 @@ numeric::rational hubiness_general_rational(const tree_t& t) noexcept
 	assert(t.is_tree());
 	assert(n > 3);
 #endif
+	[[assume(n >= 4)]];
 
 	const numeric::rational k2_tree = moment_degree_rational(t, 2);
 	const numeric::rational k2_linear = numeric::rational(4 * n - 6, n);
@@ -99,6 +100,7 @@ double hubiness_general(const tree_t& t) noexcept
 	assert(t.is_tree());
 	assert(n > 3);
 #endif
+	[[assume(n >= 4)]];
 
 	const double k2_tree = moment_degree(t, 2);
 	const double k2_linear =

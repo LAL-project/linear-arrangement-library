@@ -272,6 +272,8 @@ template <graphs::Graph graph_t, Arrangement arrangement_t>
 		return 0;
 	}
 
+	[[assume(n >= 4)]];
+
 	// boolean neighbourhood of nodes
 	array<unsigned char> boolean_neighborhood(n, 0);
 	// array L1 (same as in the pseudocode) ( size n )
@@ -367,6 +369,8 @@ template <graphs::Graph graph_t>
 	if (n < 4) {
 		return cs;
 	}
+
+	[[assume(n >= 4)]];
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> boolean_neighborhood(n, 0);

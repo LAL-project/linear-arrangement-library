@@ -251,8 +251,12 @@ public:
 	[[nodiscard]] T& operator[] (const std::size_t i) noexcept
 	{
 #if defined DEBUG
-		assert(i < size());
+		assert(m_data != nullptr);
+		assert(i < m_size);
 #endif
+		[[assume(m_data != nullptr)]];
+		[[assume(i < m_size)]];
+
 		return m_data[i];
 	}
 	/**
@@ -264,8 +268,12 @@ public:
 	[[nodiscard]] const T& operator[] (const std::size_t i) const noexcept
 	{
 #if defined DEBUG
-		assert(i < size());
+		assert(m_data != nullptr);
+		assert(i < m_size);
 #endif
+		[[assume(m_data != nullptr)]];
+		[[assume(i < m_size)]];
+
 		return m_data[i];
 	}
 
@@ -273,32 +281,48 @@ public:
 	[[nodiscard]] T& first() noexcept
 	{
 #if defined DEBUG
+		assert(m_data != nullptr);
 		assert(m_size > 0);
 #endif
+		[[assume(m_data != nullptr)]];
+		[[assume(m_size > 0)]];
+
 		return *m_data;
 	}
 	/// Constant reference to the first element in the array.
 	[[nodiscard]] const T& first() const noexcept
 	{
 #if defined DEBUG
+		assert(m_data != nullptr);
 		assert(m_size > 0);
 #endif
+		[[assume(m_data != nullptr)]];
+		[[assume(m_size > 0)]];
+
 		return *m_data;
 	}
 	/// Non-constant reference to the last element in the array.
 	[[nodiscard]] T& back() noexcept
 	{
 #if defined DEBUG
+		assert(m_data != nullptr);
 		assert(m_size > 0);
 #endif
+		[[assume(m_data != nullptr)]];
+		[[assume(m_size > 0)]];
+
 		return *(m_data + m_size - 1);
 	}
 	/// Constant reference to the first element in the array.
 	[[nodiscard]] const T& back() const noexcept
 	{
 #if defined DEBUG
+		assert(m_data != nullptr);
 		assert(m_size > 0);
 #endif
+		[[assume(m_data != nullptr)]];
+		[[assume(m_size > 0)]];
+
 		return *(m_data + m_size - 1);
 	}
 
@@ -316,8 +340,12 @@ public:
 	[[nodiscard]] T *at(const std::size_t i) noexcept
 	{
 #if defined DEBUG
+		assert(m_data != nullptr);
 		assert(i < m_size);
 #endif
+		[[assume(m_data != nullptr)]];
+		[[assume(i < m_size)]];
+
 		return &m_data[i];
 	}
 	/**
@@ -328,8 +356,12 @@ public:
 	[[nodiscard]] const T *at(const std::size_t i) const noexcept
 	{
 #if defined DEBUG
+		assert(m_data != nullptr);
 		assert(i < m_size);
 #endif
+		[[assume(m_data != nullptr)]];
+		[[assume(i < m_size)]];
+
 		return &m_data[i];
 	}
 

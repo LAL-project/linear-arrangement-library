@@ -102,6 +102,8 @@ alpha(const int64_t n, const int64_t d1, const int64_t d2) noexcept
 #if defined DEBUG
 	assert(f >= 0);
 #endif
+	[[assume(f >= 0)]];
+
 	return to_uint64(f);
 }
 
@@ -168,6 +170,9 @@ beta(const int64_t n, const int64_t d1, const int64_t d2) noexcept
 	assert(f >= 0);
 	assert(f % 2 == 0);
 #endif
+	[[assume(f >= 0)]];
+	[[assume(f % 2 == 0)]];
+
 	return to_uint64(f / 2);
 }
 

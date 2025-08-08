@@ -83,6 +83,8 @@ public:
 #if defined DEBUG
 		assert(not is_full());
 #endif
+		[[assume(m_right < m_queue.size())]];
+
 		m_queue[m_right++] = v;
 	}
 	/// Insert a new element to the queue.
@@ -91,6 +93,8 @@ public:
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
+		[[assume(m_left < m_queue.size())]];
+
 		m_queue[m_right++] = std::forward<value_t>(v);
 	}
 	/**
@@ -102,8 +106,10 @@ public:
 	[[nodiscard]] value_t&& pop() noexcept
 	{
 #if defined DEBUG
-		assert(m_left < m_queue.size());
+		assert(not is_exhausted());
 #endif
+		[[assume(m_left < m_queue.size())]];
+
 		return std::move(m_queue[m_left++]);
 	}
 
@@ -113,6 +119,8 @@ public:
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
+		[[assume(m_left < m_queue.size())]];
+
 		return m_queue[m_left];
 	}
 
@@ -122,6 +130,8 @@ public:
 #if defined DEBUG
 		assert(not is_exhausted());
 #endif
+		[[assume(m_left < m_queue.size())]];
+
 		return m_queue[m_left];
 	}
 	/// Returns the size of the queue.

@@ -126,6 +126,7 @@ public:
 #if defined DEBUG
 		assert(m_root != nullptr);
 #endif
+		[[assume(m_root != nullptr)]];
 
 		tree_node *n = m_root;
 		while (n->right != nullptr) {
@@ -179,6 +180,7 @@ public:
 #if defined DEBUG
 		assert(m_root != nullptr);
 #endif
+		[[assume(m_root != nullptr)]];
 
 		frequencies freqs{0, 0, 0};
 		tree_node *n = m_root;
@@ -308,6 +310,8 @@ public:
 #if defined DEBUG
 			assert(r != nullptr);
 #endif
+			[[assume(r != nullptr)]];
+
 			{
 				// update the counter of the leftmost node of
 				// the tree rooted at 'r'.
@@ -333,6 +337,8 @@ public:
 #if defined DEBUG
 		assert(m_root->tree_size >= 2 and n->tree_size >= 2);
 #endif
+		[[assume(m_root->tree_size >= 2 and n->tree_size >= 2)]];
+
 		m_root =
 			(m_root->height >= n->height ? join_taller(m_root, n)
 										 : join_shorter(m_root, n));
@@ -527,6 +533,7 @@ private:
 #if defined DEBUG
 			assert(left == n or right == n);
 #endif
+			[[assume(left == n or right == n)]];
 
 			n->parent = parent;
 			n->side = side;
@@ -565,6 +572,7 @@ private:
 #if defined DEBUG
 		assert(n != nullptr);
 #endif
+		[[assume(n != nullptr)]];
 
 		tree_node *P = n->parent;
 		tree_node *L = n->left;
@@ -572,6 +580,7 @@ private:
 #if defined DEBUG
 		assert(L != nullptr);
 #endif
+		[[assume(L != nullptr)]];
 
 		// update n's parent
 		//    (notice P might be null, however,
@@ -619,6 +628,7 @@ private:
 #if defined DEBUG
 		assert(n != nullptr);
 #endif
+		[[assume(n != nullptr)]];
 
 		tree_node *R = n->right;
 
@@ -801,6 +811,8 @@ private:
 #if defined DEBUG
 			assert(n != nullptr);
 #endif
+			[[assume(n != nullptr)]];
+
 			return n;
 		}
 
@@ -897,6 +909,7 @@ private:
 #if defined DEBUG
 		assert(n != nullptr);
 #endif
+		[[assume(n != nullptr)]];
 
 		const auto original = n;
 
@@ -971,6 +984,7 @@ private:
 #if defined DEBUG
 		assert(n != nullptr);
 #endif
+		[[assume(n != nullptr)]];
 
 		const auto original = n;
 
@@ -1080,6 +1094,9 @@ private:
 			assert(n->tree_counter > 0);
 			assert(n->node_counter > 0);
 #endif
+			[[assume(n->tree_counter > 0)]];
+			[[assume(n->node_counter > 0)]];
+
 			// Occurrences are important.
 			n->tree_counter -= 1;
 			n->node_counter -= 1;
@@ -1146,6 +1163,8 @@ private:
 		assert(T2 != nullptr);
 		assert(T1->tree_size > 1 and T2->tree_size > 1);
 #endif
+		[[assume(T1 != nullptr)]];
+		[[assume(T2 != nullptr)]];
 
 		// we need a new node anyway
 		tree_node *x = new tree_node();
@@ -1168,6 +1187,7 @@ private:
 #if defined DEBUG
 		assert(v != nullptr);
 #endif
+		[[assume(v != nullptr)]];
 
 		// NOTE: 'u' is allowed to be nullptr!
 		tree_node *u = v->parent;
@@ -1200,6 +1220,7 @@ private:
 #if defined DEBUG
 		assert(u != nullptr);
 #endif
+		[[assume(u != nullptr)]];
 
 		u->update();
 		return balance(u);
@@ -1221,6 +1242,8 @@ private:
 		assert(T2 != nullptr);
 		assert(T1->tree_size > 1 and T2->tree_size > 1);
 #endif
+		[[assume(T1 != nullptr)]];
+		[[assume(T2 != nullptr)]];
 
 		// we need a new node anyway
 		tree_node *x = new tree_node();
@@ -1244,6 +1267,7 @@ private:
 #if defined DEBUG
 		assert(v != nullptr);
 #endif
+		[[assume(v != nullptr)]];
 
 		// NOTE: 'u' is allowed to be nullptr!
 		tree_node *u = v->parent;
@@ -1276,6 +1300,7 @@ private:
 #if defined DEBUG
 		assert(u != nullptr);
 #endif
+		[[assume(u != nullptr)]];
 
 		u->update();
 		return balance(u);

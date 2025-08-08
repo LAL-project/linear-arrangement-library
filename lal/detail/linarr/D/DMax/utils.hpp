@@ -112,6 +112,7 @@ template <Dopt_utils::place r_place, bool make_arrangement>
 #if defined DEBUG
 	assert(ini <= fin);
 #endif
+	[[assume(ini <= fin)]];
 
 	if constexpr (make_arrangement) {
 		if constexpr (r_place == Dopt_utils::PLACE_LEFT_OF) {

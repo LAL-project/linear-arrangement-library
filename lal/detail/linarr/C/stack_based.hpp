@@ -280,6 +280,8 @@ n_C_stack_based(const graph_t& g, const arrangement_t& arr) noexcept
 		return 0;
 	}
 
+	[[assume(n >= 4)]];
+
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
 	array<uint64_t> size_adjN_u(n, 0);
@@ -361,6 +363,8 @@ template <graphs::Graph graph_t, Arrangement arrangement_t>
 	if (n < 4) {
 		return 0;
 	}
+
+	[[assume(n >= 4)]];
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)
@@ -445,6 +449,8 @@ template <graphs::Graph graph_t>
 	if (n < 4) {
 		return cs;
 	}
+
+	[[assume(n >= 4)]];
 
 	// size_adjN_u[u] := size of adjN[u]
 	// (adjN declared and defined inside the algorithm)

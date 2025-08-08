@@ -679,6 +679,7 @@ index_to_treebank_feature(const std::size_t idx) noexcept
 #if defined DEBUG
 	assert(idx < treebank_feature_to_index(treebank_feature_type::_last_value));
 #endif
+
 	return static_cast<io::treebank_feature_type>(idx);
 }
 

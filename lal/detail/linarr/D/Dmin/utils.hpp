@@ -119,6 +119,7 @@ template <bool make_arrangement>
 #if defined DEBUG
 	assert(ini <= fin);
 #endif
+	[[assume(ini <= fin)]];
 
 	// the children and the sizes of the subtrees of 'r'
 	const auto& children_size_of_r = L[r];
@@ -404,6 +405,8 @@ template <bool make_arrangement>
 #if defined DEBUG
 			assert(pos >= 0);
 #endif
+			[[assume(pos >= 0)]];
+
 			arr.assign(v, to_uint64(pos));
 		}
 	}

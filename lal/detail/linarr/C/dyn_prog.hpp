@@ -284,6 +284,8 @@ n_C_dynamic_programming(const graph_t& g, const arrangement_t& arr) noexcept
 		return 0;
 	}
 
+	[[assume(n >= 4)]];
+
 	// boolean neighbourhood of nodes
 	array<unsigned char> bool_neighs(n);
 
@@ -377,6 +379,8 @@ template <graphs::Graph graph_t, Arrangement arrangement_t>
 #if defined DEBUG
 	assert(arr.size() == 0 or arr.size() == n);
 #endif
+
+	[[assume(n >= 4)]];
 
 	// boolean neighbourhood of nodes
 	array<unsigned char> bool_neighs(n);
@@ -480,6 +484,8 @@ template <graphs::Graph graph_t>
 	if (n < 4) {
 		return cs;
 	}
+
+	[[assume(n >= 4)]];
 
 	/* allocate memory */
 	const std::size_t n_elems = 2 * (n - 3) * (n - 3);

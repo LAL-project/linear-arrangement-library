@@ -94,6 +94,8 @@ AEF(const graphs::free_tree& t) noexcept
 #endif
 
 	const uint64_t n = t.get_num_nodes();
+	[[assume(n > 0)]];
+
 	if (n == 1) {
 		if constexpr (make_arrangement) {
 			return {0, linear_arrangement::identity(1)};

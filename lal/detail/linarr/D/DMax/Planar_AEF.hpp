@@ -298,6 +298,7 @@ all_max_sum_lengths_values(const graphs::free_tree& t) noexcept
 			return 0;
 		}
 	}
+	[[assume(n >= 3)]];
 
 	const auto M = make_sorted_adjacency_list(t);
 

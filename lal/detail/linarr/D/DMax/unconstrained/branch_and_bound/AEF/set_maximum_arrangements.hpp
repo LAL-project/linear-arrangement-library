@@ -117,6 +117,7 @@ public:
 #if defined DEBUG
 		assert(i < m_amount.size());
 #endif
+
 		return m_amount[i];
 	}
 
