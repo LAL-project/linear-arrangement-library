@@ -176,6 +176,9 @@ HEADERS += \
 	detail/sorting/sorting_types.hpp \
 	detail/type_traits/type_sequence.hpp \
 	detail/utilities/tree_isomorphism.hpp \
+	detail/utilities/tree_isomorphism_fast_noniso.hpp \
+	detail/utilities/tree_isomorphism_string.hpp \
+	detail/utilities/tree_isomorphism_tuple.hpp \
 	generate.hpp \
 	generate/all_arrangements.hpp \
 	generate/all_bipartite_arrangements.hpp \
