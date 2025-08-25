@@ -131,8 +131,6 @@ typedef std::vector<std::vector<sorted_adjacency_list_info>>
 [[nodiscard]] inline sorted_adjacency_list
 make_sorted_adjacency_list(const graphs::free_tree& t) noexcept
 {
-	typedef std::pair<edge, uint64_t> edge_size;
-
 	const uint64_t n = t.get_num_nodes();
 	const uint64_t m = n - 1;
 
@@ -153,7 +151,7 @@ make_sorted_adjacency_list(const graphs::free_tree& t) noexcept
 			S.size(),
 			[](const edge_size& T) -> std::size_t
 			{
-				return std::get<1>(T);
+				return T.size;
 			}
 		);
 	}
@@ -163,8 +161,8 @@ make_sorted_adjacency_list(const graphs::free_tree& t) noexcept
 	for (std::size_t idx = 0; idx < S.size(); ++idx) {
 		const auto& T = S[idx];
 
-		const auto [u, v] = T.first;
-		const uint64_t nv = T.second;
+		const auto [u, v] = T.e;
+		const uint64_t nv = T.size;
 		const uint64_t sigma_u_v = M[u].size();
 
 		M[u].push_back({// node identifier
