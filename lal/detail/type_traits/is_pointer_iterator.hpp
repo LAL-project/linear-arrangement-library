@@ -49,16 +49,31 @@ namespace lal {
 namespace detail {
 
 /**
+ * @brief A concept for pointers
+ * @tparam pointer_t The iterator type.
+ * @tparam value_t The iterated type.
+ */
+template <typename pointer_t, typename value_t>
+concept Pointer = std::is_pointer_v<pointer_t> and
+				  std::is_same_v<std::remove_pointer_t<pointer_t>, value_t>;
+
+/**
+ * @brief A concept for iterators
+ * @tparam iterator_t The iterator type.
+ * @tparam value_t The iterated type.
+ */
+template <typename iterator_t, typename value_t>
+concept Iterator = std::
+	is_same_v<typename std::iterator_traits<iterator_t>::value_type, value_t>;
+
+/**
  * @brief A concept for pointers or iterators
  * @tparam iterator_t The iterator type.
  * @tparam value_t The iterated type.
  */
 template <typename iterator_t, typename value_t>
 concept PointerOrIterator =
-	std::is_pointer_v<iterator_t> or
-	std::is_same_v<
-		typename std::iterator_traits<iterator_t>::value_type,
-		value_t>;
+	Pointer<iterator_t, value_t> or Iterator<iterator_t, value_t>;
 
 } // namespace detail
 } // namespace lal
