@@ -49,10 +49,10 @@ namespace sorting {
 namespace radix {
 
 /**
- * @brief from_buckets_to_queue
+ * @brief Move the elements in the buckets to the actual array.
  * @tparam value_t A type for an array (or vector) of values.
- * @param buckets
- * @param queue
+ * @param buckets The series of buckets with the sorted elements.
+ * @param queue The array with the elements to be sorted.
  */
 template <typename value_t>
 void from_buckets_to_queue(
@@ -70,13 +70,13 @@ void from_buckets_to_queue(
 } // namespace radix
 
 /**
- * @brief radix_sort
- * @tparam type
+ * @brief Radix sort algorithm adapted to arbitrary lists of elements.
+ * @tparam type The type of ordering.
  * @tparam value_t A type for an array (or vector) of values.
- * @param queue
- * @param max_value
- * @param max_length
- * @param f
+ * @param queue The array with the elements to be sorted.
+ * @param max_value An upper bound of the maximum value over all elements in
+ * every list of @e queue.
+ * @param max_length An upper bound of the length of the longest list in @e queue.
  */
 template <sort_type type, typename value_t>
 void radix_sort(
@@ -108,13 +108,10 @@ void radix_sort(
 }
 
 /**
- * @brief radix_sort
- * @tparam type
+ * @brief Radix sort algorithm adapted to arbitrary lists of elements.
+ * @tparam type The type of ordering.
  * @tparam value_t A type for an array (or vector) of values.
- * @param queue
- * @param max_value
- * @param max_length
- * @param f
+ * @param queue The array with the elements to be sorted.
  */
 template <sort_type type, typename value_t>
 void radix_sort(array<value_t>& queue)
