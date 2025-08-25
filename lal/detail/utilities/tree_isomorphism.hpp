@@ -91,37 +91,6 @@ enum class algorithm {
 	tuple_large
 };
 
-/**
- * @brief Calls one of the isomorphism algorithms.
- * @tparam algo The algorithm to call.
- * @param T1 Input rooted tree as a @ref lal::graphs::free_tree object.
- * @param r1 Root of the first tree.
- * @param T2 Input rooted tree as a @ref lal::graphs::free_tree object.
- * @param r2 Root of the second tree.
- * @returns Whether or not the rooted trees are isomorphic.
- */
-template <isomorphism::algorithm algo>
-[[nodiscard]] inline bool iso_func(
-	const graphs::free_tree& t1,
-	const node r1,
-	const graphs::free_tree& t2,
-	const node r2
-) noexcept
-{
-	if constexpr (algo == isomorphism::algorithm::string) {
-		return are_rooted_trees_isomorphic_string(t1, r1, t2, r2);
-	}
-	else if constexpr (algo == isomorphism::algorithm::tuple_small) {
-		return are_rooted_trees_isomorphic_tuple_small(t1, r1, t2, r2);
-	}
-	else if constexpr (algo == isomorphism::algorithm::tuple_large) {
-		return are_rooted_trees_isomorphic_tuple_large(t1, r1, t2, r2);
-	}
-	else {
-		static_assert(false);
-	}
-}
-
 } // namespace isomorphism
 
 /**
@@ -259,19 +228,20 @@ template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 
 	// the centres have only one vertex
 	if (size1 == 1) {
-		return isomorphism::iso_func<algo>(t1, c1.first, t2, c2.first);
+		return are_trees_isomorphic<algo, false>(t1, c1.first, t2, c2.first);
 	}
 
 	// the centres have two vertices
 
 	// try with the first centre of the second tree
-	const bool iso1 = isomorphism::iso_func<algo>(t1, c1.first, t2, c2.first);
+	const bool iso1 =
+		are_trees_isomorphic<algo, false>(t1, c1.first, t2, c2.first);
 	if (iso1) {
 		return true;
 	}
 
 	// try with the second centre of the second tree
-	return isomorphism::iso_func<algo>(t1, c1.first, t2, c2.second);
+	return are_trees_isomorphic<algo, false>(t1, c1.first, t2, c2.first);
 }
 
 } // namespace detail
