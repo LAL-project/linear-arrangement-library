@@ -54,8 +54,13 @@ bool are_trees_isomorphic(
 			detail::isomorphism::algorithm::string,
 			true>(t1, t2);
 	}
+	if (n < 200) {
+		return detail::are_trees_isomorphic<
+			detail::isomorphism::algorithm::tuple_small,
+			true>(t1, t2);
+	}
 	return detail::are_trees_isomorphic<
-		detail::isomorphism::algorithm::tuple,
+		detail::isomorphism::algorithm::tuple_large,
 		true>(t1, t2);
 }
 
@@ -68,13 +73,19 @@ bool are_trees_isomorphic(
 	assert(t2.is_tree());
 #endif
 
-	if (t1.get_num_nodes() < 40) {
+	const uint64_t n = t1.get_num_nodes();
+	if (n < 40) {
 		return detail::are_trees_isomorphic<
 			detail::isomorphism::algorithm::string,
 			true>(t1, t2);
 	}
+	if (n < 200) {
+		return detail::are_trees_isomorphic<
+			detail::isomorphism::algorithm::tuple_small,
+			true>(t1, t2);
+	}
 	return detail::are_trees_isomorphic<
-		detail::isomorphism::algorithm::tuple,
+		detail::isomorphism::algorithm::tuple_large,
 		true>(t1, t2);
 }
 
@@ -90,13 +101,19 @@ bool are_trees_isomorphic(
 	assert(t2.is_tree());
 #endif
 
-	if (t1.get_num_nodes() < 40) {
+	const uint64_t n = t1.get_num_nodes();
+	if (n < 40) {
 		return detail::are_trees_isomorphic<
 			detail::isomorphism::algorithm::string,
 			true>(t1, r1, t2, r2);
 	}
+	if (n < 200) {
+		return detail::are_trees_isomorphic<
+			detail::isomorphism::algorithm::tuple_small,
+			true>(t1, r1, t2, r2);
+	}
 	return detail::are_trees_isomorphic<
-		detail::isomorphism::algorithm::tuple,
+		detail::isomorphism::algorithm::tuple_large,
 		true>(t1, r1, t2, r2);
 }
 

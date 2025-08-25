@@ -71,10 +71,24 @@ enum class algorithm {
 	 * assumed to be under 2^64. This algorithm is more memory friendly.
 	 *
 	 * This algorithm implements the algorithm described in \cite Aho1974a.
+	 * The implementation is more suitable for small tress.
 	 *
 	 * See function @ref lal::detail::are_rooted_trees_isomorphic_tuple.
 	 */
-	tuple
+	tuple_small,
+	/**
+	 * @brief A tuple-based algorithm.
+	 *
+	 * This implementation uses tuples to build an identifier of every vertex.
+	 * The tuple is constructed using integer values, which can be safely
+	 * assumed to be under 2^64. This algorithm is more memory friendly.
+	 *
+	 * This algorithm implements the algorithm described in \cite Aho1974a.
+	 * The implementation is more suitable for large tress.
+	 *
+	 * See function @ref lal::detail::are_rooted_trees_isomorphic_tuple.
+	 */
+	tuple_large
 };
 
 /**
@@ -97,11 +111,10 @@ template <isomorphism::algorithm algo>
 	if constexpr (algo == isomorphism::algorithm::string) {
 		return are_rooted_trees_isomorphic_string(t1, r1, t2, r2);
 	}
-	else if constexpr (algo == isomorphism::algorithm::tuple) {
-		const uint64_t n = t1.get_num_nodes();
-		if (n < 200) {
-			return are_rooted_trees_isomorphic_tuple_small(t1, r1, t2, r2);
-		}
+	else if constexpr (algo == isomorphism::algorithm::tuple_small) {
+		return are_rooted_trees_isomorphic_tuple_small(t1, r1, t2, r2);
+	}
+	else if constexpr (algo == isomorphism::algorithm::tuple_large) {
 		return are_rooted_trees_isomorphic_tuple_large(t1, r1, t2, r2);
 	}
 	else {
@@ -142,11 +155,10 @@ template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 	if constexpr (algo == isomorphism::algorithm::string) {
 		return are_rooted_trees_isomorphic_string(t1, t2);
 	}
-	else if constexpr (algo == isomorphism::algorithm::tuple) {
-		const uint64_t n = t1.get_num_nodes();
-		if (n < 200) {
-			return are_rooted_trees_isomorphic_tuple_small(t1, t2);
-		}
+	else if constexpr (algo == isomorphism::algorithm::tuple_small) {
+		return are_rooted_trees_isomorphic_tuple_small(t1, t2);
+	}
+	else if constexpr (algo == isomorphism::algorithm::tuple_large) {
 		return are_rooted_trees_isomorphic_tuple_large(t1, t2);
 	}
 	else {
@@ -190,11 +202,10 @@ template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 	if constexpr (algo == isomorphism::algorithm::string) {
 		return are_rooted_trees_isomorphic_string(t1, r1, t2, r2);
 	}
-	else if constexpr (algo == isomorphism::algorithm::tuple) {
-		const uint64_t n = t1.get_num_nodes();
-		if (n < 200) {
-			return are_rooted_trees_isomorphic_tuple_small(t1, r1, t2, r2);
-		}
+	else if constexpr (algo == isomorphism::algorithm::tuple_small) {
+		return are_rooted_trees_isomorphic_tuple_small(t1, r1, t2, r2);
+	}
+	else if constexpr (algo == isomorphism::algorithm::tuple_large) {
 		return are_rooted_trees_isomorphic_tuple_large(t1, r1, t2, r2);
 	}
 	else {
