@@ -251,7 +251,7 @@ void calculate_mla(
 			M = std::max(M, s_ui);
 			ord[i].v = ui;
 		}
-		sorting::counting_sort<node_size, sorting::sort_type::non_increasing>(
+		sorting::counting_sort<sorting::sort_type::non_increasing>(
 			ord.begin(),
 			ord.end(),
 			M,

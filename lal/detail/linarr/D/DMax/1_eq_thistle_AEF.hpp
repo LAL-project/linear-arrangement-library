@@ -250,7 +250,7 @@ inline void construct_initial_arrangement(
 
 	// Sort the vertices by level (first, those with positive level. Then, those
 	// with negative level). Independent tasks.
-	sorting::counting_sort<node, sorting::sort_type::non_increasing>(
+	sorting::counting_sort<sorting::sort_type::non_increasing>(
 		inv_arr.begin(),
 		inv_arr.begin() + left,
 		2 * n,
@@ -260,7 +260,7 @@ inline void construct_initial_arrangement(
 			return to_uint64(lal_level_vertex_(u) - min_level_value);
 		}
 	);
-	sorting::counting_sort<node, sorting::sort_type::non_increasing>(
+	sorting::counting_sort<sorting::sort_type::non_increasing>(
 		inv_arr.begin() + right + 1,
 		inv_arr.end(),
 		2 * n,
@@ -314,7 +314,7 @@ inline void sort_level_sequences(
 #endif
 
 		// sort interval [p,q)
-		sorting::counting_sort<node, sorting::sort_type::non_decreasing>(
+		sorting::counting_sort<sorting::sort_type::non_decreasing>(
 			inv_arr.begin() + p,
 			inv_arr.begin() + q,
 			2,

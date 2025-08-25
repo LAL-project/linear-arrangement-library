@@ -146,11 +146,11 @@ struct memory {
  * range to be sorted.
  */
 template <
-	typename value_t,
 	sort_type type,
 	bool memory_has_frequencies,
 	// Can be inferred \/ ...
-	PointerOrIterator<value_t> iterator_t,
+	typename iterator_t,
+	typename value_t = std::iter_value_t<iterator_t>,
 	typename Callable>
 void counting_sort(
 	const iterator_t begin,
@@ -244,10 +244,10 @@ void counting_sort(
  * range to be sorted.
  */
 template <
-	typename value_t,
 	sort_type type,
 	// Can be inferred \/ ...
-	PointerOrIterator<value_t> iterator_t,
+	typename iterator_t,
+	typename value_t = std::iter_value_t<iterator_t>,
 	typename Callable>
 void counting_sort(
 	const iterator_t begin,
@@ -269,7 +269,9 @@ void counting_sort(
 
 	countingsort::memory<value_t> mem(largest_key + 1, upper_bound_size);
 
-	counting_sort<value_t, type, false, iterator_t>(begin, end, key, mem);
+	counting_sort<type, false, iterator_t, value_t, Callable>(
+		begin, end, key, mem
+	);
 }
 
 } // namespace sorting

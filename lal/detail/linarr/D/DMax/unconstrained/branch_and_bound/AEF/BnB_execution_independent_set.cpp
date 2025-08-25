@@ -92,7 +92,7 @@ AEF_BnB::exe_independent_set(const uint64_t D_p, position pos) noexcept
 			}
 		}
 
-		sorting::counting_sort<node, sorting::sort_type::non_decreasing>(
+		sorting::counting_sort<sorting::sort_type::non_decreasing>(
 			remain_verts.begin(),
 			remain_verts.end(),
 			max_deg,

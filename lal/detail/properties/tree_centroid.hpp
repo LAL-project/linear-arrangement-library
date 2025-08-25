@@ -369,7 +369,7 @@ template <graphs::Tree tree_t>
 	const uint64_t n = t.get_num_nodes();
 
 	// sort the edges by directional size
-	sorting::counting_sort<edge_size, sorting::sort_type::non_increasing>(
+	sorting::counting_sort<sorting::sort_type::non_increasing>(
 		centroid_subtree_sizes.second.begin(),
 		centroid_subtree_sizes.second.end(),
 		n,

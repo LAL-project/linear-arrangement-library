@@ -121,7 +121,7 @@ optimal_bipartite_arrangement_AEF(
 
 		const auto sort_nodes = [&](array<node>& nodes, std::size_t s)
 		{
-			sorting::counting_sort<node, type>(
+			sorting::counting_sort<type>(
 				nodes.begin(),
 				nodes.begin() + s,
 				n - 1,

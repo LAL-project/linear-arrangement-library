@@ -175,7 +175,7 @@ void make_sorted_adjacency_list_rooted(
 		}
 
 		// sort all tuples in L using the size of the subtree
-		sorting::counting_sort<edge_size, type, true>(
+		sorting::counting_sort<type, true>(
 			edge_list.begin(),
 			edge_list.end(),
 			[](const edge_size& T) -> std::size_t

@@ -146,7 +146,7 @@ make_sorted_adjacency_list(const graphs::free_tree& t) noexcept
 		calculate_bidirectional_sizes(t, n, 0, S.begin());
 
 		// sort all tuples in bidir_sizes using the size of the subtree
-		sorting::counting_sort<edge_size, sorting::sort_type::non_increasing>(
+		sorting::counting_sort<sorting::sort_type::non_increasing>(
 			S.begin(),
 			S.end(),
 			n,
@@ -195,7 +195,7 @@ make_sorted_adjacency_list(const graphs::free_tree& t) noexcept
 #endif
 
 	// sort all tuples in bidir_idxs using the size of the subtree
-	sorting::counting_sort<edge_size_sigma, sorting::sort_type::non_increasing>(
+	sorting::counting_sort<sorting::sort_type::non_increasing>(
 		J.begin(),
 		J.end(),
 		n,

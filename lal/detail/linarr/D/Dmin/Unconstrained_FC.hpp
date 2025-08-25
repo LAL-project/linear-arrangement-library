@@ -339,7 +339,7 @@ get_ordering(const graphs::free_tree& t, const node u) noexcept
 
 		M = std::max(M, s_ui);
 	}
-	sorting::counting_sort<node_size, sorting::sort_type::non_increasing>(
+	sorting::counting_sort<sorting::sort_type::non_increasing>(
 		ord.begin(),
 		ord.end(),
 		M,

@@ -228,7 +228,7 @@ template <class depflux, Arrangement arrangement_t>
 
 		// sort the dependencies by ending position so that edges
 		// can be erased more efficiently in the next iteration
-		sorting::counting_sort<edge, sorting::sort_type::non_decreasing, false>(
+		sorting::counting_sort<sorting::sort_type::non_decreasing, false>(
 			// iterators to the container to be sorted
 			cur_deps.begin(),
 			cur_deps.end(),

@@ -98,17 +98,17 @@ void split_vertices_by_color(
 	}
 	const auto sort_nodes = [&](std::vector<node>& nodes)
 	{
-		detail::sorting::
-			counting_sort<node, detail::sorting::sort_type::non_decreasing>(
-				nodes.begin(),
-				nodes.end(),
-				n - 1,
-				nodes.size(),
-				[&](const node u) -> std::size_t
-				{
-					return t.get_degree(u);
-				}
-			);
+		detail::sorting::counting_sort<
+			detail::sorting::sort_type::non_decreasing>(
+			nodes.begin(),
+			nodes.end(),
+			n - 1,
+			nodes.size(),
+			[&](const node u) -> std::size_t
+			{
+				return t.get_degree(u);
+			}
+		);
 	};
 	sort_nodes(blue_vertices_sorted_by_degree);
 	sort_nodes(red_vertices_sorted_by_degree);
