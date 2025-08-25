@@ -48,7 +48,8 @@ bool are_trees_isomorphic(
 	assert(t2.is_rooted_tree());
 #endif
 
-	if (t1.get_num_nodes() < 40) {
+	const uint64_t n = t1.get_num_nodes();
+	if (n < 40) {
 		return detail::are_trees_isomorphic<
 			detail::isomorphism::algorithm::string,
 			true>(t1, t2);

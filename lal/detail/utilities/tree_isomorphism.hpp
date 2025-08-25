@@ -40,7 +40,8 @@
 #endif
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/properties/tree_centre.hpp>
-#include <lal/detail/utilities/tree_isomorphism_tuple.hpp>
+#include <lal/detail/utilities/tree_isomorphism_tuple_small.hpp>
+#include <lal/detail/utilities/tree_isomorphism_tuple_large.hpp>
 #include <lal/detail/utilities/tree_isomorphism_string.hpp>
 #include <lal/detail/utilities/tree_isomorphism_fast_noniso.hpp>
 
@@ -87,17 +88,21 @@ enum class algorithm {
  */
 template <isomorphism::algorithm algo>
 [[nodiscard]] inline bool iso_func(
-	const graphs::free_tree& T1,
+	const graphs::free_tree& t1,
 	const node r1,
-	const graphs::free_tree& T2,
+	const graphs::free_tree& t2,
 	const node r2
 ) noexcept
 {
 	if constexpr (algo == isomorphism::algorithm::string) {
-		return are_rooted_trees_isomorphic_string(T1, r1, T2, r2);
+		return are_rooted_trees_isomorphic_string(t1, r1, t2, r2);
 	}
 	else if constexpr (algo == isomorphism::algorithm::tuple) {
-		return are_rooted_trees_isomorphic_tuple(T1, r1, T2, r2);
+		const uint64_t n = t1.get_num_nodes();
+		if (n < 200) {
+			return are_rooted_trees_isomorphic_tuple_small(t1, r1, t2, r2);
+		}
+		return are_rooted_trees_isomorphic_tuple_large(t1, r1, t2, r2);
 	}
 	else {
 		static_assert(false);
@@ -138,7 +143,11 @@ template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 		return are_rooted_trees_isomorphic_string(t1, t2);
 	}
 	else if constexpr (algo == isomorphism::algorithm::tuple) {
-		return are_rooted_trees_isomorphic_tuple(t1, t2);
+		const uint64_t n = t1.get_num_nodes();
+		if (n < 200) {
+			return are_rooted_trees_isomorphic_tuple_small(t1, t2);
+		}
+		return are_rooted_trees_isomorphic_tuple_large(t1, t2);
 	}
 	else {
 		static_assert(false);
@@ -182,7 +191,11 @@ template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 		return are_rooted_trees_isomorphic_string(t1, r1, t2, r2);
 	}
 	else if constexpr (algo == isomorphism::algorithm::tuple) {
-		return are_rooted_trees_isomorphic_tuple(t1, r1, t2, r2);
+		const uint64_t n = t1.get_num_nodes();
+		if (n < 200) {
+			return are_rooted_trees_isomorphic_tuple_small(t1, r1, t2, r2);
+		}
+		return are_rooted_trees_isomorphic_tuple_large(t1, r1, t2, r2);
 	}
 	else {
 		static_assert(false);

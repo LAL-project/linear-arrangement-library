@@ -144,6 +144,7 @@ HEADERS += \
 	detail/properties/tree_maximum_caterpillar.hpp \
 	detail/queue_array.hpp \
 	detail/set_array.hpp \
+	detail/sorting/radix_sort.hpp \
 	detail/type_traits/bool_sequence.hpp \
 	detail/type_traits/conditional_list.hpp \
 	detail/type_traits/first_true.hpp \
@@ -179,6 +180,8 @@ HEADERS += \
 	detail/utilities/tree_isomorphism_fast_noniso.hpp \
 	detail/utilities/tree_isomorphism_string.hpp \
 	detail/utilities/tree_isomorphism_tuple.hpp \
+	detail/utilities/tree_isomorphism_tuple_large.hpp \
+	detail/utilities/tree_isomorphism_tuple_small.hpp \
 	generate.hpp \
 	generate/all_arrangements.hpp \
 	generate/all_bipartite_arrangements.hpp \
