@@ -47,9 +47,9 @@ namespace sorting {
 
 /// The different types of sorting patterns
 enum class sort_type {
-	/// Non-decreasing sort type.
+	/// Non-decreasing sort type (a.k.a. increasing)
 	non_decreasing,
-	/// Non-increasing sort.
+	/// Non-increasing sort (a.k.a. decreasing)
 	non_increasing
 };
 
