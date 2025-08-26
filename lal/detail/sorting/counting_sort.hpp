@@ -58,7 +58,7 @@ namespace detail {
 namespace sorting {
 
 /**
- * @brief Types used only by the counting sort algorithm.
+ * @brief Namespace that contains specific methods and types used only by the counting sort algorithm.
  *
  * For details on the algorithm, see https://en.wikipedia.org/wiki/Counting_sort
  * and \cite Cormen2001a.

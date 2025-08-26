@@ -39,6 +39,9 @@
 #include <vector>
 
 // lal includes
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+#include <lal/bibliography.hpp>
+#endif
 #include <lal/detail/array.hpp>
 #include <lal/detail/sorting/sorting_types.hpp>
 
@@ -46,7 +49,8 @@ namespace lal {
 namespace detail {
 namespace sorting {
 
-namespace radix {
+/// Namespace that contains specific methods and types used only by the radix sort algorithm.
+namespace radixsort {
 
 /**
  * @brief Move the elements in the buckets to the actual array.
@@ -67,7 +71,7 @@ void from_buckets_to_queue(
 	}
 }
 
-} // namespace radix
+} // namespace radixsort
 
 /**
  * @brief Radix sort algorithm adapted to arbitrary lists of elements.
@@ -85,6 +89,10 @@ void radix_sort(
 	const std::size_t max_length
 )
 {
+#if defined LAL_REGISTER_BIBLIOGRAPHY
+	bibliography::register_entry(bibliography::entries::Aho1974a);
+#endif
+
 	array<std::vector<value_t>> buckets(max_value + 1);
 
 	for (std::size_t j = max_length; j >= 1; --j) {
@@ -99,7 +107,7 @@ void radix_sort(
 			buckets[elem].emplace_back(std::move(queue[i]));
 		}
 
-		radix::from_buckets_to_queue<value_t>(buckets, queue);
+		radixsort::from_buckets_to_queue<value_t>(buckets, queue);
 	}
 
 	if constexpr (type == sort_type::non_increasing) {
