@@ -241,7 +241,7 @@ template <isomorphism::algorithm algo, bool check_fast_noniso = true>
 	}
 
 	// try with the second centre of the second tree
-	return are_trees_isomorphic<algo, false>(t1, c1.first, t2, c2.first);
+	return are_trees_isomorphic<algo, false>(t1, c1.first, t2, c2.second);
 }
 
 } // namespace detail
