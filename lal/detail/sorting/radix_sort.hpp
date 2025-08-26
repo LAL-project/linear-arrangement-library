@@ -68,6 +68,7 @@ void from_buckets_to_queue(
 		for (value_t& k : buckets[i]) {
 			queue[j++] = std::move(k);
 		}
+		buckets[i].clear();
 	}
 }
 
@@ -96,9 +97,6 @@ void radix_sort(
 	array<std::vector<value_t>> buckets(max_value + 1);
 
 	for (std::size_t j = max_length; j >= 1; --j) {
-		for (std::size_t i = 0; i < buckets.size(); ++i) {
-			buckets[i].clear();
-		}
 
 		for (std::size_t i = 0; i < queue.size(); ++i) {
 			const std::size_t elem =
