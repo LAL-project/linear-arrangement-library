@@ -87,13 +87,13 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (t.get_num_nodes_component(X) == 1) {
+	if (t.get_num_nodes_component(X) == 1) [[unlikely]] {
 		return {X, n + 1};
 	}
 
 	// Second simple case:
 	// if the connected component has two nodes then
-	if (t.get_num_nodes_component(X) == 2) {
+	if (t.get_num_nodes_component(X) == 2) [[unlikely]] {
 		// case component_size==1 is actually the first simple case
 		const node v1 = X;
 
@@ -109,6 +109,8 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 		}
 		return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
 	}
+
+	// Third case: the component has three nodes or more...
 
 	BFS<tree_t> bfs(t);
 
@@ -167,9 +169,6 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	assert(_size_trimmed == size_trimmed);
 #endif
 
-	// Third case: the component has three nodes or more...
-
-	// ---------------------------------------------------
 	bfs.reset();
 
 	// ---------------------------------------------------
@@ -202,10 +201,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 		[&](const auto&, node u, node v, bool) -> void
 		{
 			// ignore the edge if one of its nodes has already been trimmed out.
-			if (trimmed_degree[u] == 0) {
-				return;
-			}
-			if (trimmed_degree[v] == 0) {
+			if (trimmed_degree[u] == 0 or trimmed_degree[v] == 0) {
 				return;
 			}
 
@@ -245,8 +241,13 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 		}
 	);
 
-	// do the bfs from the leaves inwards
-	bfs.set_use_rev_edges(t.is_directed());
+	// run the bfs from the leaves inwards
+	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
+		bfs.set_use_rev_edges(false);
+	}
+	else {
+		bfs.set_use_rev_edges(true);
+	}
 	bfs.start_at(tree_leaves);
 
 	if (has_single_center) {
@@ -267,7 +268,12 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 
 	// -- reset the bfs
 	bfs.reset();
-	bfs.set_use_rev_edges(t.is_directed());
+	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
+		bfs.set_use_rev_edges(false);
+	}
+	else {
+		bfs.set_use_rev_edges(true);
+	}
 
 	node v1, v2;
 	v1 = v2 = n;
