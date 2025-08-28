@@ -54,7 +54,7 @@ namespace radixsort {
 
 /**
  * @brief Move the elements in the buckets to the actual array.
- * @tparam value_t A type for an array (or vector) of values.
+ * @tparam value_t The values to be sorted.
  * @param buckets The series of buckets with the sorted elements.
  * @param queue The array with the elements to be sorted.
  */
@@ -76,18 +76,21 @@ void from_buckets_to_queue(
 
 /**
  * @brief Radix sort algorithm adapted to arbitrary lists of elements.
+ *
+ * This implementation may not be appropriate when @e value_t is a number type.
  * @tparam type The type of ordering.
- * @tparam value_t A type for an array (or vector) of values.
+ * @tparam value_t The values to be sorted.
  * @param queue The array with the elements to be sorted.
  * @param max_value An upper bound of the maximum value over all elements in
  * every list of @e queue.
  * @param max_length An upper bound of the length of the longest list in @e queue.
  */
-template <sort_type type, typename value_t>
+template <sort_type type, typename value_t, typename Callable>
 void radix_sort(
 	array<value_t>& queue,
 	const std::size_t max_value,
-	const std::size_t max_length
+	const std::size_t max_length,
+	const Callable& digit
 )
 {
 #if defined LAL_REGISTER_BIBLIOGRAPHY
@@ -99,9 +102,7 @@ void radix_sort(
 	for (std::size_t j = max_length; j >= 1; --j) {
 
 		for (std::size_t i = 0; i < queue.size(); ++i) {
-			const std::size_t elem =
-				(j - 1 < queue[i].size() ? queue[i][j - 1] : 0);
-
+			const std::size_t elem = digit(queue[i], j - 1);
 			buckets[elem].emplace_back(std::move(queue[i]));
 		}
 
@@ -115,12 +116,14 @@ void radix_sort(
 
 /**
  * @brief Radix sort algorithm adapted to arbitrary lists of elements.
+ *
+ * This implementation may not be appropriate when @e value_t is a number type.
  * @tparam type The type of ordering.
  * @tparam value_t A type for an array (or vector) of values.
  * @param queue The array with the elements to be sorted.
  */
-template <sort_type type, typename value_t>
-void radix_sort(array<value_t>& queue)
+template <sort_type type, typename value_t, typename Callable>
+void radix_sort(array<value_t>& queue, const Callable& digit)
 {
 	std::size_t max_value = 0;
 	std::size_t max_length = 0;
@@ -130,7 +133,7 @@ void radix_sort(array<value_t>& queue)
 			max_value = std::max(max_value, q[i]);
 		}
 	}
-	radix_sort<type, value_t>(queue, max_value, max_length);
+	radix_sort<type, value_t>(queue, max_value, max_length, digit);
 }
 
 } // namespace sorting
