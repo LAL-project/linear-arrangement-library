@@ -143,6 +143,8 @@ inline void calculate_ids_large(
 	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
 
+	static constexpr auto increasing = sorting::sort_type::non_decreasing;
+
 	const uint64_t n = t1.get_num_nodes();
 
 	isomorphism::LevelList levels_1, levels_2;
@@ -215,11 +217,11 @@ inline void calculate_ids_large(
 
 		// Step 2: Sort the sequences of the current level. If they differ,
 		// the trees are *not* isomorphic.
-		sorting::radix_sort<sorting::sort_type::non_decreasing>(
-			S1, max_value_S1, max_length_S1
+		sorting::radix_sort<increasing>(
+			S1, max_value_S1, max_length_S1, isomorphism::access_tuple
 		);
-		sorting::radix_sort<sorting::sort_type::non_decreasing>(
-			S2, max_value_S2, max_length_S2
+		sorting::radix_sort<increasing>(
+			S2, max_value_S2, max_length_S2, isomorphism::access_tuple
 		);
 
 		if (S1 != S2) {
@@ -228,12 +230,8 @@ inline void calculate_ids_large(
 
 		// Step 3: Construct the ids of the current tuples.
 		if (h > 0) {
-			isomorphism::calculate_ids_large(
-				t1, S1, tuple_ids_1, max_value_S1
-			);
-			isomorphism::calculate_ids_large(
-				t2, S2, tuple_ids_2, max_value_S2
-			);
+			isomorphism::calculate_ids_large(t1, S1, tuple_ids_1, max_value_S1);
+			isomorphism::calculate_ids_large(t2, S2, tuple_ids_2, max_value_S2);
 
 			--h;
 		}
@@ -262,6 +260,8 @@ inline void calculate_ids_large(
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
+
+	static constexpr auto increasing = sorting::sort_type::non_decreasing;
 
 	const uint64_t n = t1.get_num_nodes();
 
@@ -338,11 +338,12 @@ inline void calculate_ids_large(
 
 		// Step 2: Sort the sequences of the current level. If they differ,
 		// the trees are *not* isomorphic.
-		sorting::radix_sort<sorting::sort_type::non_decreasing>(
-			S1, max_value_S1, max_length_S1
+		sorting::radix_sort<increasing>(
+			S1, max_value_S1, max_length_S1, isomorphism::access_tuple
+
 		);
-		sorting::radix_sort<sorting::sort_type::non_decreasing>(
-			S2, max_value_S2, max_length_S2
+		sorting::radix_sort<increasing>(
+			S2, max_value_S2, max_length_S2, isomorphism::access_tuple
 		);
 
 		if (S1 != S2) {

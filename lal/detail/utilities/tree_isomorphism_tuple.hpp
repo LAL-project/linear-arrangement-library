@@ -68,16 +68,20 @@ struct tuple_node {
 	}
 	[[nodiscard]] std::size_t operator[] (const std::size_t i) const noexcept
 	{
-#if defined DEBUG
-		assert(i < tuple.size());
-#endif
-		return tuple[i];
+		return (i < tuple.size() ? tuple[i] : 0);
 	}
 	[[nodiscard]] std::size_t size() const noexcept
 	{
 		return tuple.size();
 	}
 };
+
+/// Helper function
+[[nodiscard]] inline std::size_t
+access_tuple(const tuple_node& t, const std::size_t i) noexcept
+{
+	return t[i];
+}
 
 /**
  * @brief Distributes the vertices of the tree @e t over height levels.
