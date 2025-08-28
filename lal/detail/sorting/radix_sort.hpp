@@ -44,35 +44,11 @@
 #endif
 #include <lal/detail/array.hpp>
 #include <lal/detail/sorting/sorting_types.hpp>
+#include <lal/detail/sorting/counting_sort.hpp>
 
 namespace lal {
 namespace detail {
 namespace sorting {
-
-/// Namespace that contains specific methods and types used only by the radix sort algorithm.
-namespace radixsort {
-
-/**
- * @brief Move the elements in the buckets to the actual array.
- * @tparam value_t The values to be sorted.
- * @param buckets The series of buckets with the sorted elements.
- * @param queue The array with the elements to be sorted.
- */
-template <typename value_t>
-void from_buckets_to_queue(
-	array<std::vector<value_t>>& buckets, array<value_t>& queue
-)
-{
-	std::size_t j = 0;
-	for (std::size_t i = 0; i < buckets.size(); ++i) {
-		for (value_t& k : buckets[i]) {
-			queue[j++] = std::move(k);
-		}
-		buckets[i].clear();
-	}
-}
-
-} // namespace radixsort
 
 /**
  * @brief Radix sort algorithm adapted to arbitrary lists of elements.
@@ -97,16 +73,19 @@ void radix_sort(
 	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
 
-	array<std::vector<value_t>> buckets(max_value + 1);
+	countingsort::memory<value_t> mem(max_value + 1, queue.size());
 
 	for (std::size_t j = max_length; j >= 1; --j) {
-
-		for (std::size_t i = 0; i < queue.size(); ++i) {
-			const std::size_t elem = digit(queue[i], j - 1);
-			buckets[elem].emplace_back(std::move(queue[i]));
-		}
-
-		radixsort::from_buckets_to_queue<value_t>(buckets, queue);
+		counting_sort<sort_type::non_decreasing, false>(
+			queue.begin(),
+			queue.end(),
+			[&](const value_t& v)
+			{
+				return digit(v, j - 1);
+			},
+			mem
+		);
+		mem.reset_count();
 	}
 
 	if constexpr (type == sort_type::non_increasing) {
