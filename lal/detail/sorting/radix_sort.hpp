@@ -36,7 +36,6 @@
 
 // C++ includes
 #include <algorithm>
-#include <vector>
 
 // lal includes
 #if defined LAL_REGISTER_BIBLIOGRAPHY
@@ -56,14 +55,14 @@ namespace sorting {
  * This implementation may not be appropriate when @e value_t is a number type.
  * @tparam type The type of ordering.
  * @tparam value_t The values to be sorted.
- * @param queue The array with the elements to be sorted.
+ * @param v The array with the elements to be sorted.
  * @param max_value An upper bound of the maximum value over all elements in
- * every list of @e queue.
- * @param max_length An upper bound of the length of the longest list in @e queue.
+ * every list of @e v.
+ * @param max_length An upper bound of the length of the longest list in @e v.
  */
 template <sort_type type, typename value_t, typename Callable>
 void radix_sort(
-	array<value_t>& queue,
+	array<value_t>& v,
 	const std::size_t max_value,
 	const std::size_t max_length,
 	const Callable& digit
@@ -73,12 +72,12 @@ void radix_sort(
 	bibliography::register_entry(bibliography::entries::Aho1974a);
 #endif
 
-	countingsort::memory<value_t> mem(max_value + 1, queue.size());
+	countingsort::memory<value_t> mem(max_value + 1, v.size());
 
 	for (std::size_t j = max_length; j >= 1; --j) {
 		counting_sort<sort_type::non_decreasing, false>(
-			queue.begin(),
-			queue.end(),
+			v.begin(),
+			v.end(),
 			[&](const value_t& v)
 			{
 				return digit(v, j - 1);
@@ -89,7 +88,7 @@ void radix_sort(
 	}
 
 	if constexpr (type == sort_type::non_increasing) {
-		std::reverse(queue.begin(), queue.end());
+		std::reverse(v.begin(), v.end());
 	}
 }
 
@@ -99,20 +98,20 @@ void radix_sort(
  * This implementation may not be appropriate when @e value_t is a number type.
  * @tparam type The type of ordering.
  * @tparam value_t A type for an array (or vector) of values.
- * @param queue The array with the elements to be sorted.
+ * @param v The array with the elements to be sorted.
  */
 template <sort_type type, typename value_t, typename Callable>
-void radix_sort(array<value_t>& queue, const Callable& digit)
+void radix_sort(array<value_t>& v, const Callable& digit)
 {
 	std::size_t max_value = 0;
 	std::size_t max_length = 0;
-	for (const value_t& q : queue) {
+	for (const value_t& q : v) {
 		max_length = std::max(q.size(), max_length);
 		for (std::size_t i = 0; i < q.size(); ++i) {
 			max_value = std::max(max_value, q[i]);
 		}
 	}
-	radix_sort<type, value_t>(queue, max_value, max_length, digit);
+	radix_sort<type, value_t>(v, max_value, max_length, digit);
 }
 
 } // namespace sorting
