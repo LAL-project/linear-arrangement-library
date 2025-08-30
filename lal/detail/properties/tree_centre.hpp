@@ -137,39 +137,56 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	// 1. fill in 'trimmed_degree' values
 	// 2. retrieve connected component's leaves ('tree_leaves')
 	// 3. calculate amount of leaves left to process ('l0')
-	bfs.set_process_current(
-		[&](const node u) -> void
-		{
+	if (size_trimmed < n / 2) {
+
+		bfs.set_process_current(
+			[&](const node u) -> void
+			{
 #if defined DEBUG
-			++_size_trimmed;
+				++_size_trimmed;
 #endif
-			// std::cout << "    process: " << u << '\n';
+				// std::cout << "    process: " << u << '\n';
 
-			// 'trimmed_degree' must be the degree of the vertex
-			// in the underlying undirected graph!
-			trimmed_degree[u] = t.get_degree(u);
+				// 'trimmed_degree' must be the degree of the vertex
+				// in the underlying undirected graph!
+				trimmed_degree[u] = t.get_degree(u);
 
-			if (trimmed_degree[u] == 1) {
-				tree_leaves.push_back(u);
-				++l0;
+				if (trimmed_degree[u] == 1) {
+					tree_leaves.push_back(u);
+					++l0;
+				}
 			}
-		}
-	);
+		);
 
-	if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
-		bfs.set_use_rev_edges(false);
+		if constexpr (std::is_base_of_v<graphs::free_tree, tree_t>) {
+			bfs.set_use_rev_edges(false);
+		}
+		else {
+			bfs.set_use_rev_edges(true);
+		}
+
+		bfs.start_at(X);
+		bfs.reset();
+
+#if defined DEBUG
+		// make sure that the method n_nodes_component returns a correct value
+		assert(_size_trimmed == size_trimmed);
+#endif
 	}
 	else {
-		bfs.set_use_rev_edges(true);
+		for (node u = 0; u < n; ++u) {
+			if (t.are_nodes_in_same_component(u, X)) {
+				// 'trimmed_degree' must be the degree of the vertex
+				// in the underlying undirected graph!
+				trimmed_degree[u] = t.get_degree(u);
+
+				if (trimmed_degree[u] == 1) {
+					tree_leaves.push_back(u);
+					++l0;
+				}
+			}
+		}
 	}
-
-	bfs.start_at(X);
-	bfs.reset();
-
-#if defined DEBUG
-	// make sure that the method n_nodes_component returns a correct value
-	assert(_size_trimmed == size_trimmed);
-#endif
 
 	// ---------------------------------------------------
 	// retrieve the centre of the connected component
@@ -276,13 +293,25 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	node v1, v2;
 	v1 = v2 = n;
 
-	// Traverse the connected component of 'x' in order to find the central
-	// nodes. NOTE: we could use a "for" loop through the 'n' nodes of the
-	// tree, but this BFS-traversal might be faster (due to the fewer
-	// amount of vertices in the connected component).
-	bfs.set_process_current(
-		[&](const node u) -> void
-		{
+	// Traverse the connected component of 'x' in order to find the central nodes.
+	if (size_trimmed < n / 2) {
+		bfs.set_process_current(
+			[&](const node u) -> void
+			{
+				if (trimmed_degree[u] == 1) {
+					if (v1 == n) {
+						v1 = u;
+					}
+					else {
+						v2 = u;
+					}
+				}
+			}
+		);
+		bfs.start_at(X);
+	}
+	else {
+		for (node u = 0; u < n; ++u) {
 			if (trimmed_degree[u] == 1) {
 				if (v1 == n) {
 					v1 = u;
@@ -292,8 +321,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 				}
 			}
 		}
-	);
-	bfs.start_at(X);
+	}
 
 	// return the nodes in the right order according to index values
 	return (v1 < v2 ? std::make_pair(v1, v2) : std::make_pair(v2, v1));
