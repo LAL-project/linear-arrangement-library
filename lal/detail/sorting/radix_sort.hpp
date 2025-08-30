@@ -78,9 +78,9 @@ void radix_sort(
 		counting_sort<sort_type::non_decreasing, false>(
 			v.begin(),
 			v.end(),
-			[&](const value_t& v)
+			[&](const value_t& val)
 			{
-				return digit(v, j - 1);
+				return digit(val, j - 1);
 			},
 			mem
 		);
