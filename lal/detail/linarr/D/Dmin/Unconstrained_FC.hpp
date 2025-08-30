@@ -379,7 +379,7 @@ void calculate_mla(
 		auto it = reachable.begin();
 		BFS bfs(t);
 		bfs.set_process_current(
-			[&](const auto&, node u)
+			[&](const node u)
 			{
 				*it++ = u;
 			}

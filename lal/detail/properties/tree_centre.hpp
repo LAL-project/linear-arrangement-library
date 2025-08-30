@@ -138,7 +138,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	// 2. retrieve connected component's leaves ('tree_leaves')
 	// 3. calculate amount of leaves left to process ('l0')
 	bfs.set_process_current(
-		[&](const auto&, node u) -> void
+		[&](const node u) -> void
 		{
 #if defined DEBUG
 			++_size_trimmed;
@@ -175,7 +175,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	// retrieve the centre of the connected component
 
 	bfs.set_terminate(
-		[&](const auto&, node) -> bool
+		[&](const node) -> bool
 		{
 			// Meaning of every condition:
 			// --> l0 == 1 or l0 == 2
@@ -198,7 +198,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 
 	bfs.set_process_visited_neighbors(true);
 	bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool) -> void
+		[&](const node u, const node v, bool) -> void
 		{
 			// ignore the edge if one of its nodes has already been trimmed out.
 			if (trimmed_degree[u] == 0 or trimmed_degree[v] == 0) {
@@ -235,7 +235,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	// add the next node only if its degree
 	// (in the trimmed tree) is exactly one.
 	bfs.set_node_add(
-		[&](const auto&, node, node v, bool) -> bool
+		[&](const node, const node v, const bool) -> bool
 		{
 			return trimmed_degree[v] == 1;
 		}
@@ -283,7 +283,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	// tree, but this BFS-traversal might be faster (due to the fewer
 	// amount of vertices in the connected component).
 	bfs.set_process_current(
-		[&](const auto&, node u) -> void
+		[&](const node u) -> void
 		{
 			if (trimmed_degree[u] == 1) {
 				if (v1 == n) {

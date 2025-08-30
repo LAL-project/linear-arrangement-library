@@ -115,7 +115,7 @@ template <graphs::Tree tree_t>
 	node farthest = n + 1;
 
 	bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool)
+		[&](const node u, const node v, const bool)
 		{
 			num_vertices_in_path[v] = num_vertices_in_path[u] + weight[u] + 1;
 			if (max_num_vertices < num_vertices_in_path[v]) {
@@ -271,14 +271,14 @@ max_subtree(const tree_t& t) noexcept
 	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 
 	bfs.set_process_current(
-		[&](const auto&, node)
+		[&](const node)
 		{
 			path_to_current = path_queue.pop();
 		}
 	);
 
 	bfs.set_terminate(
-		[&](const auto&, node u)
+		[&](const node u)
 		{
 			if (u == v_star) {
 				maximum_caterpillar_backbone = std::move(path_to_current);
@@ -288,7 +288,7 @@ max_subtree(const tree_t& t) noexcept
 	);
 
 	bfs.set_process_neighbour(
-		[&](const auto&, node, node v, bool)
+		[&](const node, const node v, const bool)
 		{
 			auto path_to_v = path_to_current;
 			path_to_v.push_back(v);

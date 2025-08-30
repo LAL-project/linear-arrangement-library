@@ -124,7 +124,7 @@ template <bool get_subsizes>
 	// retrieve edges and relabel them at the same time
 	if (relabel) {
 		bfs.set_process_neighbour(
-			[&](const auto&, node s, node t, bool left_to_right) -> void
+			[&](node s, node t, bool left_to_right) -> void
 			{
 				// change the orientation of the edge whenever appropriate
 				// left_to_right: true  ---> "s->t"
@@ -160,7 +160,7 @@ template <bool get_subsizes>
 	}
 	else {
 		bfs.set_process_neighbour(
-			[&](const auto&, node s, node t, bool left_to_right) -> void
+			[&](node s, node t, bool left_to_right) -> void
 			{
 				// change the orientation of the edge whenever appropriate
 				// dir: true  ---> "s->t"

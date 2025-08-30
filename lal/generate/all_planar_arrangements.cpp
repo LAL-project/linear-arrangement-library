@@ -158,7 +158,7 @@ void all_planar_arrangements::initialize_intervals_tree() noexcept
 	// every vertex with respect to the root.
 	detail::BFS<graphs::free_tree> bfs(m_T);
 	bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool) -> void
+		[&](const node u, const node v, const bool) -> void
 		{
 			m_intervals[v].resize(m_T.get_degree(v));
 			initialize_interval_node(v, u);

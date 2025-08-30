@@ -172,7 +172,7 @@ branchless_paths_compute(const tree_t& t) noexcept
 
 	// detect the last hub
 	bfs.set_process_current(
-		[&](const auto&, node u)
+		[&](const node u)
 		{
 			p.add_node(u);
 			if (t.get_degree(u) != 2) {
@@ -184,7 +184,7 @@ branchless_paths_compute(const tree_t& t) noexcept
 	);
 	// stop the traversal as soon as we find a vertex of degree != 2
 	bfs.set_terminate(
-		[&](const auto&, node u)
+		[&](const node u)
 		{
 			return t.get_degree(u) != 2;
 		}

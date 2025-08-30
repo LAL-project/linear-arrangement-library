@@ -71,7 +71,7 @@ connected_components(const graph_t& g) noexcept
 	}
 
 	bfs.set_process_current(
-		[&](const auto&, node u)
+		[&](const node u)
 		{
 			map_nodes_to_current_cc.insert({u, map_nodes_to_current_cc.size()});
 			nodes_current_cc.push_back(u);

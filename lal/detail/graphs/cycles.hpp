@@ -151,13 +151,13 @@ has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept
 	bfs.set_process_visited_neighbors(true);
 	// -- functions for the traversal
 	bfs.set_terminate(
-		[&](const BFS<graph_t>&, const node) -> bool
+		[&](const node) -> bool
 		{
 			return cycle_found;
 		}
 	);
 	bfs.set_process_neighbour(
-		[&](const auto& _bfs, node s, node t, bool) -> void
+		[&](const node s, const node t, const bool) -> void
 		{
 			// Since we want to do the traversal on the directed graphs likewise on
 			// the undirected graphs, the direction is ignored. We do not want to
@@ -165,7 +165,7 @@ has_undirected_cycles(const graph_t& g, BFS<graph_t>& bfs) noexcept
 			// edge "s->t" so as to mimic an "undirected traversal" on directed
 			// graphs.
 
-			if (_bfs.node_was_visited(t)) {
+			if (bfs.node_was_visited(t)) {
 				// if t was visted before then
 				//     "s -> t" and later "t -> s"
 				// or

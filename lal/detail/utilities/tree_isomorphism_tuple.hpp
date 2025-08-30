@@ -101,7 +101,7 @@ inline void gather_vertices_by_level(
 	BFS bfs(t);
 	bfs.set_use_rev_edges(false);
 	bfs.set_process_neighbour(
-		[&](const auto&, const node v, const node w, const bool)
+		[&](const node v, const node w, const bool)
 		{
 			height[w] = height[v] + 1;
 			if (levels.size() <= height[w]) {
@@ -137,7 +137,7 @@ inline void gather_vertices_by_level(
 	BFS bfs(t);
 	bfs.set_use_rev_edges(false);
 	bfs.set_process_neighbour(
-		[&](const auto&, const node v, const node w, const bool)
+		[&](const node v, const node w, const bool)
 		{
 			height[w] = height[v] + 1;
 			parents[w] = v;

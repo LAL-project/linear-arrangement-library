@@ -730,7 +730,7 @@ inline void choose_orientations_for_thistle_neighbors(
 
 	BFS bfs(t);
 	bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool)
+		[&](const node u, const node v, const bool)
 		{
 			thistle_side_per_vertex[v] = other_side(thistle_side_per_vertex[u]);
 		}

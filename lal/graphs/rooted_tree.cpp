@@ -140,7 +140,7 @@ void rooted_tree::init_rooted(
 	// the root.
 	detail::BFS bfs(t);
 	bfs.set_process_neighbour(
-		[&](const auto&, const node u, const node v, bool) -> void
+		[&](const node u, const node v, const bool) -> void
 		{
 			m_adjacency_list[u].push_back(v);
 			m_in_adjacency_list[v].push_back(u);
@@ -200,7 +200,7 @@ void rooted_tree::init_rooted(
 	detail::BFS bfs(*this);
 	bfs.set_use_rev_edges(false);
 	bfs.set_process_neighbour(
-		[&](const auto&, const node u, const node v, bool) -> void
+		[&](const node u, const node v, bool) -> void
 		{
 			// add missing edges.
 			m_in_adjacency_list[v].push_back(u);
@@ -627,7 +627,7 @@ bool rooted_tree::subtree_contains_node(const node r, const node u)
 
 	// terminate the BFS traversal as soon as node 'u' has been reached.
 	bfs.set_terminate(
-		[u](const auto&, node current) -> bool
+		[u](const node current) -> bool
 		{
 			return current == u;
 		}

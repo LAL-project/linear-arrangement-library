@@ -67,7 +67,7 @@ color_vertices_graph(const graph_t& g) noexcept
 	bfs.set_use_rev_edges(g.is_directed());
 
 	bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool)
+		[&](const node u, const node v, const bool)
 		{
 			if (colors[u] == properties::bipartite_graph_coloring::blue) {
 				colors[v] = properties::bipartite_graph_coloring::red;

@@ -87,7 +87,7 @@ template <graphs::Tree tree_t>
 
 	// calculate the farthest vertex from a starting 'random' vertex
 	bfs.set_process_neighbour(
-		[&](const auto&, node, node v, bool)
+		[&](const node, const node v, const bool)
 		{
 			farthest_from_x = v;
 		}
@@ -102,7 +102,7 @@ template <graphs::Tree tree_t>
 	bfs.clear_queue();
 
 	bfs.set_process_neighbour(
-		[&](const auto&, node u, node v, bool)
+		[&](const node u, const node v, const bool)
 		{
 			distance[v] = distance[u] + 1;
 			diameter = std::max(diameter, distance[v]);

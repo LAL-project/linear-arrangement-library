@@ -121,7 +121,7 @@ void update_unionfind_after_add_edge(
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-		[&](const BFS<tree_t>&, const node w) -> void
+		[&](const node w) -> void
 		{
 			root_of[w] = new_root;
 		}
@@ -158,7 +158,7 @@ void update_unionfind_after_add_edges(
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-		[&](const auto&, const node w)
+		[&](const node w)
 		{
 			root_of[w] = current_root;
 			++size_current_root;
@@ -202,7 +202,7 @@ void update_unionfind_after_add_rem_edges_bulk(
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-		[&](const auto&, const node w)
+		[&](const node w)
 		{
 			root_of[w] = current_root;
 			++size_current_root;
@@ -262,7 +262,7 @@ void update_unionfind_after_remove_edge(
 	uint64_t size_cc_u = 0;
 	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-		[&](const auto&, const node w) -> void
+		[&](const node w) -> void
 		{
 			root_of[w] = u;
 			++size_cc_u;
@@ -277,7 +277,7 @@ void update_unionfind_after_remove_edge(
 	// Update the root of the vertices reachable from 'v'.
 	//   (there is no need to reset the BFS object)
 	bfs.set_process_current(
-		[&](const auto&, const node w) -> void
+		[&](const node w) -> void
 		{
 			root_of[w] = v;
 		}
@@ -316,7 +316,7 @@ void update_unionfind_after_remove_edges(
 	BFS<tree_t> bfs(t);
 	bfs.set_use_rev_edges(BFS<tree_t>::is_graph_directed);
 	bfs.set_process_current(
-		[&](const auto&, const node w)
+		[&](const node w)
 		{
 			root_of[w] = current_root;
 			++size_current_cc;
@@ -368,7 +368,7 @@ void update_unionfind_before_remove_edges_incident_to(
 {
 	uint64_t size_cc_v = 0;
 	bfs.set_process_current(
-		[&](const auto&, const node w) -> void
+		[&](const node w) -> void
 		{
 			root_of[w] = v;
 			++size_cc_v;

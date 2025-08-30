@@ -62,7 +62,7 @@ template <graphs::Graph graph_t>
 {
 	BFS<graph_t> bfs(g);
 	bfs.set_terminate(
-		[target](const auto&, const node s) -> bool
+		[target](const node s) -> bool
 		{
 			return (s == target);
 		}

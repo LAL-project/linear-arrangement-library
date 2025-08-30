@@ -214,7 +214,7 @@ find_centroidal_vertex(const tree_t& t, const node x) noexcept
 		BFS<tree_t> bfs(t);
 		bfs.set_use_rev_edges(std::is_base_of_v<graphs::rooted_tree, tree_t>);
 		bfs.set_process_current(
-			[&](const auto&, const node u)
+			[&](const node u)
 			{
 				degree[u] = t.get_degree(u);
 				// fill queue

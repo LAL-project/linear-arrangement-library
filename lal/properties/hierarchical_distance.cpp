@@ -74,7 +74,7 @@ uint64_t sum_hierarchical_distances(const graphs::rooted_tree& t) noexcept
 
 	detail::BFS<graphs::rooted_tree> bfs(t);
 	bfs.set_process_neighbour(
-		[&](const auto&, const node u, const node v, bool) -> void
+		[&](const node u, const node v, const bool) -> void
 		{
 			distances[v] = distances[u] + 1;
 			sum_distances += distances[v];

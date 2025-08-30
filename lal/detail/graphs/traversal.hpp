@@ -87,17 +87,14 @@ class BFS {
 public:
 
 	/// Single node processing function.
-	typedef std::function<void(const BFS<graph_t>&, const node)>
-		BFS_process_one;
+	typedef std::function<void(const node)> BFS_process_one;
 	/// Two nodes processing function.
-	typedef std::function<
-		void(const BFS<graph_t>&, const node, const node, const bool)>
+	typedef std::function<void(const node, const node, const bool)>
 		BFS_process_two;
 	/// One node decision function.
-	typedef std::function<bool(const BFS<graph_t>&, const node)> BFS_bool_one;
+	typedef std::function<bool(const node)> BFS_bool_one;
 	/// Two nodes decision function.
-	typedef std::function<
-		bool(const BFS<graph_t>&, const node, const node, const bool)>
+	typedef std::function<bool(const node, const node, const bool)>
 		BFS_bool_two;
 
 public:
@@ -185,7 +182,7 @@ public:
 	/// Set the default value of @ref m_terminate.
 	void set_terminate_default() noexcept
 	{
-		m_terminate = [](const BFS<graph_t>&, const node) -> bool
+		m_terminate = [](const node) -> bool
 		{
 			return false;
 		};
@@ -201,7 +198,7 @@ public:
 	/// Set the default value of @ref m_process_current.
 	void set_process_current_default() noexcept
 	{
-		m_process_current = [](const BFS<graph_t>&, const node) -> void
+		m_process_current = [](const node) -> void
 		{
 		};
 		m_is_process_current_set = false;
@@ -216,8 +213,7 @@ public:
 	/// Set the default value of @ref m_process_neighbour.
 	void set_process_neighbour_default() noexcept
 	{
-		m_process_neighbour =
-			[](const BFS<graph_t>&, const node, const node, const bool) -> void
+		m_process_neighbour = [](const node, const node, const bool) -> void
 		{
 		};
 		m_is_process_neighbour_set = false;
@@ -232,8 +228,7 @@ public:
 	/// Set the default value of @ref m_add_node.
 	void set_node_add_default() noexcept
 	{
-		m_add_node = [](const BFS<graph_t>&, const node, const node, const bool
-					 ) -> bool
+		m_add_node = [](const node, const node, const bool) -> bool
 		{
 			return true;
 		};
@@ -349,13 +344,13 @@ protected:
 
 		if ((not t_vis) or (t_vis and m_process_visited_neighbors)) {
 			if (m_is_process_neighbour_set) {
-				m_process_neighbour(*this, s, t, ltr);
+				m_process_neighbour(s, t, ltr);
 			}
 		}
 
 		if (not t_vis) {
 			const bool add_node =
-				m_is_add_node_set ? m_add_node(*this, s, t, ltr) : true;
+				m_is_add_node_set ? m_add_node(s, t, ltr) : true;
 
 			if (add_node) {
 				m_queue.push(t);
@@ -454,12 +449,12 @@ protected:
 
 			// process current node
 			if (m_is_process_current_set) {
-				m_process_current(*this, s);
+				m_process_current(s);
 			}
 
 			// check user-defined early termination condition
 			if (m_is_terminate_set) {
-				if (m_terminate(*this, s)) {
+				if (m_terminate(s)) {
 					break;
 				}
 			}
