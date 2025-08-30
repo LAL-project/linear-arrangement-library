@@ -122,15 +122,15 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	// number of nodes in the connected component
 	uint64_t size_trimmed = t.get_num_nodes_component(X);
 
-#if defined DEBUG
-	uint64_t _size_trimmed = 0; // for debugging purposes only
-#endif
-
 	// leaves left to process
-	//   l0: leaves in the current tree
+	//   l0: leaves in the current (trimmed) tree
 	uint64_t l0 = 0;
 	//   l1: leaves produced after having trimmed all the l0 leaves
 	uint64_t l1 = 0;
+
+#if defined DEBUG
+	uint64_t _size_trimmed = 0; // for debugging purposes only
+#endif
 
 	// ---------------------------------------------------
 	// Initialize data:
@@ -143,6 +143,7 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 #if defined DEBUG
 			++_size_trimmed;
 #endif
+			// std::cout << "    process: " << u << '\n';
 
 			// 'trimmed_degree' must be the degree of the vertex
 			// in the underlying undirected graph!
@@ -163,13 +164,12 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	}
 
 	bfs.start_at(X);
+	bfs.reset();
 
 #if defined DEBUG
 	// make sure that the method n_nodes_component returns a correct value
 	assert(_size_trimmed == size_trimmed);
 #endif
-
-	bfs.reset();
 
 	// ---------------------------------------------------
 	// retrieve the centre of the connected component
@@ -200,15 +200,15 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 	bfs.set_process_neighbour(
 		[&](const node u, const node v, bool) -> void
 		{
-			// ignore the edge if one of its nodes has already been trimmed out.
+			// ignore the edge if one of its nodes has already been trimmed.
 			if (trimmed_degree[u] == 0 or trimmed_degree[v] == 0) {
 				return;
 			}
 
-			// trim node 's':
-			//  1) its degree is set to null, 2) node 't' loses a neighbour, so
-			//  its degree is reduced by 1. 3) the size of the trimmed tree
-			//  decreases by 1.
+			// trim node 'u':
+			//  1) its degree is set to null
+			//  2) node 't' loses a neighbour, so its degree is reduced by 1.
+			//  3) the size of the trimmed tree decreases by 1.
 			trimmed_degree[u] = 0;
 			--trimmed_degree[v];
 			--size_trimmed;
@@ -217,17 +217,15 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 				has_single_center = true;
 				single_center = v;
 			}
+			else if (trimmed_degree[v] == 1) {
+				++l1;
+			}
 
 			// leaves left to process in the current trimmed tree
 			--l0;
-			// leaves left to process in the next trimmed tree
-			if (trimmed_degree[v] == 1) {
-				++l1;
-				if (l0 == 0) {
-					// l0 <- l1
-					// l1 <- 0
-					std::swap(l0, l1);
-				}
+			if (l0 == 0) {
+				l0 = l1;
+				l1 = 0;
 			}
 		}
 	);
