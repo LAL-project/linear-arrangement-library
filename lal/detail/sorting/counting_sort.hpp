@@ -176,7 +176,7 @@ void counting_sort(
 		// calculate frequency of each element
 		for (auto it = begin; it != end;) {
 			// get the key of the element into a variable so that
-			// the function is NOT called more than once per iteration
+			// the function is called JUST ONCE per iteration
 			const std::size_t elem_key = key(*(it++));
 
 			++mem.count[elem_key];
@@ -192,7 +192,7 @@ void counting_sort(
 		++actual_container_size;
 
 		// get the key of the element into a variable so that
-		// the function is NOT called more than once per iteration
+		// the function is called JUST ONCE per iteration
 		const std::size_t elem_key = key(*it);
 
 		mem.output[mem.count[elem_key]] = std::move(*(it++));
