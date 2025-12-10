@@ -42,6 +42,7 @@
 #pragma once
 
 // C++ include
+#include <cstdint>
 #include <string>
 
 namespace lal {
