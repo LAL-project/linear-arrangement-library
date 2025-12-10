@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.10.2)
 
+# project's version
+set(LAL_MAJOR 21.07)
+set(LAL_PATCH 00)
+
+# project declaration
+project(LAL VERSION "${LAL_MAJOR}.${LAL_PATCH}")
+project(LAL DESCRIPTION "Linear Arrangement Library")
+
 # needed includes to make CMake work
 include(CheckCXXCompilerFlag)
 # installation directories (platform dependent)
