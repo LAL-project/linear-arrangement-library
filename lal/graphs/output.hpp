@@ -43,220 +43,293 @@
 
 // C++ includes
 #include <ostream>
+#include <format>
 
 // lal includes
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/rooted_tree.hpp>
+#include <lal/utilities/dectorator.hpp>
 
-namespace lal {
-namespace graphs {
+#if not defined LAL_PYTHON
+
+/// Specialization of std::formatter
+template <>
+struct std::formatter<lal::utilities::decorator<lal::graphs::undirected_graph>>
+	: std::formatter<std::string> {
+	auto format(
+		const lal::utilities::decorator<lal::graphs::undirected_graph>& dec,
+		std::format_context& ctx
+	) const
+	{
+		auto out = ctx.out();
+		std::string_view prefix = dec.prefix;
+		const auto& g = dec.value;
+
+		const uint64_t n = g.get_num_nodes();
+		for (lal::node u = 0; u < n; ++u) {
+			std::format_to(out, "{}{}:", prefix, u);
+			for (const lal::node v : g.get_neighbors(u)) {
+				std::format_to(out, " {}", v);
+			}
+			if (u < n - 1) {
+				std::format_to(out, "\n");
+			}
+		}
+		return out;
+	}
+};
+
+#endif
 
 /**
- * @brief A singleton class to enrich output of graphs.
+ * @brief Standard output operator for undirected graphs and free trees.
  *
- * This class is a helper to output graphs with a tabulator string at the beginning
- * of each line.
+ * Usable by @ref lal::graphs::undirected_graph and @ref lal::graphs::free_tree.
+ *
+ * This operator writes a graph from a @ref lal::utilities::decorator object:
+ * every new line starts with adds a prefix string. The suffix string is not
+ * used in this operator.
+ *
+ * Usage example:
+@code
+lal::graphs::undirected_graph g = ...;
+std::cout << "|   " + g << '\n';
+@endcode
+ *
+ * @param os ostream C++ object.
+ * @param g Input decorated graph.
+ * @returns The output stream.
  */
-class formatted_output {
-public:
-
-	/// The string that is written at the beginning of every line.
-	std::string_view tabulator_string;
-	/// Returns the only instance of this class.
-	static formatted_output& get_instance() noexcept
-	{
-		static formatted_output i;
-		return i;
-	}
-
-private:
-
-	/// Default constructor.
-	formatted_output() noexcept = default;
-};
+inline std::ostream& operator<< (
+	std::ostream& os,
+	const lal::utilities::decorator<lal::graphs::undirected_graph>& dec
+) noexcept
+{
+	std::format_to(std::ostreambuf_iterator<char>(os), "{}", dec);
+	return os;
+}
 
 /**
  * @brief Standard output operator for undirected graphs.
  *
  * Usable by @ref lal::graphs::undirected_graph and @ref lal::graphs::free_tree.
- *
- * This operator adds a tabulator string at the beginning of each line. See
- * @ref lal::graphs::formatted_output, and @ref lal::graphs::tabulator.
- *
- * Example:
-@code
-lal::graphs::undirected_graph g = ...;
-std::cout << "|   "_tab << g << '\n';
-@endcode
- *
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns The output stream.
  */
 inline std::ostream&
-operator<< (std::ostream& os, const undirected_graph& g) noexcept
+operator<< (std::ostream& os, const lal::graphs::undirected_graph& g) noexcept
 {
-	formatted_output& f = formatted_output::get_instance();
-	const uint64_t n = g.get_num_nodes();
-	for (node u = 0; u < n; ++u) {
-		os << f.tabulator_string << u << ':';
-		for (const node v : g.get_neighbors(u)) {
-			os << " " << v;
+	os << lal::utilities::decorator{.prefix = "", .value = g, .suffix = ""};
+	return os;
+}
+
+#if not defined LAL_PYTHON
+
+/**
+ * @brief Standard output operator for directed graphs.
+ *
+ * This operator writes a graph from a @ref lal::utilities::decorator object:
+ * every new line starts with adds a prefix string. The suffix string is not
+ * used in this operator.
+ *
+ * Usage example:
+@code
+lal::graphs::directed_graph g = ...;
+std::cout << "|   " + g << '\n';
+@endcode
+ *
+ * @param os ostream C++ object.
+ * @param g Input decorated graph.
+ * @returns The output stream.
+ */
+template <>
+struct std::formatter<lal::utilities::decorator<lal::graphs::directed_graph>>
+	: std::formatter<std::string> {
+	auto format(
+		const lal::utilities::decorator<lal::graphs::directed_graph>& dec,
+		std::format_context& ctx
+	) const
+	{
+		auto out = ctx.out();
+		std::string_view prefix = dec.prefix;
+		const auto& g = dec.value;
+
+		const uint64_t n = g.get_num_nodes();
+		std::format_to(out, "{}out:\n", prefix);
+		for (lal::node u = 0; u < n; ++u) {
+			std::format_to(out, "{}{}:", prefix, u);
+			for (const lal::node v : g.get_out_neighbors(u)) {
+				std::format_to(out, " {}", v);
+			}
+			if (u < n - 1) {
+				std::format_to(out, "\n");
+			}
 		}
-		if (u < n - 1) {
-			os << '\n';
+		std::format_to(out, "\n{}in:\n", prefix);
+		for (lal::node u = 0; u < n; ++u) {
+			std::format_to(out, "{}{}:", prefix, u);
+			for (const lal::node v : g.get_in_neighbors(u)) {
+				std::format_to(out, " {}", v);
+			}
+			if (u < n - 1) {
+				std::format_to(out, "\n");
+			}
 		}
+		return out;
 	}
-	f.tabulator_string = "";
+};
+
+#endif
+
+/**
+ * @brief Standard output operator for directed graphs.
+ *
+ * This operator writes a graph from a @ref lal::utilities::decorator object:
+ * every new line starts with adds a prefix string. The suffix string is not
+ * used in this operator.
+ *
+ * Usage example:
+@code
+lal::graphs::directed_graph g = ...;
+std::cout << "|   " + g << '\n';
+@endcode
+ *
+ * @param os ostream C++ object.
+ * @param g Input decorated graph.
+ * @returns The output stream.
+ */
+inline std::ostream& operator<< (
+	std::ostream& os,
+	const lal::utilities::decorator<lal::graphs::directed_graph>& dec
+) noexcept
+{
+	std::format_to(std::ostreambuf_iterator<char>(os), "{}", dec);
 	return os;
 }
 
 /**
  * @brief Standard output operator for directed graphs.
- *
- * Usable only by @ref lal::graphs::directed_graph.
  * @param os ostream C++ object.
  * @param g Input graph.
  * @returns The output stream.
  */
 inline std::ostream&
-operator<< (std::ostream& os, const directed_graph& g) noexcept
+operator<< (std::ostream& os, const lal::graphs::directed_graph& g) noexcept
 {
-	formatted_output& f = formatted_output::get_instance();
-	const uint64_t n = g.get_num_nodes();
-	os << f.tabulator_string << "out:\n";
-	for (node u = 0; u < n; ++u) {
-		os << f.tabulator_string << u << ':';
-		for (const node v : g.get_out_neighbors(u)) {
-			os << " " << v;
-		}
-		if (u < n - 1) {
-			os << '\n';
-		}
-	}
-	os << "\nin:\n";
-	for (node u = 0; u < n; ++u) {
-		os << f.tabulator_string << u << ':';
-		for (const node v : g.get_in_neighbors(u)) {
-			os << " " << v;
-		}
-		if (u < n - 1) {
-			os << '\n';
-		}
-	}
-	f.tabulator_string = "";
+	os << lal::utilities::decorator{.prefix = "", .value = g, .suffix = ""};
 	return os;
 }
 
-/**
- * @brief Standard output operator for directed rooted trees.
- *
- * Usable by @ref lal::graphs::rooted_tree.
- * @param os ostream C++ object.
- * @param g Input graph.
- * @returns The output stream.
- */
-inline std::ostream&
-operator<< (std::ostream& os, const rooted_tree& g) noexcept
-{
-	formatted_output& f = formatted_output::get_instance();
-	const uint64_t n = g.get_num_nodes();
-	const std::string_view pad =
-		(g.has_root() ? std::string_view{" "} : std::string_view{""});
-	os << f.tabulator_string << "out:\n";
-	for (node u = 0; u < n; ++u) {
-		os << f.tabulator_string
-		   << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
-		for (const node v : g.get_out_neighbors(u)) {
-			os << " " << v;
-		}
-		if (u < n - 1) {
-			os << '\n';
-		}
-	}
-	os << "\nin:\n";
-	for (node u = 0; u < n; ++u) {
-		os << f.tabulator_string
-		   << (g.has_root() and u == g.get_root() ? "*" : pad) << u << ':';
-		for (const node v : g.get_in_neighbors(u)) {
-			os << " " << v;
-		}
-		if (u < n - 1) {
-			os << '\n';
-		}
-	}
-	f.tabulator_string = "";
-	return os;
-}
+#if not defined LAL_PYTHON
 
 /**
- * @brief Tabulator for output of graphs.
+ * @brief Standard output operator for rooted trees.
  *
- * This is simply a wrapper over std::string_view. This object, when output-ed
- * via some std::ostream object, modifies @ref lal::graphs::formatted_output
- * so that the operator<< for the various lal::graphs::* objects can use it.
+ * This operator writes a graph from a @ref lal::utilities::decorator object:
+ * every new line starts with adds a prefix string. The suffix string is not
+ * used in this operator.
  *
- * It is best to use the user-defined literal operator defined below to instantiate
- * this class.
+ * Usage example:
 @code
-lal::graphs::undirected_graph g = ...;
-
-// option 1
-std::cout << lal::graphs::tabulator{"|   "} << g << '\n';
-
-// option 2
-std::cout << "|   "_tab << g << '\n';
+lal::graphs::rooted_tree g = ...;
+std::cout << "|   " + g << '\n';
 @endcode
+ *
+ * @param os ostream C++ object.
+ * @param g Input decorated graph.
+ * @returns The output stream.
  */
-struct tabulator {
-	/// The string that will become the tabulator string.
-	const std::string_view tabulator_string;
-	/// Default constructor
-	tabulator() noexcept = default;
-	/// Move contructor
-	explicit tabulator(std::string_view&& str) noexcept
-		: tabulator_string(std::move(str))
-	{ }
-	/// Default copy contructor
-	tabulator(const tabulator&) noexcept = default;
-	/// Default move contructor
-	tabulator(tabulator&&) noexcept = default;
-	/// Default destructor
-	~tabulator() = default;
+template <>
+struct std::formatter<lal::utilities::decorator<lal::graphs::rooted_tree>>
+	: std::formatter<std::string> {
+	auto format(
+		const lal::utilities::decorator<lal::graphs::rooted_tree>& dec,
+		std::format_context& ctx
+	) const
+	{
+		auto out = ctx.out();
+		std::string_view prefix = dec.prefix;
+		const auto& g = dec.value;
+
+		const uint64_t n = g.get_num_nodes();
+		const std::string_view pad =
+			(g.has_root() ? std::string_view{" "} : std::string_view{""});
+		std::format_to(out, "{}out:\n", prefix);
+		for (lal::node u = 0; u < n; ++u) {
+			std::format_to(
+				out,
+				"{}{}{}:",
+				prefix,
+				(g.has_root() and u == g.get_root() ? "*" : pad),
+				u
+			);
+
+			for (const lal::node v : g.get_out_neighbors(u)) {
+				std::format_to(out, " {}", v);
+			}
+			if (u < n - 1) {
+				std::format_to(out, "\n");
+			}
+		}
+		std::format_to(out, "\n{}in:\n", prefix);
+		for (lal::node u = 0; u < n; ++u) {
+			std::format_to(
+				out,
+				"{}{}{}:",
+				prefix,
+				(g.has_root() and u == g.get_root() ? "*" : pad),
+				u
+			);
+			for (const lal::node v : g.get_in_neighbors(u)) {
+				std::format_to(out, " {}", v);
+			}
+			if (u < n - 1) {
+				std::format_to(out, "\n");
+			}
+		}
+		return out;
+	}
 };
 
+#endif
+
 /**
- * @brief Operator << for @ref lal::graphs::tabulator.
+ * @brief Standard output operator for rooted trees.
  *
- * This simply modifies the tabulator string in the class @ref lal::graphs::formatted_output.
- * @param os std::ostream C++ object.
- * @param t Tabulator object.
- * @returns std::ostream object.
+ * This operator writes a graph from a @ref lal::utilities::decorator object:
+ * every new line starts with adds a prefix string. The suffix string is not
+ * used in this operator.
+ *
+ * Usage example:
+@code
+lal::graphs::roted_tree g = ...;
+std::cout << "|   " + g << '\n';
+@endcode
+ *
+ * @param os ostream C++ object.
+ * @param g Input decorated graph.
+ * @returns The output stream.
  */
-inline std::ostream& operator<< (std::ostream& os, const tabulator& t) noexcept
+inline std::ostream& operator<< (
+	std::ostream& os,
+	const lal::utilities::decorator<lal::graphs::rooted_tree>& dec
+) noexcept
 {
-	formatted_output::get_instance().tabulator_string = t.tabulator_string;
+	std::format_to(std::ostreambuf_iterator<char>(os), "{}", dec);
 	return os;
 }
 
-} // namespace graphs
-} // namespace lal
-
 /**
- * @brief Operator to aid in output tabulation of graphs.
- *
- * Example usage:
- * @code
-lal::graphs::undirected_graph g = ...;
-std::cout << "|   "_tab << g << '\n';
-@endcode
- * @param str The tabulator string. Can be any string.
- * @param s Size.
- * @returns An instance of @ref lal::graphs::tabulator.
+ * @brief Standard output operator for rooted trees.
+ * @param os ostream C++ object.
+ * @param g Input graph.
+ * @returns The output stream.
  */
-[[nodiscard]] inline lal::graphs::tabulator
-operator""_tab (const char *str, const std::size_t s) noexcept
+inline std::ostream&
+operator<< (std::ostream& os, const lal::graphs::rooted_tree& g) noexcept
 {
-	return lal::graphs::tabulator(std::string_view{str, s});
+	os << lal::utilities::decorator{.prefix = "", .value = g, .suffix = ""};
+	return os;
 }
