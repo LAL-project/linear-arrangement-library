@@ -54,6 +54,12 @@ This namespace contains several utilities for the library, useful for experiment
 
 - Isomorphism tests. For free trees (see @ref lal::utilities::are_trees_isomorphic(const lal::graphs::free_tree&,const lal::graphs::free_tree&)) and for rooted trees (see @ref lal::utilities::are_trees_isomorphic(const lal::graphs::rooted_tree&,const graphs::rooted_tree&)).
  */
-namespace utilities {}
+namespace utilities {
 
+/// Namespace that holds the operators for easy composition of decorators
+/// (see @ref decorator).
+namespace decorator_operators {
+} // -- namespace utilities
+
+} // -- namespace utilities
 } // -- namespace lal
