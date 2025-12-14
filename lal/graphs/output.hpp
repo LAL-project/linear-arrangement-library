@@ -49,7 +49,7 @@
 #include <lal/graphs/undirected_graph.hpp>
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/graphs/rooted_tree.hpp>
-#include <lal/utilities/dectorator.hpp>
+#include <lal/utilities/decorator.hpp>
 
 #if not defined LAL_PYTHON
 

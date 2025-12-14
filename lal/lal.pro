@@ -284,7 +284,7 @@ HEADERS += \
 	properties/vertex_orbits.hpp \
 	utilities.hpp \
 	utilities/aggregations.hpp \
-	utilities/dectorator.hpp \
+	utilities/decorator.hpp \
 	utilities/tree_isomorphism.hpp \
 	lal_version.hpp
 
