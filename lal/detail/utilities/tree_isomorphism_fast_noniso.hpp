@@ -38,7 +38,6 @@
 #if defined LAL_REGISTER_BIBLIOGRAPHY
 #include <lal/bibliography.hpp>
 #endif
-#include <lal/graphs/output.hpp>
 #include <lal/graphs/rooted_tree.hpp>
 #include <lal/detail/graphs/traversal.hpp>
 #include <lal/detail/macros/basic_convert.hpp>
