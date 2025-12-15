@@ -46,10 +46,10 @@
 #include <cassert>
 #endif
 
-#if defined LAL_PYTHON
-#include <string>
-#else
+#if !defined LAL_PYTHON
 #include <string_view>
+#else
+#include <string>
 #endif
 
 namespace lal {
