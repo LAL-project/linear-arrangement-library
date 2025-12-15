@@ -34,10 +34,20 @@
 
 #pragma once
 
+#if defined LAL_INTERFACE_PYTHON || defined LAL_COMPILE_PYTHON
+#include <string>
+#else
 #include <string_view>
+#endif
 
 namespace lal {
 namespace utilities {
+
+#if defined LAL_INTERFACE_PYTHON || defined LAL_COMPILE_PYTHON
+typedef std::string string_t;
+#else
+typedef std::string_view string_t;
+#endif
 
 /**
  * @brief A decorator for formatted output.
@@ -48,32 +58,32 @@ namespace utilities {
 template <typename T>
 struct decorator {
 	/// Prefix string.
-	std::string_view prefix;
+	string_t prefix;
 	/// Value to be written into output.
-	const T& value;
+	const T *value;
 	/// Suffix string.
-	std::string_view suffix;
+	string_t suffix;
 };
 
 namespace decorator_operators {
 
 template <typename T>
 [[nodiscard]] static inline decorator<T>
-operator+ (std::string_view w, const T& t) noexcept
+operator+ (string_t w, const T& t) noexcept
 {
-	return decorator<T>{.prefix = w, .value = t, .suffix = ""};
+	return decorator<T>{.prefix = w, .value = &t, .suffix = ""};
 }
 
 template <typename T>
 [[nodiscard]] static inline decorator<T>
-operator+ (const T& t, std::string_view w) noexcept
+operator+ (const T& t, string_t w) noexcept
 {
-	return decorator<T>{.prefix = "", .value = t, .suffix = w};
+	return decorator<T>{.prefix = "", .value = &t, .suffix = w};
 }
 
 template <typename T>
 [[nodiscard]] static inline decorator<T>
-operator+ (decorator<T> t, std::string_view w) noexcept
+operator+ (decorator<T> t, string_t w) noexcept
 {
 	t.suffix = w;
 	return t;
@@ -81,7 +91,7 @@ operator+ (decorator<T> t, std::string_view w) noexcept
 
 template <typename T>
 [[nodiscard]] static inline decorator<T>
-operator+ (std::string_view w, decorator<T> t) noexcept
+operator+ (string_t w, decorator<T> t) noexcept
 {
 	t.prefix = w;
 	return t;
