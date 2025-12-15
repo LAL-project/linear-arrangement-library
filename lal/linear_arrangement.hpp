@@ -154,8 +154,8 @@ public:
 	}
 
 	/// Copy assignment operator.
-	linear_arrangement& operator= (const std::vector<position>& dir_arr
-	) noexcept
+	linear_arrangement&
+	operator= (const std::vector<position>& dir_arr) noexcept
 	{
 		m_memory.resize(2 * dir_arr.size());
 		m_n = dir_arr.size();
@@ -204,13 +204,13 @@ public:
 	 * @returns A linear arrangement object constructed from @e v.
 	 * @post @ref m_inverse is updated.
 	 */
-	static linear_arrangement from_direct(const std::vector<position>& v
-	) noexcept
+	static linear_arrangement
+	from_direct(const std::vector<position>& v) noexcept
 	{
 		return from_direct(v.begin(), v.end(), v.size());
 	}
 
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Construct a linear arrangement from a direct arrangement.
 	 *
@@ -259,7 +259,7 @@ public:
 		return from_inverse(v.begin(), v.end(), v.size());
 	}
 
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Construct a linear arrangement from an inverse arrangement.
 	 *

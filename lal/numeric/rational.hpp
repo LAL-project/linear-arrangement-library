@@ -300,8 +300,8 @@ public:
 	 * @brief Three-way comparison operator.
 	 * @param r A @ref lal::numeric::rational.
 	 */
-	[[nodiscard]] std::strong_ordering operator<=> (const rational& r
-	) const noexcept
+	[[nodiscard]] std::strong_ordering
+	operator<=> (const rational& r) const noexcept
 	{
 		return mpq_cmp(m_val, r.m_val) <=> 0;
 	}
@@ -339,8 +339,8 @@ public:
 	 * @brief Three-way comparison operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	[[nodiscard]] std::strong_ordering operator<=> (const integer& i
-	) const noexcept
+	[[nodiscard]] std::strong_ordering
+	operator<=> (const integer& i) const noexcept
 	{
 		rational r(i);
 		return mpq_cmp(m_val, r.m_val) <=> 0;
@@ -368,7 +368,7 @@ public:
 		r += i;
 		return r;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
@@ -391,7 +391,7 @@ public:
 		r += i;
 		return r;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -465,7 +465,7 @@ public:
 		mpq_add(r.m_val, r.m_val, m_val);
 		return r;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
@@ -488,7 +488,7 @@ public:
 		r -= i;
 		return r;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -562,7 +562,7 @@ public:
 		mpq_canonicalize(r.m_val);
 		return r;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Multiplication operator.
 	 * @param i An integer (basic type) number.
@@ -587,7 +587,7 @@ public:
 		mpq_canonicalize(r.m_val);
 		return r;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Multiplication operator.
 	 * @param i A @ref lal::numeric::integer.
@@ -673,7 +673,7 @@ public:
 			return r;
 		}
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
@@ -874,7 +874,7 @@ public:
 		std::swap(m_initialized, r.m_initialized);
 	}
 
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Swaps two rationals.
 	 * @param r1 Input rational.

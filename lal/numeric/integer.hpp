@@ -210,8 +210,8 @@ public:
 	 * @brief Three-way comparison operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	[[nodiscard]] std::strong_ordering operator<=> (const integer& i
-	) const noexcept
+	[[nodiscard]] std::strong_ordering
+	operator<=> (const integer& i) const noexcept
 	{
 		return mpz_cmp(m_val, i.m_val) <=> 0;
 	}
@@ -270,7 +270,7 @@ public:
 		}
 		return a;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Addition operator.
 	 * @param i An integer (basic type) number.
@@ -353,7 +353,7 @@ public:
 		}
 		return a;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Substraction operator.
 	 * @param i An integer (basic type) number.
@@ -424,7 +424,7 @@ public:
 		}
 		return a;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Product operator.
 	 * @param i An integer (basic type) number.
@@ -497,7 +497,7 @@ public:
 		}
 		return a;
 	}
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Division operator.
 	 * @param i An integer (basic type) number.
@@ -708,7 +708,7 @@ public:
 		std::swap(m_initialized, i.m_initialized);
 	}
 
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 	/**
 	 * @brief Swaps two integers.
 	 * @param i Input lal::numeric::integer.

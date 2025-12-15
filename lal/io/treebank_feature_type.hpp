@@ -46,7 +46,7 @@
 #include <cassert>
 #endif
 
-#if !defined LAL_PYTHON
+#if !defined LAL_INTERFACE_PYTHON
 #include <string_view>
 #else
 #include <string>
