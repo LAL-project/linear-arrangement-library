@@ -62,12 +62,12 @@ struct std::formatter<lal::utilities::decorator<lal::graphs::undirected_graph>>
 	{
 		auto out = ctx.out();
 		const auto& prefix = dec.prefix;
-		const auto& g = dec.value;
+		const auto& g = *dec.value;
 
-		const uint64_t n = g->get_num_nodes();
+		const uint64_t n = g.get_num_nodes();
 		for (lal::node u = 0; u < n; ++u) {
 			std::format_to(out, "{}{}:", prefix, u);
-			for (const lal::node v : g->get_neighbors(u)) {
+			for (const lal::node v : g.get_neighbors(u)) {
 				std::format_to(out, " {}", v);
 			}
 			if (u < n - 1) {
@@ -133,13 +133,13 @@ struct std::formatter<lal::utilities::decorator<lal::graphs::directed_graph>>
 	{
 		auto out = ctx.out();
 		const auto& prefix = dec.prefix;
-		const auto& g = dec.value;
+		const auto& g = *dec.value;
 
-		const uint64_t n = g->get_num_nodes();
+		const uint64_t n = g.get_num_nodes();
 		std::format_to(out, "{}out:\n", prefix);
 		for (lal::node u = 0; u < n; ++u) {
 			std::format_to(out, "{}{}:", prefix, u);
-			for (const lal::node v : g->get_out_neighbors(u)) {
+			for (const lal::node v : g.get_out_neighbors(u)) {
 				std::format_to(out, " {}", v);
 			}
 			if (u < n - 1) {
@@ -149,7 +149,7 @@ struct std::formatter<lal::utilities::decorator<lal::graphs::directed_graph>>
 		std::format_to(out, "\n{}in:\n", prefix);
 		for (lal::node u = 0; u < n; ++u) {
 			std::format_to(out, "{}{}:", prefix, u);
-			for (const lal::node v : g->get_in_neighbors(u)) {
+			for (const lal::node v : g.get_in_neighbors(u)) {
 				std::format_to(out, " {}", v);
 			}
 			if (u < n - 1) {
@@ -213,21 +213,21 @@ struct std::formatter<lal::utilities::decorator<lal::graphs::rooted_tree>>
 	{
 		auto out = ctx.out();
 		const auto& prefix = dec.prefix;
-		const auto& g = dec.value;
+		const auto& g = *dec.value;
 
-		const uint64_t n = g->get_num_nodes();
-		const std::string_view pad = (g->has_root() ? " " : "");
+		const uint64_t n = g.get_num_nodes();
+		const std::string_view pad = (g.has_root() ? " " : "");
 		std::format_to(out, "{}out:\n", prefix);
 		for (lal::node u = 0; u < n; ++u) {
 			std::format_to(
 				out,
 				"{}{}{}:",
 				prefix,
-				(g->has_root() and u == g->get_root() ? "*" : pad),
+				(g.has_root() and u == g.get_root() ? "*" : pad),
 				u
 			);
 
-			for (const lal::node v : g->get_out_neighbors(u)) {
+			for (const lal::node v : g.get_out_neighbors(u)) {
 				std::format_to(out, " {}", v);
 			}
 			if (u < n - 1) {
@@ -240,10 +240,10 @@ struct std::formatter<lal::utilities::decorator<lal::graphs::rooted_tree>>
 				out,
 				"{}{}{}:",
 				prefix,
-				(g->has_root() and u == g->get_root() ? "*" : pad),
+				(g.has_root() and u == g.get_root() ? "*" : pad),
 				u
 			);
-			for (const lal::node v : g->get_in_neighbors(u)) {
+			for (const lal::node v : g.get_in_neighbors(u)) {
 				std::format_to(out, " {}", v);
 			}
 			if (u < n - 1) {
