@@ -210,8 +210,8 @@ public:
 	 * @brief Three-way comparison operator.
 	 * @param i A @ref lal::numeric::integer.
 	 */
-	[[nodiscard]] std::strong_ordering
-	operator<=> (const integer& i) const noexcept
+	[[nodiscard]] std::strong_ordering operator<=> (const integer& i
+	) const noexcept
 	{
 		return mpz_cmp(m_val, i.m_val) <=> 0;
 	}

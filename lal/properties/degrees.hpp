@@ -83,10 +83,7 @@ template <class value_t, graphs::Graph graph_t>
 	uint64_t (graph_t::*degree_function)(node) const noexcept
 ) noexcept
 {
-	static_assert(
-		std::is_same_v<value_t, uint64_t> ||
-		std::is_same_v<value_t, numeric::integer>
-	);
+	static_assert(std::is_same_v<value_t, uint64_t> || std::is_same_v<value_t, numeric::integer>);
 
 	// sum of powers
 	value_t S(0);
@@ -358,10 +355,7 @@ template <class value_t, graphs::Graph graph_t>
 	uint64_t (graph_t::*degree_function)(node) const noexcept
 ) noexcept
 {
-	static_assert(
-		std::is_floating_point_v<value_t> ||
-		std::is_same_v<value_t, numeric::rational>
-	);
+	static_assert(std::is_floating_point_v<value_t> || std::is_same_v<value_t, numeric::rational>);
 
 	if constexpr (std::is_floating_point_v<value_t>) {
 		const uint64_t S = sum_powers_degrees<uint64_t>(g, p, degree_function);
@@ -600,8 +594,8 @@ moment_out_degree(const graphs::directed_graph& g, const uint64_t p) noexcept
  * @pre The tree @e t is a valid tree. Method graphs::free_tree::is_tree returns true.
  * @pre \f$n > 3\f$.
  */
-[[nodiscard]] numeric::rational
-hubiness_rational(const graphs::free_tree& t) noexcept;
+[[nodiscard]] numeric::rational hubiness_rational(const graphs::free_tree& t
+) noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as an exact rational number.
@@ -622,8 +616,8 @@ hubiness_rational(const graphs::free_tree& t) noexcept;
  * returns true.
  * @pre \f$n > 3\f$.
  */
-[[nodiscard]] numeric::rational
-hubiness_rational(const graphs::rooted_tree& t) noexcept;
+[[nodiscard]] numeric::rational hubiness_rational(const graphs::rooted_tree& t
+) noexcept;
 
 /**
  * @brief Computes the hubiness coefficient as a floating point value.
