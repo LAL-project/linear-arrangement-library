@@ -50,6 +50,7 @@
 // C++ includes
 #if defined LAL_DEBUG_DMax_Unc_BnB
 #include <string_view>
+#include <utility>
 #endif
 #include <cstdint>
 
@@ -101,7 +102,7 @@ propagation_result_to_string(const propagation_result at) noexcept
 [[nodiscard]] inline constexpr std::size_t
 propagation_result_to_index(const propagation_result rd) noexcept
 {
-	return static_cast<std::size_t>(rd);
+	return static_cast<std::size_t>(std::to_underlying(rd));
 }
 
 /// Converts an index value to a value of

@@ -45,6 +45,7 @@
 #if defined DEBUG
 #include <cassert>
 #endif
+#include <utility>
 
 #if !defined LAL_INTERFACE_PYTHON
 #include <string_view>
@@ -669,7 +670,7 @@ constexpr inline
 constexpr inline std::size_t
 treebank_feature_to_index(const io::treebank_feature_type& tf) noexcept
 {
-	return static_cast<std::size_t>(tf);
+	return static_cast<std::size_t>(std::to_underlying(tf));
 }
 
 /// Returns the treebank feature corresponding to the input index
