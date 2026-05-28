@@ -84,16 +84,17 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 {
 	// number of nodes of the whole tree
 	const auto n = t.get_num_nodes();
+	const auto N = t.get_num_nodes_component(X);
 
 	// First simple case:
 	// in case the component of x has only one node (node x)...
-	if (t.get_num_nodes_component(X) == 1) [[unlikely]] {
+	if (N == 1) [[unlikely]] {
 		return {X, n + 1};
 	}
 
 	// Second simple case:
 	// if the connected component has two nodes then
-	if (t.get_num_nodes_component(X) == 2) [[unlikely]] {
+	if (N == 2) [[unlikely]] {
 		// case component_size==1 is actually the first simple case
 		const node v1 = X;
 
@@ -116,17 +117,11 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 
 	// leaves of the orginal tree's connected component
 	std::vector<node> tree_leaves;
-	tree_leaves.reserve(t.get_num_nodes_component(X) - 1);
+	tree_leaves.reserve(N - 1);
 	// full degree of every node of the connected component
 	array<uint64_t> trimmed_degree(n, 0);
 	// number of nodes in the connected component
-	uint64_t size_trimmed = t.get_num_nodes_component(X);
-
-	// leaves left to process
-	//   l0: leaves in the current (trimmed) tree
-	uint64_t l0 = 0;
-	//   l1: leaves produced after having trimmed all the l0 leaves
-	uint64_t l1 = 0;
+	uint64_t size_trimmed = N;
 
 #if defined DEBUG
 	uint64_t _size_trimmed = 0; // for debugging purposes only
@@ -153,7 +148,6 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 
 				if (trimmed_degree[u] == 1) {
 					tree_leaves.push_back(u);
-					++l0;
 				}
 			}
 		);
@@ -167,26 +161,35 @@ retrieve_centre(const tree_t& t, const node X) noexcept
 
 		bfs.start_at(X);
 		bfs.reset();
-
-#if defined DEBUG
-		// make sure that the method n_nodes_component returns a correct value
-		assert(_size_trimmed == size_trimmed);
-#endif
 	}
 	else {
 		for (node u = 0; u < n; ++u) {
 			if (t.are_nodes_in_same_component(u, X)) {
+#if defined DEBUG
+				++_size_trimmed;
+#endif
+				
 				// 'trimmed_degree' must be the degree of the vertex
 				// in the underlying undirected graph!
 				trimmed_degree[u] = t.get_degree(u);
 
 				if (trimmed_degree[u] == 1) {
 					tree_leaves.push_back(u);
-					++l0;
 				}
 			}
 		}
 	}
+
+#if defined DEBUG
+	// make sure that the method n_nodes_component returns a correct value
+	assert(_size_trimmed == size_trimmed);
+#endif
+
+	// leaves left to process
+	//   l0: leaves in the current (trimmed) tree
+	uint64_t l0 = tree_leaves.size();
+	//   l1: leaves produced after having trimmed all the l0 leaves
+	uint64_t l1 = 0;
 
 	// ---------------------------------------------------
 	// retrieve the centre of the connected component
