@@ -116,7 +116,7 @@ find_package(OpenMP REQUIRED)
 # ******************************************************************************
 # HEADER AND SOURCE FILES FOR COMPILATION
 
-file(GLOB_RECURSE SOURCES ../lal/*)
+file(GLOB_RECURSE SOURCES lal/*)
 target_sources(${TargetStringLibrary} PRIVATE ${SOURCES})
 
 # **************************************************************************** #
@@ -127,33 +127,33 @@ target_sources(${TargetStringLibrary} PRIVATE ${SOURCES})
 # but via several custom variables
 
 # ---------------------------------------------------------------------------- #
-file(GLOB LIBLAL_MAIN_HEADER ../lal/*.hpp)
+file(GLOB LIBLAL_MAIN_HEADER lal/*.hpp)
 # ---------------------------------------------------------------------------- #
 set(LIBLAL_DETAIL_HEADER
-	detail/array.hpp
-	detail/arrangement_wrapper.hpp
+	lal/detail/array.hpp
+	lal/detail/arrangement_wrapper.hpp
 )
 # ---------------------------------------------------------------------------- #
-file(GLOB_RECURSE LIBLAL_GENERATION_HEADER ../lal/generate/*.hpp)
+file(GLOB_RECURSE LIBLAL_GENERATION_HEADER lal/generate/*.hpp)
 # ---------------------------------------------------------------------------- #
-file(GLOB_RECURSE LIBLAL_GRAPHS_HEADER ../lal/graphs/*.hpp)
+file(GLOB_RECURSE LIBLAL_GRAPHS_HEADER lal/graphs/*.hpp)
 # ---------------------------------------------------------------------------- #
-file(GLOB_RECURSE LIBLAL_IO_HEADER ../lal/io/*.hpp)
+file(GLOB_RECURSE LIBLAL_IO_HEADER lal/io/*.hpp)
 # ---------------------------------------------------------------------------- #
-file(GLOB_RECURSE LIBLAL_ITERATORS_HEADER ../lal/iterators/*.hpp)
+file(GLOB_RECURSE LIBLAL_ITERATORS_HEADER lal/iterators/*.hpp)
 # ---------------------------------------------------------------------------- #
-file(GLOB_RECURSE LIBLAL_LINARR_MAIN_HEADER ../lal/linarr/*.hpp)
-file(GLOB_RECURSE LIBLAL_LINARR_aggregations_HEADER ../lal/linarr/aggregations/*.hpp)
-file(GLOB_RECURSE LIBLAL_LINARR_C_HEADER ../lal/linarr/C/*.hpp)
-file(GLOB_RECURSE LIBLAL_LINARR_chunking_HEADER ../lal/linarr/chunking/*.hpp)
-file(GLOB_RECURSE LIBLAL_LINARR_D_HEADER ../lal/linarr/D/*.hpp)
-file(GLOB_RECURSE LIBLAL_LINARR_syndeptree_HEADER ../lal/linarr/syntactic_dependency_tree/*.hpp)
+file(GLOB_RECURSE LIBLAL_LINARR_MAIN_HEADER lal/linarr/*.hpp)
+file(GLOB_RECURSE LIBLAL_LINARR_aggregations_HEADER lal/linarr/aggregations/*.hpp)
+file(GLOB_RECURSE LIBLAL_LINARR_C_HEADER lal/linarr/C/*.hpp)
+file(GLOB_RECURSE LIBLAL_LINARR_chunking_HEADER lal/linarr/chunking/*.hpp)
+file(GLOB_RECURSE LIBLAL_LINARR_D_HEADER lal/linarr/D/*.hpp)
+file(GLOB_RECURSE LIBLAL_LINARR_syndeptree_HEADER lal/linarr/syntactic_dependency_tree/*.hpp)
 # ---------------------------------------------------------------------------- #
-file(GLOB_RECURSE LIBLAL_NUMERIC_HEADER ../lal/numeric/*.hpp)
+file(GLOB_RECURSE LIBLAL_NUMERIC_HEADER lal/numeric/*.hpp)
 # ---------------------------------------------------------------------------- #
-file(GLOB_RECURSE LIBLAL_PROPERTIES_HEADER ../lal/properties/*.hpp)
+file(GLOB_RECURSE LIBLAL_PROPERTIES_HEADER lal/properties/*.hpp)
 # ---------------------------------------------------------------------------- #
-file(GLOB_RECURSE LIBLAL_UTILITIES_HEADER ../lal/utilities/*.hpp)
+file(GLOB_RECURSE LIBLAL_UTILITIES_HEADER lal/utilities/*.hpp)
 # ******************************************************************************
 
 # ******************************************************************************
@@ -224,7 +224,7 @@ else()
 endif()
 
 # include path (required by the compiler to find the headers)
-target_include_directories(${TargetStringLibrary} PRIVATE ..)
+target_include_directories(${TargetStringLibrary} PRIVATE .)
 
 # ******************************************************************************
 # DEPENDENCIES
