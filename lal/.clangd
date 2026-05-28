@@ -1,3 +1,0 @@
-CompileFlags:
-  Add: [-I/usr/lib/gcc/x86_64-linux-gnu/11/include]
-  Compiler: gcc-11
