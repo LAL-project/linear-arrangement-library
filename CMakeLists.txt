@@ -213,6 +213,7 @@ add_compiler_flag(${OpenMP_CXX_FLAGS})
 
 # Optimisation flags
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+	add_compiler_flag(-g)
 	add_compiler_flag(-Og)
 	add_compiler_flag(-DDEBUG)
 	add_compiler_flag(-D_GLIBCXX_DEBUG)
