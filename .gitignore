@@ -6,6 +6,9 @@ docshtml/
 lal/lal.pro.user
 lal/CMakeLists.txt.user
 
+cmake-build-*/
+.idea/
+
 lal-debug/
 lal-release/
 lal-profile/
