@@ -117,7 +117,7 @@ public:
 	 *
 	 * This method can be called even after it has returned an error.
 	 */
-	void next_treebank() noexcept;
+	[[nodiscard]] treebank_file_error next_treebank() noexcept;
 
 	/// Returns a treebank reader class instance for processing a treebank.
 	[[nodiscard]] treebank_reader& get_treebank_reader() noexcept

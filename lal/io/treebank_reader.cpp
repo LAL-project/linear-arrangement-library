@@ -42,6 +42,7 @@
 #include <lal/io/treebank_reader.hpp>
 
 // C++ includes
+#include <filesystem>
 #include <sstream>
 
 // lal includes
@@ -56,6 +57,13 @@ treebank_file_error treebank_reader::init(
 	const std::string& treebank_filename, const std::string& treebank_id
 ) noexcept
 {
+	if (not std::filesystem::is_regular_file(treebank_filename)) {
+		return treebank_file_error(
+			"Path '" + treebank_filename + "' does not point to a regular file.",
+			treebank_file_error_type::path_is_not_a_file
+		);
+	}
+
 	m_treebank.close();
 	m_treebank_file = treebank_filename;
 	m_treebank_identifier = treebank_id;

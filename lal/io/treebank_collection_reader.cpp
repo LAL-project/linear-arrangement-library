@@ -43,7 +43,6 @@
 
 // C++ includes
 #include <filesystem>
-#include <tuple>
 
 namespace lal {
 namespace io {
@@ -51,6 +50,13 @@ namespace io {
 treebank_file_error
 treebank_collection_reader::init(const std::string& main_file) noexcept
 {
+	if (not std::filesystem::is_regular_file(main_file)) {
+		return treebank_file_error(
+			"Path '" + main_file + "' does not point to a regular file.",
+			treebank_file_error_type::path_is_not_a_file
+		);
+	}
+
 	// close current dataset (if any)
 	m_list.close();
 	m_reached_end = false;
@@ -76,28 +82,27 @@ treebank_collection_reader::init(const std::string& main_file) noexcept
 	}
 
 	step_line();
-	next_treebank();
-
-	return treebank_file_error("", treebank_file_error_type::no_error);
+	return next_treebank();
 }
 
-void treebank_collection_reader::next_treebank() noexcept
+treebank_file_error treebank_collection_reader::next_treebank() noexcept
 {
 	if (m_no_more_treebanks) {
 		m_reached_end = true;
-		return;
+		return treebank_file_error("", treebank_file_error_type::no_error);
 	}
 
 	// build path to treebank file
 	std::filesystem::path M(m_main_file);
 	M.replace_filename(m_cur_treebank_filename);
 
-	std::ignore = m_treebank_reader.init(M.string(), m_cur_treebank_id);
-	// this call can only return
-	//     lal::io::treebank_error::treebank_file_could_not_be_opened
-	// which can be checked with 'is_open'
+	auto err = m_treebank_reader.init(M.string(), m_cur_treebank_id);
+	if (err.is_error()) {
+		return err;
+	}
 
 	step_line();
+	return treebank_file_error("", treebank_file_error_type::no_error);
 }
 
 } // namespace io

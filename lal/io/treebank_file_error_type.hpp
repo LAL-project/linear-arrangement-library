@@ -111,6 +111,18 @@ enum class treebank_file_error_type {
 	 */
 	malformed_treebank_file,
 
+	/**
+	 * @brief The path provided does not lead to a regular file.
+	 *
+	 * You will have to sanitize the parameters passed to the treebank reader
+	 * or treebank processor.
+	 *
+	 * Returned by:
+	 * - @ref lal::io::treebank_reader
+	 * - @ref lal::io::treebank_collection_reader
+	 */
+	path_is_not_a_file,
+
 	// TREEBANK COLLECTION
 
 	/**
