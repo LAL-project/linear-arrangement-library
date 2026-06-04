@@ -41,6 +41,8 @@
 
 #pragma once
 
+#include <iostream>
+
 // lal includes
 #include <lal/graphs/directed_graph.hpp>
 #include <lal/detail/graphs/traversal.hpp>
@@ -48,6 +50,10 @@
 
 namespace lal {
 namespace detail {
+
+static constexpr char STATE_PENDING = 0;
+static constexpr char STATE_IN_STACK = 1;
+static constexpr char STATE_PROCESSED = 2;
 
 /**
  * @brief Returns true if, and only if, the graph has cycles.
@@ -59,26 +65,24 @@ namespace detail {
 [[nodiscard]] inline bool find_cycle(
 	const graphs::directed_graph& g,
 	const node u,
-	char * const __restrict__ visited,
-	char * const __restrict__ in_stack
+	array<char>& state
 ) noexcept
 {
-	if (visited[u]) {
+	if (state[u] == STATE_PROCESSED) {
 		return false;
 	}
-	visited[u] = 1;
-
-	in_stack[u] = 1;
+	if (state[u] == STATE_IN_STACK) {
+		return true;
+	}
+	
+	state[u] = STATE_IN_STACK;
 	for (const node v : g.get_out_neighbors(u)) {
-		if (in_stack[v]) {
-			return true;
-		}
-		if (visited[v] == 0 and find_cycle(g, v, visited, in_stack)) {
+		if (find_cycle(g, v, state)) {
 			return true;
 		}
 	}
-
-	in_stack[u] = 0;
+	state[u] = STATE_PROCESSED;
+	
 	return false;
 }
 
@@ -91,18 +95,19 @@ namespace detail {
  */
 [[nodiscard]] inline bool has_directed_cycles(
 	const graphs::directed_graph& g,
-	char * const __restrict__ vis,
-	char * const __restrict__ in_stack
+	array<char>& state
 ) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
-	std::fill(&vis[0], &vis[n], 0);
-	std::fill(&in_stack[0], &in_stack[n], 0);
+	std::fill(state.begin(), state.end(), STATE_PENDING);
+	
 	bool has_cycle = false;
-	for (node u = 0; u < n and not has_cycle; ++u) {
-		if (vis[u] == 0) {
-			has_cycle = find_cycle(g, u, vis, in_stack);
+	node u = 0;
+	while (u < n and not has_cycle) {
+		if (state[u] == STATE_PENDING) {
+			has_cycle = find_cycle(g, u, state);
 		}
+		++u;
 	}
 	return has_cycle;
 }
@@ -116,10 +121,8 @@ namespace detail {
 ) noexcept
 {
 	const uint64_t n = g.get_num_nodes();
-	array<char> all_mem(2 * n);
-	char * const __restrict__ vis = all_mem.begin();
-	char * const __restrict__ in_stack = all_mem.at(n);
-	return has_directed_cycles(g, vis, in_stack);
+	array<char> state(n);
+	return has_directed_cycles(g, state);
 }
 
 /**
